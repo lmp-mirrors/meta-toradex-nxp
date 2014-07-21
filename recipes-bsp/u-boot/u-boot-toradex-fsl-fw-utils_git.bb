@@ -11,8 +11,8 @@ DEFAULT_PREFERENCE_apalis-imx6 = "1"
 
 FILESPATHPKG =. "git:"
 S="${WORKDIR}/git"
-SRCREV_colibri-vf = "0b4191106b32ca91afa759f3620fc470cf61d7c2"
-SRCREV_apalis-imx6 = "0b4191106b32ca91afa759f3620fc470cf61d7c2"
+SRCREV_colibri-vf = "a62f99816066992c7a3793f944d253c3c5484cda"
+SRCREV_apalis-imx6 = "a62f99816066992c7a3793f944d253c3c5484cda"
 SRCBRANCH_colibri-vf = "2014.04-toradex"
 SRCBRANCH_apalis-imx6 = "2014.04-toradex"
 SRC_URI = "git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=${SRCBRANCH} \
@@ -25,6 +25,7 @@ PR = "r0"
 S = "${WORKDIR}/git"
 
 EXTRA_OEMAKE = 'CROSS_COMPILE=${TARGET_PREFIX} CC="${TARGET_PREFIX}gcc ${TOOLCHAIN_OPTIONS}"'
+
 inherit uboot-config
 
 do_compile () {
