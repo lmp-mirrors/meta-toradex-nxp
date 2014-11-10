@@ -13,9 +13,8 @@ S = "${WORKDIR}/git/"
 
 PR = "r1"
 
-#we want mkfs.ubifs binary to run on a 32 bit architecture, on x86-64 this requires the 32 bit compatibility libs
-#FIXME: this does not work, currently we have to compile the 32bit binary on a 32bit machine
-#EXTRA_OEMAKE_class-native = "'CC=${CC}' 'RANLIB=${RANLIB}' 'AR=${AR}' 'CFLAGS=${CFLAGS} -I${S}/include -DWITHOUT_XATTR -m32' 'BUILDDIR=${S}'"
+#we want imx_usb binary to run on a 32-bit architecture, on x86_64 this requires the 32-bit compatibility libs
+EXTRA_OEMAKE_class-native = "CC='${CC} -m32' CXX='${CXX} -m32'"
 
 BBCLASSEXTEND = "native"
 
