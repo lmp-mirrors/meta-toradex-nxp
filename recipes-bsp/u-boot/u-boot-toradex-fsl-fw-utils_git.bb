@@ -26,7 +26,7 @@ PR = "r0"
 
 S = "${WORKDIR}/git"
 
-EXTRA_OEMAKE = 'CROSS_COMPILE=${TARGET_PREFIX} CC="${TARGET_PREFIX}gcc ${TOOLCHAIN_OPTIONS}"'
+EXTRA_OEMAKE = 'CC="${CC}"'
 
 inherit uboot-config
 
