@@ -1,4 +1,4 @@
-DESCRIPTION = "U-boot bootloader fw_printenv/setenv utils"
+SUMMARY = "U-boot bootloader fw_printenv/setenv utils"
 LICENSE = "GPLv2+"
 LIC_FILES_CHKSUM_colibri-vf = "file://Licenses/README;md5=c7383a594871c03da76b3707929d2919"
 LIC_FILES_CHKSUM = "file://Licenses/README;md5=025bf9f768cbcb1a165dbe1a110babfb"

@@ -1,4 +1,4 @@
-DESCRIPTION = "USB/UART loader for i.MX51/53/6x and Vybrid"
+SUMMARY = "USB/UART loader for i.MX51/53/6x and Vybrid"
 SECTION = "base"
 HOMEPAGE = "https://github.com/boundarydevices/imx_usb_loader"
 LICENSE = "LGPLv2+"
