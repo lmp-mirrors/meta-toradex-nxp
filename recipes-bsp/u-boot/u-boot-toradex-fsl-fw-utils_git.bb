@@ -26,7 +26,7 @@ PR = "r0"
 
 S = "${WORKDIR}/git"
 
-EXTRA_OEMAKE = 'CC="${CC}"'
+EXTRA_OEMAKE = 'CC="${CC}" STRIP="${STRIP}"'
 
 inherit uboot-config
 
