@@ -1,4 +1,4 @@
-state.colibrit20wm971 {
+state.Audio {
 	control.1 {
 		iface MIXER
 		name 'Speaker Playback Volume'
@@ -78,7 +78,7 @@ state.colibrit20wm971 {
 	control.8 {
 		iface MIXER
 		name 'Headphone Playback ZC Switch'
-		value true
+		value false
 		comment {
 			access 'read write'
 			type BOOLEAN
@@ -383,7 +383,7 @@ state.colibrit20wm971 {
 	}
 	control.36 {
 		iface MIXER
-		name 'Capture 20dB Boost Switch'
+		name 'Capture Boost Switch'
 		value false
 		comment {
 			access 'read write'
@@ -393,7 +393,7 @@ state.colibrit20wm971 {
 	}
 	control.37 {
 		iface MIXER
-		name 'Capture to Phone 20dB Boost Switch'
+		name 'Capture to Phone Boost Switch'
 		value true
 		comment {
 			access 'read write'
@@ -498,8 +498,8 @@ state.colibrit20wm971 {
 	}
 	control.47 {
 		iface MIXER
-		name 'Capture ADC Switch'
-		value false
+		name 'Capture Switch'
+		value true
 		comment {
 			access 'read write'
 			type BOOLEAN
@@ -550,6 +550,9 @@ state.colibrit20wm971 {
 			type INTEGER
 			count 1
 			range '0 - 31'
+			dbmin -3450
+			dbmax 1200
+			dbvalue.0 0
 		}
 	}
 	control.52 {
@@ -561,16 +564,23 @@ state.colibrit20wm971 {
 			type INTEGER
 			count 1
 			range '0 - 31'
+			dbmin -3450
+			dbmax 1200
+			dbvalue.0 0
 		}
 	}
 	control.53 {
 		iface MIXER
-		name 'Mic 20dB Boost Switch'
-		value false
+		name 'Mic Boost Volume'
+		value 0
 		comment {
 			access 'read write'
-			type BOOLEAN
+			type INTEGER
 			count 1
+			range '0 - 1'
+			dbmin 0
+			dbmax 2000
+			dbvalue.0 0
 		}
 	}
 	control.54 {
@@ -606,7 +616,7 @@ state.colibrit20wm971 {
 	control.57 {
 		iface MIXER
 		name 'Speaker Mixer Line Bypass Switch'
-		value true
+		value false
 		comment {
 			access 'read write'
 			type BOOLEAN
@@ -805,19 +815,7 @@ state.colibrit20wm971 {
 	}
 	control.77 {
 		iface MIXER
-		name 'Differential Source'
-		value Mic
-		comment {
-			access 'read write'
-			type ENUMERATED
-			count 1
-			item.0 Mic
-			item.1 Line
-		}
-	}
-	control.78 {
-		iface MIXER
-		name 'Mic Select Source'
+		name 'Mic Source Select'
 		value 'Mic 1'
 		comment {
 			access 'read write'
@@ -829,7 +827,7 @@ state.colibrit20wm971 {
 			item.3 Stereo
 		}
 	}
-	control.79 {
+	control.78 {
 		iface MIXER
 		name 'Right Capture Select'
 		value Mic
@@ -847,7 +845,7 @@ state.colibrit20wm971 {
 			item.7 Phone
 		}
 	}
-	control.80 {
+	control.79 {
 		iface MIXER
 		name 'Left Capture Select'
 		value Mic
@@ -865,21 +863,7 @@ state.colibrit20wm971 {
 			item.7 Phone
 		}
 	}
-	control.81 {
-		iface MIXER
-		name 'Capture Phone Mux'
-		value Mute
-		comment {
-			access 'read write'
-			type ENUMERATED
-			count 1
-			item.0 Stereo
-			item.1 Left
-			item.2 Right
-			item.3 Mute
-		}
-	}
-	control.82 {
+	control.80 {
 		iface MIXER
 		name 'Speaker Mux'
 		value 'Speaker Mix'
@@ -891,7 +875,7 @@ state.colibrit20wm971 {
 			item.1 'Headphone Mix'
 		}
 	}
-	control.83 {
+	control.81 {
 		iface MIXER
 		name 'Out3 Mux'
 		value Left
@@ -905,7 +889,7 @@ state.colibrit20wm971 {
 			item.3 Mono
 		}
 	}
-	control.84 {
+	control.82 {
 		iface MIXER
 		name 'ALC Sidetone Mux'
 		value None
