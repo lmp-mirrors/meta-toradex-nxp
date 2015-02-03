@@ -13,7 +13,7 @@ DEFAULT_PREFERENCE_colibri-imx6 = "1"
 
 FILESPATHPKG =. "git:"
 S="${WORKDIR}/git"
-SRCREV_colibri-vf = "f7e57f71da1eecbf1ac28339868d15492c929925"
+SRCREV_colibri-vf = "73b99ed96be527c482e63f8d0aac4e6188b1f7e0"
 SRCREV_mx6 = "0260e62f008aa292d87da7c1a9fbe1051a793518"
 SRCBRANCH_colibri-vf = "2014.10-toradex"
 SRCBRANCH_mx6 = "2014.04-toradex"
