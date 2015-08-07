@@ -509,8 +509,8 @@ state.Audio {
 	control.48 {
 		iface MIXER
 		name 'Capture Volume Steps'
-		value.0 '+1.5dB Steps'
-		value.1 '+1.5dB Steps'
+		value.0 '+0.75dB Steps'
+		value.1 '+0.75dB Steps'
 		comment {
 			access 'read write'
 			type ENUMERATED
