@@ -19,6 +19,8 @@ SRCBRANCH_mx6 = "2015.04-toradex"
 SRC_URI = "git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=${SRCBRANCH} \
            file://fw_env.config \
 "
+SRC_URI_append_mx6 = " file://fw_unlock_mmc.sh \
+"
 
 PV = "${PR}+gitr${SRCREV}"
 PR = "r0"
@@ -41,6 +43,24 @@ do_install () {
     install -m 755 ${S}/tools/env/fw_printenv ${D}${base_sbindir}/fw_printenv
     ln -s fw_printenv ${D}${base_sbindir}/fw_setenv
     install -m 644 ${WORKDIR}/fw_env.config ${D}${sysconfdir}/
+}
+
+do_install_append_mx6() {
+    install -d ${D}${sysconfdir}/profile.d/
+    install -m 0644 ${WORKDIR}/fw_unlock_mmc.sh ${D}${sysconfdir}/profile.d/fw_unlock_mmc.sh
+}
+
+pkg_postinst_${PN}_mx6 () {
+    # can't do this offline
+    if [ "x$D" != "x" ]; then
+        exit 1
+    fi
+    # Environment in eMMC, before the configblock at the end of 1st "boot sector"
+    DISK="mmcblk0boot0"
+    DISK_SIZE=`cat /sys/block/$DISK/size`
+    CONFIG_ENV_SIZE=8192 # 0x2000
+    CONFIG_ENV_OFFSET=`expr $DISK_SIZE \* 512 - $CONFIG_ENV_SIZE - 512`
+    printf "/dev/%s\t0x%X\t0x%X\n" $DISK $CONFIG_ENV_OFFSET $CONFIG_ENV_SIZE >> "/etc/fw_env.config"
 }
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
