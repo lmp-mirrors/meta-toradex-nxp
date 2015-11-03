@@ -12,8 +12,8 @@ DEFAULT_PREFERENCE_colibri-imx6 = "1"
 
 FILESPATHPKG =. "git:"
 S="${WORKDIR}/git"
-SRCREV_colibri-vf = "f9e7649338178f823e291386dde5086ad636b703"
-SRCREV_mx6 = "06ee8db6422e02337242e43b8573359443db59ea"
+SRCREV_colibri-vf = "1ef4a29e8cea0239411dde64f9617ad76248fd02"
+SRCREV_mx6 = "1ef4a29e8cea0239411dde64f9617ad76248fd02"
 SRCBRANCH_colibri-vf = "2015.04-toradex"
 SRCBRANCH_mx6 = "2015.04-toradex"
 SRC_URI = "git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=${SRCBRANCH} \
