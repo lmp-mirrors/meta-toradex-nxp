@@ -1,13 +1,13 @@
-SUMMARY = "USB/UART loader for i.MX51/53/6x and Vybrid"
+SUMMARY = "USB/UART loader for i.MX51/53/6x/7 and Vybrid"
 SECTION = "base"
 HOMEPAGE = "https://github.com/boundarydevices/imx_usb_loader"
 LICENSE = "LGPLv2+"
-LIC_FILES_CHKSUM = "file://COPYING;md5=d32239bcb673463ab874e80d47fae504"
+LIC_FILES_CHKSUM = "file://COPYING;md5=4fbd65380cdd255951079008b364516c"
 
 DEPENDS = "libusb1-native"
 
-SRCREV = "09377bd5b8d04d4b20ef70bb0c56cf3de4500746"
-SRC_URI = "git://github.com/toradex/imx_loader.git;protocol=git;branch=master"
+SRCREV = "d4d978927f9835d5583ad6d1e00cd9d3138947ab"
+SRC_URI = "git://github.com/boundarydevices/imx_usb_loader.git;protocol=git;branch=master"
 
 S = "${WORKDIR}/git/"
 
