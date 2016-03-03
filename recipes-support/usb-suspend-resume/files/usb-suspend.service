@@ -1,0 +1,10 @@
+[Unit]
+Description=User suspend actions
+Before=sleep.target
+
+[Service]
+Type=simple
+ExecStart=-/usr/bin/usb-suspend.sh
+
+[Install]
+WantedBy=sleep.target
