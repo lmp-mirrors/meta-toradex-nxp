@@ -1,2 +1,5 @@
-SRCREV = "790ce5c389461d90a34838b3ab63e3a334fbc57a"
-SRCBRANCH = "2015.04-toradex-next"
+PV = "v2015.04-v2.6b1+git${SRCPV}"
+
+SRCREV = "7f946663c11fd5e580eb7e4f15bcc14d47ce47ad"
+
+COMPATIBLE_MACHINE = "(mx6|mx7|vf)"
