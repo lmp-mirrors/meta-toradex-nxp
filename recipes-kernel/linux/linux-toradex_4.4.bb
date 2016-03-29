@@ -10,6 +10,6 @@ KERNEL_MODULE_AUTOLOAD += "${@bb.utils.contains('COMBINED_FEATURES', 'usbgadget'
 
 LOCALVERSION = "-v2.6b1"
 SRCBRANCH = "toradex_vf_4.4-next"
-SRCREV = "a892c86d9498144ca1306f6a308a68b96d5aef88"
+SRCREV = "88c66ffd8ed6cd50e436ce0d5830cd27f93259a2"
 DEPENDS += "lzop-native bc-native"
 COMPATIBLE_MACHINE = "(vf)"
