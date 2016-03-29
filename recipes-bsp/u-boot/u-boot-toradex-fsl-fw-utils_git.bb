@@ -5,17 +5,16 @@ SECTION = "bootloader"
 PROVIDES = "u-boot-fw-utils"
 DEPENDS = "mtd-utils"
 
-COMPATIBLE_MACHINE = "(colibri-vf|colibri-imx6|apalis-imx6)"
-DEFAULT_PREFERENCE_colibri-vf = "1"
+COMPATIBLE_MACHINE = "(apalis-imx6|colibri-imx6|colibri-imx7|colibri-vf)"
 DEFAULT_PREFERENCE_apalis-imx6 = "1"
 DEFAULT_PREFERENCE_colibri-imx6 = "1"
+DEFAULT_PREFERENCE_colibri-imx7 = "1"
+DEFAULT_PREFERENCE_colibri-vf = "1"
 
 FILESPATHPKG =. "git:"
 S="${WORKDIR}/git"
-SRCREV_colibri-vf = "b66337d357cca761bf8627acbb1ec991f425f0b4"
-SRCREV_mx6 = "b66337d357cca761bf8627acbb1ec991f425f0b4"
-SRCBRANCH_colibri-vf = "2015.04-toradex"
-SRCBRANCH_mx6 = "2015.04-toradex"
+SRCREV = "119db1915caf1bfa42ae9e6d331d693c8585a5f4"
+SRCBRANCH = "2015.04-toradex-next"
 SRC_URI = "git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=${SRCBRANCH} \
            file://fw_env.config \
 "
