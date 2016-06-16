@@ -17,6 +17,7 @@ SRCREV = "46aa70c402efec7d89f6c93531a767a1771e2192"
 SRCBRANCH = "2015.04-toradex"
 SRC_URI = "git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=${SRCBRANCH} \
            file://fw_env.config \
+           file://0001-fw_env.c-include-stdint.h-unconditionally.patch \
 "
 SRC_URI_append_mx6 = " file://fw_unlock_mmc.sh \
 "
