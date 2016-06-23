@@ -20,9 +20,8 @@ SRC_URI[cond_resched.patch.md5sum] = "1316f67ec098639048c8d1c28af2a150"
 SRC_URI[cond_resched.patch.sha256sum] = "40e5db88b03b98d81ea672ee70af7d02ed3cf39104ebfa5a193000fc3adad489"
 
 LOCALVERSION = "-v2.6b2-rt"
-SRCBRANCH = "toradex_imx_3.14.52_1.1.0_ga-next"
-SRCREV = "9ace52b11aca9bbb657a35612c72c83c85b7e92c"
+SRCBRANCH = "toradex_imx_3.14.52_1.1.0_ga"
+SRCREV = "7c83cef87116c0b2aaaf867f406831643306d3d1"
 
 DEPENDS += "lzop-native bc-native"
 COMPATIBLE_MACHINE = "(mx6|mx7)"
-
