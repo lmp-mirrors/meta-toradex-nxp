@@ -13,8 +13,8 @@ DEFAULT_PREFERENCE_colibri-vf = "1"
 
 FILESPATHPKG =. "git:"
 S="${WORKDIR}/git"
-SRCREV = "10bc451b6948e842e24799fe7fb037d335714b36"
-SRCBRANCH = "2015.04-toradex"
+SRCREV = "476fa4400d2cc32279c7ae7e73e7c4ab1bff4327"
+SRCBRANCH = "2015.04-toradex-next"
 SRC_URI = "git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=${SRCBRANCH} \
            file://fw_env.config \
 "
@@ -47,19 +47,6 @@ do_install () {
 do_install_append_mx6() {
     install -d ${D}${sysconfdir}/profile.d/
     install -m 0644 ${WORKDIR}/fw_unlock_mmc.sh ${D}${sysconfdir}/profile.d/fw_unlock_mmc.sh
-}
-
-pkg_postinst_${PN}_mx6 () {
-    # can't do this offline
-    if [ "x$D" != "x" ]; then
-        exit 1
-    fi
-    # Environment in eMMC, before the configblock at the end of 1st "boot sector"
-    DISK="mmcblk0boot0"
-    DISK_SIZE=`cat /sys/block/$DISK/size`
-    CONFIG_ENV_SIZE=8192 # 0x2000
-    CONFIG_ENV_OFFSET=`expr $DISK_SIZE \* 512 - $CONFIG_ENV_SIZE - 512`
-    printf "/dev/%s\t0x%X\t0x%X\n" $DISK $CONFIG_ENV_OFFSET $CONFIG_ENV_SIZE >> "/etc/fw_env.config"
 }
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
