@@ -1,0 +1,5 @@
+FILESEXTRAPATHS_prepend := "${THISDIR}/linux-toradex-4.4:"
+
+LOCALVERSION = "-v2.6.1b1"
+SRCREV = "745509331a798c8275262c559e8b00d71b4169a2"
+SRCBRANCH = "toradex_vf_4.4-next"
