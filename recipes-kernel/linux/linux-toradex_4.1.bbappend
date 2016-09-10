@@ -4,4 +4,5 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/linux-toradex-4.1:"
 KERNEL_MODULE_AUTOLOAD += "${@bb.utils.contains('COMBINED_FEATURES', 'usbgadget', ' libcomposite', '',d)}"
 
 LOCALVERSION = "-v2.6b1"
-SRCREV = "e6d111cd909551cec5902358db1e25dcaa8c86bb"
+SRCREV = "455cc9da4df2597945cb63a08a7c99cab99db644"
+SRCBRANCH = "toradex_vf_4.1-next"
