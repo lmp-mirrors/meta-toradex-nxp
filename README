@@ -29,7 +29,7 @@ This layer depends on:
   branch: jethro
   revision: HEAD
 
-  URI: git://git.yoctoproject.org/meta-fsl-arm-extra
+  URI: https://github.com/Freescale/meta-fsl-arm-extra
   branch: jethro
   revision: HEAD
 
