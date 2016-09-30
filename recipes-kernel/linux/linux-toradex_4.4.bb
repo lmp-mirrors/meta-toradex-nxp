@@ -17,6 +17,6 @@ KERNEL_MODULE_AUTOLOAD += "vf610_rpmsg"
 
 LOCALVERSION = "-v2.6.1b1"
 SRCBRANCH = "toradex_vf_4.4"
-SRCREV = "9b8bd3d738db0921c5b8886fef477dfd5d91f997"
+SRCREV = "fa359d75f35900293ca8ee3189d9f0f867f4f8c0"
 DEPENDS += "lzop-native bc-native"
 COMPATIBLE_MACHINE = "(vf)"
