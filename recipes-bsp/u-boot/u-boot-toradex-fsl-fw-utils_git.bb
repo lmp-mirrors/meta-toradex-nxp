@@ -13,8 +13,8 @@ DEFAULT_PREFERENCE_colibri-vf = "1"
 
 FILESPATHPKG =. "git:"
 S="${WORKDIR}/git"
-SRCREV = "46aa70c402efec7d89f6c93531a767a1771e2192"
-SRCBRANCH = "2015.04-toradex"
+SRCREV = "7e24d38e215f7c37bebd7c2b8b9b911386a13490"
+SRCBRANCH = "2015.04-toradex-next"
 SRC_URI = "git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=${SRCBRANCH} \
            file://fw_env.config \
            file://0001-fw_env.c-include-stdint.h-unconditionally.patch \
@@ -22,7 +22,7 @@ SRC_URI = "git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=${SRCBRA
 SRC_URI_append_mx6 = " file://fw_unlock_mmc.sh \
 "
 
-PV = "v2015.04-v2.6.1b1+git${SRCPV}"
+PV = "v2015.04-v2.6.2b1+git${SRCPV}"
 
 S = "${WORKDIR}/git"
 
