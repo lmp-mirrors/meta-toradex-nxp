@@ -1,6 +1,6 @@
 SUMMARY = "U-boot bootloader fw_printenv/setenv utils"
 LICENSE = "GPLv2+"
-LIC_FILES_CHKSUM = "file://Licenses/README;md5=c7383a594871c03da76b3707929d2919"
+LIC_FILES_CHKSUM = "file://Licenses/README;md5=a2c678cfd4a4d97135585cad908541c6"
 SECTION = "bootloader"
 PROVIDES = "u-boot-fw-utils"
 DEPENDS = "mtd-utils"
@@ -13,22 +13,21 @@ DEFAULT_PREFERENCE_colibri-vf = "1"
 
 FILESPATHPKG =. "git:"
 S="${WORKDIR}/git"
-SRCREV = "7e24d38e215f7c37bebd7c2b8b9b911386a13490"
-SRCBRANCH = "2015.04-toradex-next"
+SRCREV = "0cca0bafe5a9690c68a0ec971a520b61a09714b5"
+SRCBRANCH = "2016.11-toradex-next"
 SRC_URI = "git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=${SRCBRANCH} \
            file://fw_env.config \
-           file://0001-fw_env.c-include-stdint.h-unconditionally.patch \
 "
 SRC_URI_append_mx6 = " file://fw_unlock_mmc.sh \
 "
 
-PV = "v2015.04-v2.6.2b1+git${SRCPV}"
+PV = "v2016.11-v2.6.2b1+git${SRCPV}"
 
 S = "${WORKDIR}/git"
 
 EXTRA_OEMAKE = 'CC="${CC}" STRIP="${STRIP}"'
 
-INSANE_SKIP_${PN} = "already-stripped"
+INSANE_SKIP_${PN} = "already-stripped ldflags"
 
 inherit uboot-config
 
