@@ -10,8 +10,8 @@ SRC_URI = "git://git.toradex.com/linux-toradex.git;protocol=git;branch=${SRCBRAN
 KERNEL_MODULE_AUTOLOAD += "${@bb.utils.contains('COMBINED_FEATURES', 'usbgadget', ' libcomposite', '',d)}"
 
 LOCALVERSION = "-v2.6.1b1"
-SRCBRANCH = "toradex_imx_4.1.15_1.0.0_ga"
-SRCREV = "bef7a90406b663a74aaaf06bdccc56285d9fe93c"
+SRCBRANCH = "toradex_imx_4.1.15_1.0.0_ga-next"
+SRCREV = "4bfb39bdd76124c1cfdc41d1975c51553132d573"
 
 DEPENDS += "lzop-native bc-native"
 COMPATIBLE_MACHINE = "(mx7)"
