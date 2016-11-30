@@ -17,24 +17,24 @@ Dependencies
 This layer depends on:
 
   URI: git://git.openembedded.org/bitbake
-  branch: 1.28
+  branch: 1.32
   revision: HEAD
 
   URI: git://git.openembedded.org/openembedded-core
-  layers: meta
-  branch: jethro
+  layer: meta
+  branch: morty
   revision: HEAD
 
   URI: git://git.yoctoproject.org/meta-fsl-arm
-  branch: jethro
+  branch: morty
   revision: HEAD
 
   URI: https://github.com/Freescale/meta-fsl-arm-extra
-  branch: jethro
+  branch: morty
   revision: HEAD
 
   URI: git://git.toradex.com/meta-toradex-bsp-common
-  branch: jethro
+  branch: morty
   revision: HEAD
 
 Patches
