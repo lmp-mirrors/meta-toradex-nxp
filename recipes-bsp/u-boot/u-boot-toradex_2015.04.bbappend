@@ -1,4 +1,4 @@
-PV = "v2015.04-v2.6.2b1+git${SRCPV}"
+PV = "v2015.04-v2.6.1b1+git${SRCPV}"
 
 SRCREV = "7e24d38e215f7c37bebd7c2b8b9b911386a13490"
 SRCBRANCH = "2015.04-toradex-next"

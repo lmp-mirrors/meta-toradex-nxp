@@ -19,7 +19,7 @@ SRC_URI[rename_define.patch.sha256sum] = "4aec310ce68114d7025db33f5b766acae454c7
 SRC_URI[cond_resched.patch.md5sum] = "1316f67ec098639048c8d1c28af2a150"
 SRC_URI[cond_resched.patch.sha256sum] = "40e5db88b03b98d81ea672ee70af7d02ed3cf39104ebfa5a193000fc3adad489"
 
-LOCALVERSION = "-v2.6b2-rt"
+LOCALVERSION = "-v2.6.1b1-rt"
 SRCBRANCH = "toradex_imx_3.14.52_1.1.0_ga"
 SRCREV = "7c83cef87116c0b2aaaf867f406831643306d3d1"
 
