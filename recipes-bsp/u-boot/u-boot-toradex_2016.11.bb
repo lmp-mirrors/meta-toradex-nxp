@@ -1,6 +1,6 @@
 include recipes-bsp/u-boot/u-boot-toradex.inc
 
-PV = "v2016.11-v2.6.2b1+git${SRCPV}"
+PV = "v2016.11-v2.7b1+git${SRCPV}"
 
 LIC_FILES_CHKSUM = "file://Licenses/README;md5=a2c678cfd4a4d97135585cad908541c6"
 

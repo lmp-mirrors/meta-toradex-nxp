@@ -21,7 +21,7 @@ SRC_URI = "git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=${SRCBRA
 SRC_URI_append_mx6 = " file://fw_unlock_mmc.sh \
 "
 
-PV = "v2016.11-v2.6.2b1+git${SRCPV}"
+PV = "v2016.11-v2.7b1+git${SRCPV}"
 
 S = "${WORKDIR}/git"
 
