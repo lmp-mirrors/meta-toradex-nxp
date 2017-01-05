@@ -4,7 +4,7 @@ PV = "v2016.11-v2.7b1+git${SRCPV}"
 
 LIC_FILES_CHKSUM = "file://Licenses/README;md5=a2c678cfd4a4d97135585cad908541c6"
 
-SRCREV = "0cca0bafe5a9690c68a0ec971a520b61a09714b5"
+SRCREV = "3628691f1d5e96bdfac48bde2c2a0c37552fb51f"
 SRCBRANCH = "2016.11-toradex-next"
 COMPATIBLE_MACHINE = "(mx6|mx7|vf)"
 
@@ -12,7 +12,7 @@ COMPATIBLE_MACHINE = "(mx6|mx7|vf)"
 # Hack around building two U-Boot configurations, one with, one without SPL
 # if using UBOOT_CONFIG to build more than one configuration, the current code in
 # u-boot.inc assumes all are either with or without SPL.
-do_deploy_prepend_mx6() {
+do_compile_append_mx6() {
     for config in ${UBOOT_MACHINE}; do
         touch ${B}/${config}/${SPL_BINARY}
     done
