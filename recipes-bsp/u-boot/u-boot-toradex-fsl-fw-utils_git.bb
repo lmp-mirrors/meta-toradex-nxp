@@ -3,6 +3,7 @@ LICENSE = "GPLv2+"
 LIC_FILES_CHKSUM = "file://Licenses/README;md5=a2c678cfd4a4d97135585cad908541c6"
 SECTION = "bootloader"
 PROVIDES = "u-boot-fw-utils"
+RPROVIDES_${PN} = "u-boot-fw-utils"
 DEPENDS = "mtd-utils"
 
 COMPATIBLE_MACHINE = "(apalis-imx6|colibri-imx6|colibri-imx7|colibri-vf)"
