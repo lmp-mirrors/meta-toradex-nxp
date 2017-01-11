@@ -4,8 +4,8 @@ PV = "v2016.11-v2.7b1+git${SRCPV}"
 
 LIC_FILES_CHKSUM = "file://Licenses/README;md5=a2c678cfd4a4d97135585cad908541c6"
 
-SRCREV = "3628691f1d5e96bdfac48bde2c2a0c37552fb51f"
-SRCBRANCH = "2016.11-toradex-next"
+SRCREV = "22e68cbd1fa28e0a9df45cfbfb43f0c606370f32"
+SRCBRANCH = "2016.11-toradex"
 COMPATIBLE_MACHINE = "(mx6|mx7|vf)"
 
 
