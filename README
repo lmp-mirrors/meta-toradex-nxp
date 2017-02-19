@@ -25,11 +25,11 @@ This layer depends on:
   branch: morty
   revision: HEAD
 
-  URI: git://git.yoctoproject.org/meta-fsl-arm
+    URI: git://git.yoctoproject.org/meta-freescale
   branch: morty
   revision: HEAD
 
-  URI: https://github.com/Freescale/meta-fsl-arm-extra
+  URI: https://github.com/Freescale/meta-freescale-3rdparty.git
   branch: morty
   revision: HEAD
 
