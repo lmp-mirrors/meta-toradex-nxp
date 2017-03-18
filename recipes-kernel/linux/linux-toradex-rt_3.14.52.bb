@@ -3,14 +3,15 @@ require recipes-kernel/linux/linux-dtb.inc
 
 SUMMARY = "Real-time Linux kernel for Toradex Freescale i.MX based modules"
 
-SRC_URI = "git://git.toradex.com/linux-toradex.git;protocol=git;branch=${SRCBRANCH} \
-           https://github.com/Freescale/linux-fslc/commit/d379e64ca4fc535334a02dc0314cba6e50f4b720.patch;name=rename_define.patch \
-           https://github.com/Freescale/linux-fslc/commit/e211cb68dd3c951b104ff0b47dbaed2c8b8d2399.patch;name=cond_resched.patch \
-           file://patch-3.14.61-rt64-acpi-removed.patch.gz \
-           file://0001-fix-build.patch \
-           file://0003-no-split-ptlocks.patch \
-           file://0004-imx-sdma-channel-use-raw-spinlock.patch \
-           file://defconfig \
+SRC_URI = " \
+    git://git.toradex.com/linux-toradex.git;protocol=git;branch=${SRCBRANCH} \
+    https://github.com/Freescale/linux-fslc/commit/d379e64ca4fc535334a02dc0314cba6e50f4b720.patch;name=rename_define.patch \
+    https://github.com/Freescale/linux-fslc/commit/e211cb68dd3c951b104ff0b47dbaed2c8b8d2399.patch;name=cond_resched.patch \
+    file://patch-3.14.61-rt64-acpi-removed.patch.gz \
+    file://0001-fix-build.patch \
+    file://0003-no-split-ptlocks.patch \
+    file://0004-imx-sdma-channel-use-raw-spinlock.patch \
+    file://defconfig \
 "
 
 SRC_URI[rename_define.patch.md5sum] = "efae6dd8a584fd02888f5c9bae8461cd"

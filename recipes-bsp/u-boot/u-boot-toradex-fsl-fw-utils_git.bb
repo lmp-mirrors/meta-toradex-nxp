@@ -13,15 +13,14 @@ DEFAULT_PREFERENCE_colibri-imx7 = "1"
 DEFAULT_PREFERENCE_colibri-vf = "1"
 
 FILESPATHPKG =. "git:"
-S="${WORKDIR}/git"
-SRCREV = "c77a50386f672d6846df1a20295129fb66044779"
 
+SRCREV = "c77a50386f672d6846df1a20295129fb66044779"
 SRCBRANCH = "2016.11-toradex-next"
-SRC_URI = "git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=${SRCBRANCH} \
-           file://fw_env.config \
+SRC_URI = " \
+    git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=${SRCBRANCH} \
+    file://fw_env.config \
 "
-SRC_URI_append_mx6 = " file://fw_unlock_mmc.sh \
-"
+SRC_URI_append_mx6 = " file://fw_unlock_mmc.sh "
 
 PV = "v2016.11-v2.7b1+git${SRCPV}"
 
