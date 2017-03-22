@@ -20,8 +20,8 @@ SRC_URI[rt-patch.sha256sum] = "284a1bc0094df0a61e6dcb9996eceea6a3791ccba1e5763e3
 KERNEL_MODULE_AUTOLOAD += "${@bb.utils.contains('COMBINED_FEATURES', 'usbgadget', ' libcomposite', '',d)}"
 
 LOCALVERSION = "-v2.7b1-rt"
-SRCBRANCH = "toradex_4.1-2.0.x-imx"
-SRCREV = "c1177831f5a1fd3ee9e5c3f9567526a5d62d5d78"
+SRCBRANCH = "toradex_4.1-2.0.x-imx-next"
+SRCREV = "507c1bf97373cb3bd982f12ddebec1891922dbb8"
 
 DEPENDS += "lzop-native bc-native"
 COMPATIBLE_MACHINE = "(mx7|mx6)"
