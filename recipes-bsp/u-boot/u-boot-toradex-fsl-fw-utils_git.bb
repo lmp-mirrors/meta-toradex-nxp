@@ -6,6 +6,8 @@ PROVIDES = "u-boot-fw-utils"
 RPROVIDES_${PN} = "u-boot-fw-utils"
 DEPENDS = "mtd-utils"
 
+include conf/tdx_version.conf
+
 COMPATIBLE_MACHINE = "(apalis-imx6|colibri-imx6|colibri-imx7|colibri-vf)"
 DEFAULT_PREFERENCE_apalis-imx6 = "1"
 DEFAULT_PREFERENCE_colibri-imx6 = "1"
@@ -22,7 +24,8 @@ SRC_URI = " \
 "
 SRC_URI_append_mx6 = " file://fw_unlock_mmc.sh "
 
-PV = "v2016.11-v2.7b1+git${SRCPV}"
+PV = "2016.11"
+PR = "${TDX_VER_INT}-gitr${@d.getVar("SRCREV", False)[0:7]}"
 
 S = "${WORKDIR}/git"
 
