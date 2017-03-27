@@ -1,5 +1,6 @@
 require recipes-kernel/linux/linux-imx.inc
 require recipes-kernel/linux/linux-dtb.inc
+include conf/tdx_version.conf
 
 SUMMARY = "Linux kernel for Toradex Freescale i.MX based modules"
 
@@ -9,7 +10,9 @@ SRC_URI = "git://git.toradex.com/linux-toradex.git;protocol=git;branch=${SRCBRAN
 # Load USB functions configurable through configfs (CONFIG_USB_CONFIGFS)
 KERNEL_MODULE_AUTOLOAD += "${@bb.utils.contains('COMBINED_FEATURES', 'usbgadget', ' libcomposite', '',d)}"
 
-LOCALVERSION = "-v2.7b1"
+LOCALVERSION = "-${PR}"
+PR = "${TDX_VER_INT}"
+
 SRCBRANCH = "toradex_4.1-2.0.x-imx-next"
 SRCREV = "507c1bf97373cb3bd982f12ddebec1891922dbb8"
 

@@ -1,5 +1,6 @@
 require recipes-kernel/linux/linux-imx.inc
 require recipes-kernel/linux/linux-dtb.inc
+include conf/tdx_version.conf
 
 SUMMARY = "Real-Time Linux kernel for Toradex Freescale i.MX based modules"
 
@@ -19,7 +20,9 @@ SRC_URI[rt-patch.sha256sum] = "284a1bc0094df0a61e6dcb9996eceea6a3791ccba1e5763e3
 # Load USB functions configurable through configfs (CONFIG_USB_CONFIGFS)
 KERNEL_MODULE_AUTOLOAD += "${@bb.utils.contains('COMBINED_FEATURES', 'usbgadget', ' libcomposite', '',d)}"
 
-LOCALVERSION = "-v2.7b1-rt"
+LOCALVERSION = "-${PR}"
+PR = "${TDX_VER_INT}-rt"
+
 SRCBRANCH = "toradex_4.1-2.0.x-imx-next"
 SRCREV = "507c1bf97373cb3bd982f12ddebec1891922dbb8"
 
