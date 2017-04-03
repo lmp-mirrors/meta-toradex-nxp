@@ -6,8 +6,8 @@ PR = "${TDX_VER_INT}-gitr${@d.getVar("SRCREV", False)[0:7]}"
 
 LIC_FILES_CHKSUM = "file://Licenses/README;md5=a2c678cfd4a4d97135585cad908541c6"
 
-SRCREV = "c77a50386f672d6846df1a20295129fb66044779"
-SRCBRANCH = "2016.11-toradex-next"
+SRCREV = "60021a4daa9720ae89e31def9483a09a78ead049"
+SRCBRANCH = "2016.11-toradex"
 COMPATIBLE_MACHINE = "(mx6|mx7|vf)"
 
 
