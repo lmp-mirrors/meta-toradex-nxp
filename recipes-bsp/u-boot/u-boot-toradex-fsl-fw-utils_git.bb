@@ -26,6 +26,7 @@ SRC_URI_append_mx6 = " file://fw_unlock_mmc.sh "
 
 PV = "2016.11"
 PR = "${TDX_VER_INT}-gitr${@d.getVar("SRCREV", False)[0:7]}"
+LOCALVERSION ?= "-${TDX_VER_INT}"
 
 S = "${WORKDIR}/git"
 

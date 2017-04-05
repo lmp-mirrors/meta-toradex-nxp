@@ -1,8 +1,6 @@
 require recipes-bsp/u-boot/u-boot-toradex.inc
-include conf/tdx_version.conf
 
 PV = "2016.11"
-PR = "${TDX_VER_INT}-gitr${@d.getVar("SRCREV", False)[0:7]}"
 
 LIC_FILES_CHKSUM = "file://Licenses/README;md5=a2c678cfd4a4d97135585cad908541c6"
 
