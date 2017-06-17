@@ -16,7 +16,7 @@ DEFAULT_PREFERENCE_colibri-vf = "1"
 
 FILESPATHPKG =. "git:"
 
-SRCREV = "60021a4daa9720ae89e31def9483a09a78ead049"
+SRCREV = "f0e414972b5b225e33ebe75574562266116746f9"
 SRCBRANCH = "2016.11-toradex"
 SRC_URI = " \
     git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=${SRCBRANCH} \
