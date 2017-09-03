@@ -39,6 +39,7 @@ INSANE_SKIP_${PN} = "already-stripped ldflags"
 inherit pkgconfig uboot-config
 
 do_compile () {
+    ln -fs `which gcc` ${STAGING_BINDIR_NATIVE}/cc
     oe_runmake ${UBOOT_MACHINE}
     oe_runmake env
 }
