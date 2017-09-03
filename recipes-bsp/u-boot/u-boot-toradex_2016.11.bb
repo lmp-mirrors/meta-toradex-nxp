@@ -13,9 +13,12 @@ COMPATIBLE_MACHINE = "(mx6|mx7|vf)"
 # if using UBOOT_CONFIG to build more than one configuration, the current code in
 # u-boot.inc assumes all are either with or without SPL.
 do_compile_append_mx6() {
-    for config in ${UBOOT_MACHINE}; do
-        touch ${B}/${config}/${SPL_BINARY}
-    done
+    if [ -n "${UBOOT_CONFIG}" ]
+    then
+        for config in ${UBOOT_MACHINE}; do
+            touch ${B}/${config}/${SPL_BINARY}
+        done
+    fi
 }
 do_deploy_append_mx6() {
     # if SPL is zero sized file, remove all deployed artefacts
