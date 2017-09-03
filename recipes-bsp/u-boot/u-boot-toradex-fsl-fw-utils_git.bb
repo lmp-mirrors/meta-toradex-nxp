@@ -8,7 +8,7 @@ DEPENDS = "mtd-utils"
 
 include conf/tdx_version.conf
 
-COMPATIBLE_MACHINE = "(apalis-imx6|colibri-imx6|colibri-imx7|colibri-vf)"
+COMPATIBLE_MACHINE = "(apalis-imx*|colibri-imx*|colibri-vf*)"
 DEFAULT_PREFERENCE_apalis-imx6 = "1"
 DEFAULT_PREFERENCE_colibri-imx6 = "1"
 DEFAULT_PREFERENCE_colibri-imx7 = "1"
