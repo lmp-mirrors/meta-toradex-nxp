@@ -21,8 +21,8 @@ SRCBRANCH = "2016.11-toradex"
 SRC_URI = " \
     git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=${SRCBRANCH} \
     file://fw_env.config \
+    file://fw_unlock_mmc.sh \
 "
-SRC_URI_append_mx6 = " file://fw_unlock_mmc.sh "
 
 PV = "2016.11"
 PR = "${TDX_VER_INT}-gitr${@d.getVar("SRCREV", False)[0:7]}"
@@ -48,9 +48,17 @@ do_install () {
     install -m 644 ${WORKDIR}/fw_env.config ${D}${sysconfdir}/
 }
 
-do_install_append_mx6() {
+install_unlock_emmc() {
     install -d ${D}${sysconfdir}/profile.d/
     install -m 0644 ${WORKDIR}/fw_unlock_mmc.sh ${D}${sysconfdir}/profile.d/fw_unlock_mmc.sh
+}
+
+do_install_append_mx6() {
+    install_unlock_emmc
+}
+
+do_install_append_colibri-imx7-emmc() {
+    install_unlock_emmc
 }
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
