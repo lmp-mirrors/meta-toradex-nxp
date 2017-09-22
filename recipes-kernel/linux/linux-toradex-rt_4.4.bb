@@ -1,5 +1,4 @@
 require recipes-kernel/linux/linux-imx.inc
-require recipes-kernel/linux/linux-dtb.inc
 include conf/tdx_version.conf
 
 SUMMARY = "Linux kernel with real-time patch for Toradex Colibri VFxx Computer on Modules"
