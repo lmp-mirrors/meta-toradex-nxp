@@ -14,7 +14,7 @@ LOCALVERSION = "-${PR}"
 PR = "${TDX_VER_INT}"
 
 SRCBRANCH = "toradex_4.1-2.0.x-imx"
-SRCREV = "82f0f4f012a646a735d6b44de77b7c9d0712c714"
+SRCREV = "b1555bfbf38818bc6fed8d921b55b7b207249c53"
 
 DEPENDS += "lzop-native bc-native"
 COMPATIBLE_MACHINE = "(mx7|mx6)"

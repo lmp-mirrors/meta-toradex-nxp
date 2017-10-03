@@ -4,5 +4,5 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/linux-toradex-4.1-2.0.x:"
 #LOCALVERSION = "-${PR}"
 #PR = "${TDX_VER_INT}"
 
-SRCREV = "82f0f4f012a646a735d6b44de77b7c9d0712c714"
+SRCREV = "b1555bfbf38818bc6fed8d921b55b7b207249c53"
 SRCBRANCH = "toradex_4.1-2.0.x-imx"
