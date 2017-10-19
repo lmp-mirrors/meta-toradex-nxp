@@ -18,5 +18,7 @@ PR = "${TDX_VER_INT}"
 
 SRCREV = "c1d5fe2d54551b95b812143d94d8168da2220dd8"
 SRCBRANCH = "toradex_vf_4.4"
+SRCREV_use-head-next = "${AUTOREV}"
+SRCBRANCH_use-head-next = "toradex_vf_4.4-next"
 DEPENDS += "lzop-native bc-native"
 COMPATIBLE_MACHINE = "(vf)"

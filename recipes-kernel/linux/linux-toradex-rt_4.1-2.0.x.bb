@@ -26,6 +26,8 @@ PR = "${TDX_VER_INT}-rt"
 
 SRCBRANCH = "toradex_4.1-2.0.x-imx"
 SRCREV = "82f0f4f012a646a735d6b44de77b7c9d0712c714"
+SRCREV_use-head-next = "${AUTOREV}"
+SRCBRANCH_use-head-next = "toradex_4.1-2.0.x-imx-next"
 
 DEPENDS += "lzop-native bc-native"
 COMPATIBLE_MACHINE = "(mx7|mx6)"
