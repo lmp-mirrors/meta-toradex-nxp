@@ -26,8 +26,7 @@ SRC_URI = " \
     file://fw_unlock_mmc.sh \
 "
 
-PV = "2016.11"
-PR = "${TDX_VER_INT}+gitr${SRCPV}"
+PV = "2016.11+gitr${SRCPV}"
 LOCALVERSION ?= "-${TDX_VER_INT}"
 
 S = "${WORKDIR}/git"
