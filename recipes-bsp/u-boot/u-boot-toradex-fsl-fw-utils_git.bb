@@ -16,29 +16,30 @@ DEFAULT_PREFERENCE_colibri-vf = "1"
 
 FILESPATHPKG =. "git:"
 
+# This revision is based on upstream "v2016.11"
 SRCREV = "52259cf22a165c0721bb26c723c0dc5e2659eaa7"
 SRCBRANCH = "2016.11-toradex"
 SRCREV_use-head-next = "${AUTOREV}"
 SRCBRANCH_use-head-next = "2016.11-toradex-next"
 SRC_URI = " \
     git://git.toradex.com/u-boot-toradex.git;protocol=git;branch=${SRCBRANCH} \
+    file://default-gcc.patch \
     file://fw_env.config \
     file://fw_unlock_mmc.sh \
 "
 
-PV = "2016.11+gitr${SRCPV}"
+PV = "2016.11+git${SRCPV}"
 LOCALVERSION ?= "-${TDX_VER_INT}"
 
 S = "${WORKDIR}/git"
 
-EXTRA_OEMAKE = 'CC="${CC}" STRIP="${STRIP}"'
-
-INSANE_SKIP_${PN} = "already-stripped ldflags"
+INSANE_SKIP_${PN} = "already-stripped"
+EXTRA_OEMAKE_class-target = 'CROSS_COMPILE=${TARGET_PREFIX} CC="${CC} ${CFLAGS} ${LDFLAGS}" HOSTCC="${BUILD_CC} ${BUILD_CFLAGS} ${BUILD_LDFLAGS}" V=1'
+EXTRA_OEMAKE_class-cross = 'ARCH=${TARGET_ARCH} CC="${CC} ${CFLAGS} ${LDFLAGS}" V=1'
 
 inherit pkgconfig uboot-config
 
 do_compile () {
-    ln -fs `which gcc` ${STAGING_BINDIR_NATIVE}/cc
     oe_runmake ${UBOOT_MACHINE}
     oe_runmake env
 }
@@ -62,5 +63,13 @@ do_install_append_mx6() {
 do_install_append_colibri-imx7-emmc() {
     install_unlock_emmc
 }
+
+do_install_class-cross () {
+	install -d ${D}${bindir_cross}
+	install -m 755 ${S}/tools/env/fw_printenv ${D}${bindir_cross}/fw_printenv
+	install -m 755 ${S}/tools/env/fw_printenv ${D}${bindir_cross}/fw_setenv
+}
+
+SYSROOT_DIRS_append_class-cross = " ${bindir_cross}"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
