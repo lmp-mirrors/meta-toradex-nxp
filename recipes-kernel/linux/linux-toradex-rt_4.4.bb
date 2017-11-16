@@ -13,7 +13,7 @@ SRC_URI[sha256sum] = "cbe77f8db27bae1d018b786bead3996c753f0e45fdec6dab088fbe2cff
 KERNEL_MODULE_AUTOLOAD += "${@bb.utils.contains('COMBINED_FEATURES', 'usbgadget', ' libcomposite', '',d)}"
 
 LOCALVERSION = "-${PR}"
-PR = "${TDX_VER_INT}"
+PR = "${TDX_VER_ITEM}"
 
 SRCREV = "c1d5fe2d54551b95b812143d94d8168da2220dd8"
 SRCBRANCH = "toradex_vf_4.4"

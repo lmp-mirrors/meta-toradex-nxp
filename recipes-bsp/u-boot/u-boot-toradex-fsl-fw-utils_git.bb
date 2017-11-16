@@ -29,7 +29,7 @@ SRC_URI = " \
 "
 
 PV = "2016.11+git${SRCPV}"
-LOCALVERSION ?= "-${TDX_VER_INT}"
+LOCALVERSION ?= "-${TDX_VER_ITEM}"
 
 S = "${WORKDIR}/git"
 
