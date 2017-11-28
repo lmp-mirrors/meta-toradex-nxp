@@ -2,9 +2,7 @@ include conf/tdx_version.conf
 
 LOCALVERSION ?= "-${TDX_VER_INT}"
 
-#LIC_FILES_CHKSUM = "file://Licenses/README;md5=a2c678cfd4a4d97135585cad908541c6"
-
-SRCREV = "1b121c6ab548a9af0a27876e9eaa0c654c1dc3e1"
+SRCREV = "52259cf22a165c0721bb26c723c0dc5e2659eaa7"
 SRCBRANCH = "2016.11-toradex"
 SRCREV_use-head-next = "${AUTOREV}"
 SRCBRANCH_use-head-next = "2016.11-toradex-next"
