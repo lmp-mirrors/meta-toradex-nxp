@@ -51,3 +51,5 @@ do_deploy_append_mx6() {
         fi
     fi
 }
+
+DEPENDS_append = " dtc-native"
