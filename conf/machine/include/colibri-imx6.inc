@@ -9,3 +9,5 @@ OFFSET_SPL_PAYLOAD = "138"
 # certain image formats.
 UBOOT_CONFIG ?= "recover spl"
 UBOOT_CONFIG[recover] = "colibri_imx6_nospl_defconfig,,u-boot.imx"
+
+PREFERRED_PROVIDER_virtual/libg2d_mx6 ?= "imx-gpu-g2d"

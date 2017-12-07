@@ -15,3 +15,5 @@ KERNEL_DEVICETREE_remove = "imx6q-apalis_v1_0-eval.dtb imx6q-apalis_v1_0-ixora.d
 # certain image formats.
 UBOOT_CONFIG ?= "recover spl"
 UBOOT_CONFIG[recover] = "apalis_imx6_nospl_it_defconfig,,u-boot.imx"
+
+PREFERRED_PROVIDER_virtual/libg2d_mx6 ?= "imx-gpu-g2d"
