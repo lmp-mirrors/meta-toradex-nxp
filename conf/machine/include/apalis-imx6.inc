@@ -5,6 +5,8 @@ TORADEX_PRODUCT_IDS = "0027 0028 0029 0035"
 OFFSET_BOOTROM_PAYLOAD = "2"
 OFFSET_SPL_PAYLOAD = "138"
 
+KERNEL_DEVICETREE_remove = "imx6q-apalis_v1_0-eval.dtb imx6q-apalis_v1_0-ixora.dtb"
+
 # The SPL configures the DDR RAM depending on the module it runs on. Thus there
 # is no need to distingush between the different module types.
 # For recovery mode we build a U-Boot with IVT which runs without SPL. It uses
