@@ -1,1 +1,2 @@
-The ${MACHINE}.inc files get included from this layers layer.conf
+The ${MACHINE}.inc files net to get included from machine config or
+local.conf.
