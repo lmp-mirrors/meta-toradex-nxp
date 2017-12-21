@@ -56,7 +56,11 @@ install_unlock_emmc() {
     install -m 0644 ${WORKDIR}/fw_unlock_mmc.sh ${D}${sysconfdir}/profile.d/fw_unlock_mmc.sh
 }
 
-do_install_append_mx6() {
+do_install_append_apalis-imx6() {
+    install_unlock_emmc
+}
+
+do_install_append_colibri-imx6() {
     install_unlock_emmc
 }
 
