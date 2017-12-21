@@ -11,3 +11,5 @@ UBOOT_CONFIG ?= "recover spl"
 UBOOT_CONFIG[recover] = "colibri_imx6_nospl_defconfig,,u-boot.imx"
 
 PREFERRED_PROVIDER_virtual/libg2d_mx6 ?= "imx-gpu-g2d"
+
+MACHINE_FIRMWARE_remove = "firmware-imx-epdc"

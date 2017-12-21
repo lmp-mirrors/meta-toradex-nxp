@@ -17,3 +17,5 @@ UBOOT_CONFIG ?= "recover spl"
 UBOOT_CONFIG[recover] = "apalis_imx6_nospl_it_defconfig,,u-boot.imx"
 
 PREFERRED_PROVIDER_virtual/libg2d_mx6 ?= "imx-gpu-g2d"
+
+MACHINE_FIRMWARE_remove = "firmware-imx-epdc"
