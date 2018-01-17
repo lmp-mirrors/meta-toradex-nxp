@@ -5,10 +5,7 @@ TORADEX_PRODUCT_IDS = "0014 0015 0016 0017"
 OFFSET_BOOTROM_PAYLOAD = "2"
 OFFSET_SPL_PAYLOAD = "138"
 
-# Note: The last config will be symlinked to UBOOT_BINARY which is crucial for
-# certain image formats.
-UBOOT_CONFIG ?= "recover spl"
-UBOOT_CONFIG[recover] = "colibri_imx6_nospl_defconfig,,u-boot.imx"
+UBOOT_SUFFIX = "img"
 
 PREFERRED_PROVIDER_virtual/libg2d_mx6 ?= "imx-gpu-g2d"
 
