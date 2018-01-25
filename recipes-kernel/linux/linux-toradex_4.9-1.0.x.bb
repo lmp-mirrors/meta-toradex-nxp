@@ -1,5 +1,6 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}-${PV}:"
 require recipes-kernel/linux/linux-imx.inc
+include conf/tdx_version.conf
 
 SUMMARY = "Linux kernel for Toradex Freescale i.MX based modules"
 
