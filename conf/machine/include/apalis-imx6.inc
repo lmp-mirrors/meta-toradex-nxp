@@ -6,6 +6,7 @@ OFFSET_BOOTROM_PAYLOAD = "2"
 OFFSET_SPL_PAYLOAD = "138"
 
 KERNEL_DEVICETREE_remove = "imx6q-apalis_v1_0-eval.dtb imx6q-apalis_v1_0-ixora.dtb"
+KERNEL_IMAGETYPE_${MACHINE} = "zImage"
 
 UBOOT_SUFFIX = "img"
 
