@@ -1,5 +1,5 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}-${PV}:"
 require recipes-kernel/linux/linux-toradex_4.9-1.0.x.bb
+FILESEXTRAPATHS_prepend := "${THISDIR}/linux-toradex-rt-4.9-1.0.x:"
 
 SUMMARY = "Real-Time Linux kernel for Toradex Freescale i.MX based modules"
 
