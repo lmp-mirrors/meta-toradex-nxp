@@ -14,5 +14,5 @@ SRC_URI += " \
 SRC_URI[rt-patch.md5sum] = "c0c5e47f37c0b25dbab934c2a2e456bb"
 SRC_URI[rt-patch.sha256sum] = "399c873031599e356231fcf5694c7a438fb1f9faaa9bedcc0df4ef13fd8efc80"
 
-SRCREV = "07d40f6ffcbb9b3db3c146f0949725752ed61b63"
+SRCREV = "3bb6e3284a1bb88f142528537e6573f9d9f39aaa"
 SRCBRANCH = "toradex_4.9-1.0.x-imx"
