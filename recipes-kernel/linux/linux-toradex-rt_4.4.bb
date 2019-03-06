@@ -1,5 +1,4 @@
 require recipes-kernel/linux/linux-imx.inc
-include conf/tdx_version.conf
 
 SUMMARY = "Linux kernel with real-time patch for Toradex Colibri VFxx Computer on Modules"
 
@@ -23,3 +22,6 @@ SRCREV_use-head-next = "${AUTOREV}"
 SRCBRANCH_use-head-next = "toradex_vf_4.4-next"
 DEPENDS += "lzop-native bc-native"
 COMPATIBLE_MACHINE = "(vf)"
+
+# defaults
+TDX_VER_ITEM ??= "0"

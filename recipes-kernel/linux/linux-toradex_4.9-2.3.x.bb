@@ -1,6 +1,5 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}-${PV}:"
 require recipes-kernel/linux/linux-imx.inc
-include conf/tdx_version.conf
 
 SUMMARY = "Linux kernel for Toradex Freescale i.MX based modules"
 
@@ -20,3 +19,6 @@ SRCBRANCH_use-head-next = "toradex_4.9-2.3.x-imx-next"
 
 DEPENDS += "lzop-native bc-native"
 COMPATIBLE_MACHINE = "(mx6|mx7)"
+
+# defaults
+TDX_VER_ITEM ??= "0"
