@@ -1,7 +1,5 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
-include conf/tdx_version.conf
-
 SRCREV = "02735f400478c6e9afc432fda1149abef630657c"
 SRCREV_use-head-next = "${AUTOREV}"
 SRCBRANCH_use-head-next = "2016.11-toradex-next"
@@ -29,3 +27,5 @@ do_install_append_colibri-imx7-emmc() {
     install_unlock_emmc
 }
 
+# defaults
+TDX_VER_ITEM ??= "0"
