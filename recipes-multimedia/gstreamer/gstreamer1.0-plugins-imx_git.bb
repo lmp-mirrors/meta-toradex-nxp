@@ -35,7 +35,7 @@ EGLVIVSINK_PLATFORM = "${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'wayla
                           'fb', d),d)}"
 
 EGL_PLATFORM_CONF = "--egl-platform=${EGLVIVSINK_PLATFORM}"
-EXTRA_OECONF = "--kernel-headers=${STAGING_KERNEL_DIR}/include ${PACKAGECONFIG_CONFARGS}"
+EXTRA_OECONF = "--kernel-headers=${STAGING_KERNEL_DIR}/include ${PACKAGECONFIG_CONFARGS} --libdir=${libdir}"
 
 EGLVIVSINK_DEPENDS = " \
     virtual/egl virtual/libgles2 \
