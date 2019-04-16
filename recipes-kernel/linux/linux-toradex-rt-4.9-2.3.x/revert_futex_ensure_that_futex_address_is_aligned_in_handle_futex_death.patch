@@ -1,0 +1,23 @@
+commit f90e153d43ab26a02975c5de9d50b01161f044da
+Author: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+Date:   Tue Apr 16 03:06:34 2019 +0200
+
+    Revert "futex: Ensure that futex address is aligned in handle_futex_death()"
+    
+    This reverts commit 726c28f30ac16e0d4cab17751b447e4abf61b102.
+
+diff --git a/kernel/futex.c b/kernel/futex.c
+index 2e766ffff2cb..30fe0432c46d 100644
+--- a/kernel/futex.c
++++ b/kernel/futex.c
+@@ -3110,10 +3110,6 @@ int handle_futex_death(u32 __user *uaddr, struct task_struct *curr, int pi)
+ {
+ 	u32 uval, uninitialized_var(nval), mval;
+ 
+-	/* Futex address must be 32bit aligned */
+-	if ((((unsigned long)uaddr) % sizeof(*uaddr)) != 0)
+-		return -1;
+-
+ retry:
+ 	if (get_user(uval, uaddr))
+ 		return -1;

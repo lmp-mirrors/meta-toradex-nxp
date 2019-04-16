@@ -1,0 +1,132 @@
+commit 1b190aef79b0e83bd8fccdc267a1761968f4a20a
+Author: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+Date:   Tue Apr 16 03:30:56 2019 +0200
+
+    Revert "futex,rt_mutex: Restructure rt_mutex_finish_proxy_lock()"
+    
+    This reverts commit ce813552312bfbb28bae32064d65afff3c0e7c82.
+
+diff --git a/kernel/futex.c b/kernel/futex.c
+index 30fe0432c46d..053d7be08be5 100644
+--- a/kernel/futex.c
++++ b/kernel/futex.c
+@@ -2966,13 +2966,10 @@ static int futex_wait_requeue_pi(u32 __user *uaddr, unsigned int flags,
+ 		 */
+ 		WARN_ON(!q.pi_state);
+ 		pi_mutex = &q.pi_state->pi_mutex;
+-		ret = rt_mutex_wait_proxy_lock(pi_mutex, to, &rt_waiter);
++		ret = rt_mutex_finish_proxy_lock(pi_mutex, to, &rt_waiter);
++		debug_rt_mutex_free_waiter(&rt_waiter);
+ 
+ 		spin_lock(q.lock_ptr);
+-		if (ret && !rt_mutex_cleanup_proxy_lock(pi_mutex, &rt_waiter))
+-			ret = 0;
+-
+-		debug_rt_mutex_free_waiter(&rt_waiter);
+ 		/*
+ 		 * Fixup the pi_state owner and possibly acquire the lock if we
+ 		 * haven't already.
+diff --git a/kernel/locking/rtmutex.c b/kernel/locking/rtmutex.c
+index 7615e7722258..196cc460e38d 100644
+--- a/kernel/locking/rtmutex.c
++++ b/kernel/locking/rtmutex.c
+@@ -1746,23 +1746,21 @@ struct task_struct *rt_mutex_next_owner(struct rt_mutex *lock)
+ }
+ 
+ /**
+- * rt_mutex_wait_proxy_lock() - Wait for lock acquisition
++ * rt_mutex_finish_proxy_lock() - Complete lock acquisition
+  * @lock:		the rt_mutex we were woken on
+  * @to:			the timeout, null if none. hrtimer should already have
+  *			been started.
+  * @waiter:		the pre-initialized rt_mutex_waiter
+  *
+- * Wait for the the lock acquisition started on our behalf by
+- * rt_mutex_start_proxy_lock(). Upon failure, the caller must call
+- * rt_mutex_cleanup_proxy_lock().
++ * Complete the lock acquisition started our behalf by another thread.
+  *
+  * Returns:
+  *  0 - success
+  * <0 - error, one of -EINTR, -ETIMEDOUT
+  *
+- * Special API call for PI-futex support
++ * Special API call for PI-futex requeue support
+  */
+-int rt_mutex_wait_proxy_lock(struct rt_mutex *lock,
++int rt_mutex_finish_proxy_lock(struct rt_mutex *lock,
+ 			       struct hrtimer_sleeper *to,
+ 			       struct rt_mutex_waiter *waiter)
+ {
+@@ -1775,6 +1773,9 @@ int rt_mutex_wait_proxy_lock(struct rt_mutex *lock,
+ 	/* sleep on the mutex */
+ 	ret = __rt_mutex_slowlock(lock, TASK_INTERRUPTIBLE, to, waiter);
+ 
++	if (unlikely(ret))
++		remove_waiter(lock, waiter);
++
+ 	/*
+ 	 * try_to_take_rt_mutex() sets the waiter bit unconditionally. We might
+ 	 * have to fix that up.
+@@ -1785,42 +1786,3 @@ int rt_mutex_wait_proxy_lock(struct rt_mutex *lock,
+ 
+ 	return ret;
+ }
+-
+-/**
+- * rt_mutex_cleanup_proxy_lock() - Cleanup failed lock acquisition
+- * @lock:		the rt_mutex we were woken on
+- * @waiter:		the pre-initialized rt_mutex_waiter
+- *
+- * Attempt to clean up after a failed rt_mutex_wait_proxy_lock().
+- *
+- * Unless we acquired the lock; we're still enqueued on the wait-list and can
+- * in fact still be granted ownership until we're removed. Therefore we can
+- * find we are in fact the owner and must disregard the
+- * rt_mutex_wait_proxy_lock() failure.
+- *
+- * Returns:
+- *  true  - did the cleanup, we done.
+- *  false - we acquired the lock after rt_mutex_wait_proxy_lock() returned,
+- *          caller should disregards its return value.
+- *
+- * Special API call for PI-futex support
+- */
+-bool rt_mutex_cleanup_proxy_lock(struct rt_mutex *lock,
+-				 struct rt_mutex_waiter *waiter)
+-{
+-	bool cleanup = false;
+-
+-	raw_spin_lock_irq(&lock->wait_lock);
+-	/*
+-	 * Unless we're the owner; we're still enqueued on the wait_list.
+-	 * So check if we became owner, if not, take us off the wait_list.
+-	 */
+-	if (rt_mutex_owner(lock) != current) {
+-		remove_waiter(lock, waiter);
+-		fixup_rt_mutex_waiters(lock);
+-		cleanup = true;
+-	}
+-	raw_spin_unlock_irq(&lock->wait_lock);
+-
+-	return cleanup;
+-}
+diff --git a/kernel/locking/rtmutex_common.h b/kernel/locking/rtmutex_common.h
+index 14cbafed0014..50848b460851 100644
+--- a/kernel/locking/rtmutex_common.h
++++ b/kernel/locking/rtmutex_common.h
+@@ -107,11 +107,9 @@ extern void rt_mutex_proxy_unlock(struct rt_mutex *lock,
+ extern int rt_mutex_start_proxy_lock(struct rt_mutex *lock,
+ 				     struct rt_mutex_waiter *waiter,
+ 				     struct task_struct *task);
+-extern int rt_mutex_wait_proxy_lock(struct rt_mutex *lock,
+-			       struct hrtimer_sleeper *to,
+-			       struct rt_mutex_waiter *waiter);
+-extern bool rt_mutex_cleanup_proxy_lock(struct rt_mutex *lock,
+-				 struct rt_mutex_waiter *waiter);
++extern int rt_mutex_finish_proxy_lock(struct rt_mutex *lock,
++				      struct hrtimer_sleeper *to,
++				      struct rt_mutex_waiter *waiter);
+ extern int rt_mutex_timed_futex_lock(struct rt_mutex *l, struct hrtimer_sleeper *to);
+ extern bool rt_mutex_futex_unlock(struct rt_mutex *lock,
+ 				  struct wake_q_head *wqh);
