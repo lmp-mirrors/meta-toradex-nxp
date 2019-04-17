@@ -1,5 +1,5 @@
 IMAGE_CLASSES_append = " image_type_tezi"
-IMAGE_FSTYPES_append = " teziimg"
+IMAGE_FSTYPES += "teziimg"
 TORADEX_PRODUCT_IDS = "0014 0015 0016 0017"
 # The payload offsets are given in number of 512 byte blocks.
 OFFSET_BOOTROM_PAYLOAD = "2"
