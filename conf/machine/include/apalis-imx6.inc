@@ -17,9 +17,3 @@ MACHINE_FIRMWARE_remove = "firmware-imx-epdc"
 # As per meta-freescale commit 927b31771dab ("xf86-video-imx-vivante: Remove fb
 # from name") this package got renamed. Use new one!
 XSERVER_DRIVER_apalis-imx6 = "xf86-video-imx-vivante"
-
-# Use i.MX Gstreamer Version
-PREFERRED_VERSION_gstreamer1.0 = "1.14.imx"
-PREFERRED_VERSION_gstreamer1.0-plugins-base = "1.14.imx"
-PREFERRED_VERSION_gstreamer1.0-plugins-good = "1.14.imx"
-PREFERRED_VERSION_gstreamer1.0-plugins-bad = "1.14.imx"
