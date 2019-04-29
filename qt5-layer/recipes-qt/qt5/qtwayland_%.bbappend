@@ -1,0 +1,1 @@
+PACKAGECONFIG_remove_mx8 = "xcomposite-egl xcomposite-glx"
