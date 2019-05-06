@@ -1,0 +1,5 @@
+PV = "4.14.78"
+SRCBRANCH = "imx_4.14.78_1.0.0_ga"
+LOCALVERSION = "-${SRCBRANCH}"
+SRC_URI = "git://source.codeaurora.org/external/imx/linux-imx.git;protocol=https;branch=${SRCBRANCH}"
+SRCREV = "94da7bdc489ba686d868bcf80678a37cae22673e"
