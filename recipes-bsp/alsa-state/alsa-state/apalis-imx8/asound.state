@@ -1,4 +1,4 @@
-state.imx8qmsgtl5000 {
+state.apalisimx8qmsgt {
 	control.1 {
 		iface MIXER
 		name 'PCM Playback Volume'
