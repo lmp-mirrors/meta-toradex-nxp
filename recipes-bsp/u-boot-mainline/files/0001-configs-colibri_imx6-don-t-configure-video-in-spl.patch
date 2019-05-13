@@ -1,0 +1,36 @@
+From 0db178f077486f63f5a83ed71e80734995306239 Mon Sep 17 00:00:00 2001
+From: Max Krummenacher <max.krummenacher@toradex.com>
+Date: Thu, 21 Sep 2017 15:21:33 +0200
+Subject: [PATCH 01/19] configs: colibri_imx6: don't configure video in spl
+
+The functionality is not needed in the SPL. It allows to remove
+code conditionally in the spl case in some drivers.
+
+Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
+---
+ include/configs/colibri_imx6.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/include/configs/colibri_imx6.h b/include/configs/colibri_imx6.h
+index 129a42466d..87b402505e 100644
+--- a/include/configs/colibri_imx6.h
++++ b/include/configs/colibri_imx6.h
+@@ -66,6 +66,7 @@
+ #define CONFIG_USBD_HS
+ 
+ /* Framebuffer and LCD */
++#if !defined(CONFIG_SPL_BUILD)
+ #define CONFIG_SYS_CONSOLE_OVERWRITE_ROUTINE
+ #define CONFIG_VIDEO_BMP_RLE8
+ #define CONFIG_SPLASH_SCREEN
+@@ -76,6 +77,7 @@
+ #define CONFIG_CONSOLE_MUX
+ #define CONFIG_IMX_HDMI
+ #define CONFIG_IMX_VIDEO_SKIP
++#endif
+ 
+ /* allow to overwrite serial and ethaddr */
+ #define CONFIG_ENV_OVERWRITE
+-- 
+2.14.5
+

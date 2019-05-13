@@ -1,0 +1,1434 @@
+From 6c5418e7567c367c76c7657726cdea85e497a470 Mon Sep 17 00:00:00 2001
+From: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+Date: Mon, 29 Apr 2019 01:24:25 +0200
+Subject: [PATCH 19/19] board: toradex: add apalis imx8qm 4gb wb it v1.0b
+ module support
+
+This commit adds initial support for the Toradex Apalis iMX8QM 4GB WB IT
+V1.0B module. Unlike the V1.0A early access samples exclusively booting
+from SD card, they are now strapped to boot from eFuses which are
+factory fused to properly boot from their on-module eMMC. U-Boot
+supports either booting from the on-module eMMC or may be used for
+recovery purpose using the universal update utility (uuu) aka mfgtools
+3.0.
+
+Functionality wise the following is known to be working:
+- eMMC, 8-bit and 4-bit MMC/SD card slots
+- Gigabit Ethernet
+- GPIOs
+- I2C
+
+Unfortunately, there is no USB functionality for the i.MX 8QM as of yet.
+
+Signed-off-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+Reviewed-by: Max Krummenacher <max.krummenacher@toradex.com>
+
+Series-to: u-boot@lists.denx.de
+
+Series-version: 2
+
+Series-changes: 2
+- Use firmware-imx-8.0 matching NXP's sumo-4.14.78-1.0.0_ga BSP as
+  suggested by Max.
+- Drop Qualcomm (formwerly Atheros) AR8031 specific board_phy_config()
+  stuff not applicable to the Micrel PHY we are using as suggested by Max.
+- Drop CONFIG_FEC_XCV_TYPE in favour of device tree configuration therof
+  as suggested by Max.
+
+Cover-letter:
+apalis imx8qm 4gb wb it v1.0b module support
+
+This series adds support for more lpuart instances, support for i2c0,
+i2c1, i2c2, i2c3, i2c4, fixes support for uSDHC2, fixes CPU frequency
+reporting, fixes fuse driver and last but not least introduces support
+for the Toradex Apalis iMX8QM 4GB WB IT V1.0B module.
+
+This series is available together with the last few clean-up patches
+and the Colibri iMX8QXP patch series on our git server [1] as well.
+
+[1] http://git.toradex.com/cgit/u-boot-toradex.git/log/?h=for-next
+END
+---
+ arch/arm/dts/Makefile                       |   1 +
+ arch/arm/dts/fsl-imx8qm-apalis-u-boot.dtsi  | 128 ++++++
+ arch/arm/dts/fsl-imx8qm-apalis.dts          | 615 ++++++++++++++++++++++++++++
+ arch/arm/mach-imx/imx8/Kconfig              |   6 +
+ board/toradex/apalis-imx8qm/Kconfig         |  30 ++
+ board/toradex/apalis-imx8qm/MAINTAINERS     |   9 +
+ board/toradex/apalis-imx8qm/Makefile        |   6 +
+ board/toradex/apalis-imx8qm/README          |  66 +++
+ board/toradex/apalis-imx8qm/apalis-imx8qm.c | 149 +++++++
+ board/toradex/apalis-imx8qm/imximage.cfg    |  24 ++
+ configs/apalis-imx8qm_defconfig             |  56 +++
+ include/configs/apalis-imx8qm.h             | 177 ++++++++
+ 12 files changed, 1267 insertions(+)
+ create mode 100644 arch/arm/dts/fsl-imx8qm-apalis-u-boot.dtsi
+ create mode 100644 arch/arm/dts/fsl-imx8qm-apalis.dts
+ create mode 100644 board/toradex/apalis-imx8qm/Kconfig
+ create mode 100644 board/toradex/apalis-imx8qm/MAINTAINERS
+ create mode 100644 board/toradex/apalis-imx8qm/Makefile
+ create mode 100644 board/toradex/apalis-imx8qm/README
+ create mode 100644 board/toradex/apalis-imx8qm/apalis-imx8qm.c
+ create mode 100644 board/toradex/apalis-imx8qm/imximage.cfg
+ create mode 100644 configs/apalis-imx8qm_defconfig
+ create mode 100644 include/configs/apalis-imx8qm.h
+
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 598dc213e3..2c1cf3122a 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -576,6 +576,7 @@ dtb-$(CONFIG_MX7) += imx7d-sdb.dtb \
+ dtb-$(CONFIG_ARCH_MX7ULP) += imx7ulp-evk.dtb
+ 
+ dtb-$(CONFIG_ARCH_IMX8) += \
++	fsl-imx8qm-apalis.dtb \
+ 	fsl-imx8qm-mek.dtb \
+ 	fsl-imx8qxp-colibri.dtb \
+ 	fsl-imx8qxp-mek.dtb
+diff --git a/arch/arm/dts/fsl-imx8qm-apalis-u-boot.dtsi b/arch/arm/dts/fsl-imx8qm-apalis-u-boot.dtsi
+new file mode 100644
+index 0000000000..7b1a9550e4
+--- /dev/null
++++ b/arch/arm/dts/fsl-imx8qm-apalis-u-boot.dtsi
+@@ -0,0 +1,128 @@
++// SPDX-License-Identifier: GPL-2.0+ OR X11
++/*
++ * Copyright 2019 Toradex AG
++ */
++
++&mu {
++	u-boot,dm-spl;
++};
++
++&clk {
++	u-boot,dm-spl;
++};
++
++&iomuxc {
++	u-boot,dm-spl;
++};
++
++&pd_lsio {
++	u-boot,dm-spl;
++};
++
++&pd_lsio_gpio0 {
++	u-boot,dm-spl;
++};
++
++&pd_lsio_gpio1 {
++	u-boot,dm-spl;
++};
++
++&pd_lsio_gpio2 {
++	u-boot,dm-spl;
++};
++
++&pd_lsio_gpio3 {
++	u-boot,dm-spl;
++};
++
++&pd_lsio_gpio4 {
++	u-boot,dm-spl;
++};
++
++&pd_lsio_gpio5 {
++	u-boot,dm-spl;
++};
++
++&pd_lsio_gpio6 {
++	u-boot,dm-spl;
++};
++
++&pd_lsio_gpio7 {
++	u-boot,dm-spl;
++};
++
++&pd_conn {
++	u-boot,dm-spl;
++};
++
++&pd_conn_sdch0 {
++	u-boot,dm-spl;
++};
++
++&pd_conn_sdch1 {
++	u-boot,dm-spl;
++};
++
++&pd_conn_sdch2 {
++	u-boot,dm-spl;
++};
++
++&gpio0 {
++	u-boot,dm-spl;
++};
++
++&gpio1 {
++	u-boot,dm-spl;
++};
++
++&gpio2 {
++	u-boot,dm-spl;
++};
++
++&gpio3 {
++	u-boot,dm-spl;
++};
++
++&gpio4 {
++	u-boot,dm-spl;
++};
++
++&gpio5 {
++	u-boot,dm-spl;
++};
++
++&gpio6 {
++	u-boot,dm-spl;
++};
++
++&gpio7 {
++	u-boot,dm-spl;
++};
++
++&lpuart0 {
++	u-boot,dm-spl;
++};
++
++&lpuart1 {
++	u-boot,dm-spl;
++};
++
++&lpuart2 {
++	u-boot,dm-spl;
++};
++
++&lpuart3 {
++	u-boot,dm-spl;
++};
++
++&usdhc1 {
++	u-boot,dm-spl;
++};
++
++&usdhc2 {
++	u-boot,dm-spl;
++};
++
++&usdhc3 {
++	u-boot,dm-spl;
++};
+diff --git a/arch/arm/dts/fsl-imx8qm-apalis.dts b/arch/arm/dts/fsl-imx8qm-apalis.dts
+new file mode 100644
+index 0000000000..9b1f8aa32d
+--- /dev/null
++++ b/arch/arm/dts/fsl-imx8qm-apalis.dts
+@@ -0,0 +1,615 @@
++// SPDX-License-Identifier: GPL-2.0+ OR X11
++/*
++ * Copyright 2017-2019 Toradex
++ */
++
++/dts-v1/;
++
++/* First 128KB is for PSCI ATF. */
++/memreserve/ 0x80000000 0x00020000;
++
++#include "fsl-imx8qm.dtsi"
++#include "fsl-imx8qm-apalis-u-boot.dtsi"
++
++/ {
++	model = "Toradex Apalis iMX8QM";
++	compatible = "toradex,apalis-imx8qm", "fsl,imx8qm";
++
++	chosen {
++		bootargs = "console=ttyLP1,115200 earlycon=lpuart32,0x5a070000,115200";
++		stdout-path = &lpuart1;
++	};
++};
++
++&iomuxc {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_cam1_gpios>, <&pinctrl_dap1_gpios>,
++		    <&pinctrl_esai0_gpios>, <&pinctrl_fec2_gpios>,
++		    <&pinctrl_gpio12>, <&pinctrl_gpio34>, <&pinctrl_gpio56>,
++		    <&pinctrl_gpio7>, <&pinctrl_gpio8>, <&pinctrl_gpio_bkl_on>,
++		    <&pinctrl_gpio_keys>, <&pinctrl_gpio_pwm0>,
++		    <&pinctrl_gpio_pwm1>, <&pinctrl_gpio_pwm2>,
++		    <&pinctrl_gpio_pwm3>, <&pinctrl_gpio_pwm_bkl>,
++		    <&pinctrl_gpio_usbh_en>, <&pinctrl_gpio_usbh_oc_n>,
++		    <&pinctrl_gpio_usbo1_en>, <&pinctrl_gpio_usbo1_oc_n>,
++		    <&pinctrl_lpuart1ctrl>, <&pinctrl_lvds0_i2c0_gpio>,
++		    <&pinctrl_lvds1_i2c0_gpios>, <&pinctrl_mipi_dsi_0_1_en>,
++		    <&pinctrl_mipi_dsi1_gpios>, <&pinctrl_mlb_gpios>,
++		    <&pinctrl_qspi1a_gpios>, <&pinctrl_sata1_act>,
++		    <&pinctrl_sim0_gpios>, <&pinctrl_usdhc1_gpios>;
++
++	apalis-imx8qm {
++		pinctrl_gpio12: gpio12grp {
++			fsl,pins = <
++				/* Apalis GPIO1 */
++				SC_P_M40_GPIO0_00_LSIO_GPIO0_IO08		0x06000021
++				/* Apalis GPIO2 */
++				SC_P_M40_GPIO0_01_LSIO_GPIO0_IO09		0x06000021
++			>;
++		};
++
++		pinctrl_gpio34: gpio34grp {
++			fsl,pins = <
++				/* Apalis GPIO3 */
++				SC_P_M41_GPIO0_00_LSIO_GPIO0_IO12		0x06000021
++				/* Apalis GPIO4 */
++				SC_P_M41_GPIO0_01_LSIO_GPIO0_IO13		0x06000021
++			>;
++		};
++
++		pinctrl_gpio56: gpio56grp {
++			fsl,pins = <
++				/* Apalis GPIO5 */
++				SC_P_FLEXCAN2_RX_LSIO_GPIO4_IO01		0x06000021
++				/* Apalis GPIO6 */
++				SC_P_FLEXCAN2_TX_LSIO_GPIO4_IO02		0x06000021
++			>;
++		};
++
++		pinctrl_gpio7: gpio7 {
++			fsl,pins = <
++				/* Apalis GPIO7 */
++				SC_P_MLB_SIG_LSIO_GPIO3_IO26			0x00000021
++			>;
++		};
++
++		pinctrl_gpio8: gpio8 {
++			fsl,pins = <
++				/* Apalis GPIO8 */
++				SC_P_MLB_DATA_LSIO_GPIO3_IO28			0x00000021
++			>;
++		};
++
++		pinctrl_gpio_keys: gpio-keys {
++			fsl,pins = <
++				/* Apalis WAKE1_MICO */
++				SC_P_SPI3_CS0_LSIO_GPIO2_IO20		0x06000021
++			>;
++		};
++
++		pinctrl_fec1: fec1grp {
++			fsl,pins = <
++				SC_P_COMP_CTL_GPIO_1V8_3V3_ENET_ENETB_PAD	0x000014a0 /* Use pads in 3.3V mode */
++				SC_P_ENET0_MDC_CONN_ENET0_MDC			0x06000020
++				SC_P_ENET0_MDIO_CONN_ENET0_MDIO			0x06000020
++				SC_P_ENET0_RGMII_TX_CTL_CONN_ENET0_RGMII_TX_CTL	0x06000020
++				SC_P_ENET0_RGMII_TXC_CONN_ENET0_RGMII_TXC	0x06000020
++				SC_P_ENET0_RGMII_TXD0_CONN_ENET0_RGMII_TXD0	0x06000020
++				SC_P_ENET0_RGMII_TXD1_CONN_ENET0_RGMII_TXD1	0x06000020
++				SC_P_ENET0_RGMII_TXD2_CONN_ENET0_RGMII_TXD2	0x06000020
++				SC_P_ENET0_RGMII_TXD3_CONN_ENET0_RGMII_TXD3	0x06000020
++				SC_P_ENET0_RGMII_RXC_CONN_ENET0_RGMII_RXC	0x06000020
++				SC_P_ENET0_RGMII_RX_CTL_CONN_ENET0_RGMII_RX_CTL	0x06000020
++				SC_P_ENET0_RGMII_RXD0_CONN_ENET0_RGMII_RXD0	0x06000020
++				SC_P_ENET0_RGMII_RXD1_CONN_ENET0_RGMII_RXD1	0x06000020
++				SC_P_ENET0_RGMII_RXD2_CONN_ENET0_RGMII_RXD2	0x06000020
++				SC_P_ENET0_RGMII_RXD3_CONN_ENET0_RGMII_RXD3	0x06000020
++				SC_P_ENET0_REFCLK_125M_25M_CONN_ENET0_REFCLK_125M_25M	0x06000020
++				/* ETH_RESET# */
++				SC_P_LVDS1_GPIO01_LSIO_GPIO1_IO11		0x06000020
++			>;
++		};
++
++		pinctrl_gpio_bkl_on: gpio-bkl-on {
++			fsl,pins = <
++				/* Apalis BKL_ON */
++				SC_P_LVDS0_GPIO00_LSIO_GPIO1_IO04	0x00000021
++			>;
++		};
++
++		/* Apalis I2C2 (DDC) */
++		pinctrl_lpi2c0: lpi2c0grp {
++			fsl,pins = <
++				SC_P_HDMI_TX0_TS_SCL_DMA_I2C0_SCL	0x04000022
++				SC_P_HDMI_TX0_TS_SDA_DMA_I2C0_SDA	0x04000022
++			>;
++		};
++
++		pinctrl_cam1_gpios: cam1gpiosgrp {
++			fsl,pins = <
++				/* Apalis CAM1_D7 */
++				SC_P_MIPI_DSI1_I2C0_SCL_LSIO_GPIO1_IO20	0x00000021
++				/* Apalis CAM1_D6 */
++				SC_P_MIPI_DSI1_I2C0_SDA_LSIO_GPIO1_IO21	0x00000021
++				/* Apalis CAM1_D5 */
++				SC_P_ESAI0_TX0_LSIO_GPIO2_IO26		0x00000021
++				/* Apalis CAM1_D4 */
++				SC_P_ESAI0_TX1_LSIO_GPIO2_IO27		0x00000021
++				/* Apalis CAM1_D3 */
++				SC_P_ESAI0_TX2_RX3_LSIO_GPIO2_IO28	0x00000021
++				/* Apalis CAM1_D2 */
++				SC_P_ESAI0_TX3_RX2_LSIO_GPIO2_IO29	0x00000021
++				/* Apalis CAM1_D1 */
++				SC_P_ESAI0_TX4_RX1_LSIO_GPIO2_IO30	0x00000021
++				/* Apalis CAM1_D0 */
++				SC_P_ESAI0_TX5_RX0_LSIO_GPIO2_IO31	0x00000021
++				/* Apalis CAM1_PCLK */
++				SC_P_MCLK_IN0_LSIO_GPIO3_IO00		0x00000021
++				/* Apalis CAM1_MCLK */
++				SC_P_SPI3_SDO_LSIO_GPIO2_IO18		0x00000021
++				/* Apalis CAM1_VSYNC */
++				SC_P_ESAI0_SCKR_LSIO_GPIO2_IO24		0x00000021
++				/* Apalis CAM1_HSYNC */
++				SC_P_ESAI0_SCKT_LSIO_GPIO2_IO25		0x00000021
++			>;
++		};
++
++		pinctrl_dap1_gpios: dap1gpiosgrp {
++			fsl,pins = <
++				/* Apalis DAP1_MCLK */
++				SC_P_SPI3_SDI_LSIO_GPIO2_IO19			0x00000021
++				/* Apalis DAP1_D_OUT */
++				SC_P_SAI1_RXC_LSIO_GPIO3_IO12			0x00000021
++				/* Apalis DAP1_RESET */
++				SC_P_ESAI1_SCKT_LSIO_GPIO2_IO07			0x00000021
++				/* Apalis DAP1_BIT_CLK */
++				SC_P_SPI0_CS1_LSIO_GPIO3_IO06			0x00000021
++				/* Apalis DAP1_D_IN */
++				SC_P_SAI1_RXFS_LSIO_GPIO3_IO14			0x00000021
++				/* Apalis DAP1_SYNC */
++				SC_P_SPI2_CS1_LSIO_GPIO3_IO11			0x00000021
++				/* Wi-Fi_I2S_EN# */
++				SC_P_ESAI1_TX5_RX0_LSIO_GPIO2_IO13		0x00000021
++			>;
++		};
++
++		pinctrl_esai0_gpios: esai0gpiosgrp {
++			fsl,pins = <
++				/* Apalis LCD1_G1 */
++				SC_P_ESAI0_FSR_LSIO_GPIO2_IO22			0x00000021
++				/* Apalis LCD1_G2 */
++				SC_P_ESAI0_FST_LSIO_GPIO2_IO23			0x00000021
++			>;
++		};
++
++		pinctrl_fec2_gpios: fec2gpiosgrp {
++			fsl,pins = <
++				SC_P_COMP_CTL_GPIO_1V8_3V3_ENET_ENETA_PAD	0x000014a0
++				/* Apalis LCD1_R1 */
++				SC_P_ENET1_MDC_LSIO_GPIO4_IO18			0x00000021
++				/* Apalis LCD1_R0 */
++				SC_P_ENET1_MDIO_LSIO_GPIO4_IO17			0x00000021
++				/* Apalis LCD1_G0 */
++				SC_P_ENET1_REFCLK_125M_25M_LSIO_GPIO4_IO16	0x00000021
++				/* Apalis LCD1_R7 */
++				SC_P_ENET1_RGMII_RX_CTL_LSIO_GPIO6_IO17		0x00000021
++				/* Apalis LCD1_DE */
++				SC_P_ENET1_RGMII_RXD0_LSIO_GPIO6_IO18		0x00000021
++				/* Apalis LCD1_HSYNC */
++				SC_P_ENET1_RGMII_RXD1_LSIO_GPIO6_IO19		0x00000021
++				/* Apalis LCD1_VSYNC */
++				SC_P_ENET1_RGMII_RXD2_LSIO_GPIO6_IO20		0x00000021
++				/* Apalis LCD1_PCLK */
++				SC_P_ENET1_RGMII_RXD3_LSIO_GPIO6_IO21		0x00000021
++				/* Apalis LCD1_R6 */
++				SC_P_ENET1_RGMII_TX_CTL_LSIO_GPIO6_IO11		0x00000021
++				/* Apalis LCD1_R5 */
++				SC_P_ENET1_RGMII_TXC_LSIO_GPIO6_IO10		0x00000021
++				/* Apalis LCD1_R4 */
++				SC_P_ENET1_RGMII_TXD0_LSIO_GPIO6_IO12		0x00000021
++				/* Apalis LCD1_R3 */
++				SC_P_ENET1_RGMII_TXD1_LSIO_GPIO6_IO13		0x00000021
++				/* Apalis LCD1_R2 */
++				SC_P_ENET1_RGMII_TXD2_LSIO_GPIO6_IO14		0x00000021
++			>;
++		};
++
++		pinctrl_lvds0_i2c0_gpio: lvds0i2c0gpio {
++			fsl,pins = <
++				/* Apalis TS_2 */
++				SC_P_LVDS0_I2C0_SCL_LSIO_GPIO1_IO06		0x00000021
++			>;
++		};
++
++		pinctrl_lvds1_i2c0_gpios: lvds1i2c0gpiosgrp {
++			fsl,pins = <
++				/* Apalis LCD1_G6 */
++				SC_P_LVDS1_I2C0_SCL_LSIO_GPIO1_IO12		0x00000021
++				/* Apalis LCD1_G7 */
++				SC_P_LVDS1_I2C0_SDA_LSIO_GPIO1_IO13		0x00000021
++			>;
++		};
++
++		pinctrl_mipi_dsi1_gpios: mipidsi1gpiosgrp {
++			fsl,pins = <
++				/* Apalis TS_4 */
++				SC_P_MIPI_DSI1_GPIO0_00_LSIO_GPIO1_IO22		0x00000021
++			>;
++		};
++
++		pinctrl_mlb_gpios: mlbgpiosgrp {
++			fsl,pins = <
++				/* Apalis TS_1 */
++				SC_P_MLB_CLK_LSIO_GPIO3_IO27			0x00000021
++			>;
++		};
++
++		pinctrl_qspi1a_gpios: qspi1agpiosgrp {
++			fsl,pins = <
++				/* Apalis LCD1_B0 */
++				SC_P_QSPI1A_DATA0_LSIO_GPIO4_IO26		0x00000021
++				/* Apalis LCD1_B1 */
++				SC_P_QSPI1A_DATA1_LSIO_GPIO4_IO25		0x00000021
++				/* Apalis LCD1_B2 */
++				SC_P_QSPI1A_DATA2_LSIO_GPIO4_IO24		0x00000021
++				/* Apalis LCD1_B3 */
++				SC_P_QSPI1A_DATA3_LSIO_GPIO4_IO23		0x00000021
++				/* Apalis LCD1_B5 */
++				SC_P_QSPI1A_DQS_LSIO_GPIO4_IO22			0x00000021
++				/* Apalis LCD1_B7 */
++				SC_P_QSPI1A_SCLK_LSIO_GPIO4_IO21		0x00000021
++				/* Apalis LCD1_B4 */
++				SC_P_QSPI1A_SS0_B_LSIO_GPIO4_IO19		0x00000021
++				/* Apalis LCD1_B6 */
++				SC_P_QSPI1A_SS1_B_LSIO_GPIO4_IO20		0x00000021
++			>;
++		};
++
++		pinctrl_sim0_gpios: sim0gpiosgrp {
++			fsl,pins = <
++				/* Apalis LCD1_G5 */
++				SC_P_SIM0_CLK_LSIO_GPIO0_IO00			0x00000021
++				/* Apalis LCD1_G3 */
++				SC_P_SIM0_GPIO0_00_LSIO_GPIO0_IO05		0x00000021
++				/* Apalis TS_5 */
++				SC_P_SIM0_IO_LSIO_GPIO0_IO02			0x00000021
++				/* Apalis LCD1_G4 */
++				SC_P_SIM0_RST_LSIO_GPIO0_IO01			0x00000021
++			>;
++		};
++
++		pinctrl_usdhc1_gpios: usdhc1gpiosgrp {
++			fsl,pins = <
++				/* Apalis TS_6 */
++				SC_P_USDHC1_STROBE_LSIO_GPIO5_IO23		0x00000021
++			>;
++		};
++
++		pinctrl_mipi_dsi_0_1_en: mipi_dsi_0_1_en {
++			fsl,pins = <
++				/* Apalis TS_3 */
++				SC_P_LVDS0_I2C0_SDA_LSIO_GPIO1_IO07		0x00000021
++			>;
++		};
++
++		/* On-module I2C */
++		pinctrl_lpi2c1: lpi2c1grp {
++			fsl,pins = <
++				SC_P_GPT0_CLK_DMA_I2C1_SCL		0x04000020
++				SC_P_GPT0_CAPTURE_DMA_I2C1_SDA		0x04000020
++			>;
++		};
++
++		/* Apalis I2C1 */
++		pinctrl_lpi2c2: lpi2c2grp {
++			fsl,pins = <
++				SC_P_GPT1_CLK_DMA_I2C2_SCL		0x04000020
++				SC_P_GPT1_CAPTURE_DMA_I2C2_SDA		0x04000020
++			>;
++		};
++
++		/* Apalis I2C3 (CAM) */
++		pinctrl_lpi2c3: lpi2c3grp {
++			fsl,pins = <
++				SC_P_SIM0_PD_DMA_I2C3_SCL		0x04000020
++				SC_P_SIM0_POWER_EN_DMA_I2C3_SDA		0x04000020
++			>;
++		};
++
++		/* Apalis UART3 */
++		pinctrl_lpuart0: lpuart0grp {
++			fsl,pins = <
++				SC_P_UART0_RX_DMA_UART0_RX		0x06000020
++				SC_P_UART0_TX_DMA_UART0_TX		0x06000020
++			>;
++		};
++
++		/* Apalis UART1 */
++		pinctrl_lpuart1: lpuart1grp {
++			fsl,pins = <
++				SC_P_UART1_RX_DMA_UART1_RX		0x06000020
++				SC_P_UART1_TX_DMA_UART1_TX		0x06000020
++				SC_P_UART1_CTS_B_DMA_UART1_CTS_B	0x06000020
++				SC_P_UART1_RTS_B_DMA_UART1_RTS_B	0x06000020
++			>;
++		};
++
++		pinctrl_lpuart1ctrl: lpuart1ctrlgrp {
++			fsl,pins = <
++				/* Apalis UART1_DTR */
++				SC_P_M40_I2C0_SCL_LSIO_GPIO0_IO06	0x00000021
++				/* Apalis UART1_DSR */
++				SC_P_M40_I2C0_SDA_LSIO_GPIO0_IO07	0x00000021
++				/* Apalis UART1_DCD */
++				SC_P_M41_I2C0_SCL_LSIO_GPIO0_IO10	0x00000021
++				/* Apalis UART1_RI */
++				SC_P_M41_I2C0_SDA_LSIO_GPIO0_IO11	0x00000021
++			>;
++		};
++
++		/* Apalis UART4 */
++		pinctrl_lpuart2: lpuart2grp {
++			fsl,pins = <
++				SC_P_LVDS0_I2C1_SCL_DMA_UART2_TX	0x06000020
++				SC_P_LVDS0_I2C1_SDA_DMA_UART2_RX	0x06000020
++			>;
++		};
++
++		/* Apalis UART2 */
++		pinctrl_lpuart3: lpuart3grp {
++			fsl,pins = <
++				SC_P_LVDS1_I2C1_SCL_DMA_UART3_TX	0x06000020
++				SC_P_LVDS1_I2C1_SDA_DMA_UART3_RX	0x06000020
++				SC_P_ENET1_RGMII_TXD3_DMA_UART3_RTS_B	0x06000020
++				SC_P_ENET1_RGMII_RXC_DMA_UART3_CTS_B	0x06000020
++			>;
++		};
++
++		/* Apalis PWM3 */
++		pinctrl_gpio_pwm0: gpiopwm0grp {
++			fsl,pins = <
++				SC_P_UART0_RTS_B_LSIO_GPIO0_IO22	0x00000021
++			>;
++		};
++
++		/* Apalis PWM4 */
++		pinctrl_gpio_pwm1: gpiopwm1grp {
++			fsl,pins = <
++				SC_P_UART0_CTS_B_LSIO_GPIO0_IO23	0x00000021
++			>;
++		};
++
++		/* Apalis PWM1 */
++		pinctrl_gpio_pwm2: gpiopwm2grp {
++			fsl,pins = <
++				SC_P_GPT1_COMPARE_LSIO_GPIO0_IO19	0x00000021
++			>;
++		};
++
++		/* Apalis PWM2 */
++		pinctrl_gpio_pwm3: gpiopwm3grp {
++			fsl,pins = <
++				SC_P_GPT0_COMPARE_LSIO_GPIO0_IO16	0x00000021
++			>;
++		};
++
++		/* Apalis BKL1_PWM */
++		pinctrl_gpio_pwm_bkl: gpiopwmbklgrp {
++			fsl,pins = <
++				SC_P_LVDS1_GPIO00_LVDS1_GPIO0_IO00	0x00000021
++			>;
++		};
++
++		/* Apalis USBH_EN */
++		pinctrl_gpio_usbh_en: gpiousbhen {
++			fsl,pins = <
++				SC_P_USB_SS3_TC1_LSIO_GPIO4_IO04	0x06000060
++			>;
++		};
++
++		/* Apalis USBH_OC# */
++		pinctrl_gpio_usbh_oc_n: gpiousbhocn {
++			fsl,pins = <
++				SC_P_USB_SS3_TC3_LSIO_GPIO4_IO06	0x06000060
++			>;
++		};
++
++		/* Apalis USBO1_EN */
++		pinctrl_gpio_usbo1_en: gpiousbo1en {
++			fsl,pins = <
++				SC_P_USB_SS3_TC0_LSIO_GPIO4_IO03	0x06000060
++			>;
++		};
++
++		/* Apalis USBO1_OC# */
++		pinctrl_gpio_usbo1_oc_n: gpiousbo1ocn {
++			fsl,pins = <
++				SC_P_USB_SS3_TC2_LSIO_GPIO4_IO05	0x06000060
++			>;
++		};
++
++		pinctrl_usdhc1: usdhc1grp {
++			fsl,pins = <
++				SC_P_EMMC0_CLK_CONN_EMMC0_CLK		0x06000041
++				SC_P_EMMC0_CMD_CONN_EMMC0_CMD		0x00000021
++				SC_P_EMMC0_DATA0_CONN_EMMC0_DATA0	0x00000021
++				SC_P_EMMC0_DATA1_CONN_EMMC0_DATA1	0x00000021
++				SC_P_EMMC0_DATA2_CONN_EMMC0_DATA2	0x00000021
++				SC_P_EMMC0_DATA3_CONN_EMMC0_DATA3	0x00000021
++				SC_P_EMMC0_DATA4_CONN_EMMC0_DATA4	0x00000021
++				SC_P_EMMC0_DATA5_CONN_EMMC0_DATA5	0x00000021
++				SC_P_EMMC0_DATA6_CONN_EMMC0_DATA6	0x00000021
++				SC_P_EMMC0_DATA7_CONN_EMMC0_DATA7	0x00000021
++				SC_P_EMMC0_STROBE_CONN_EMMC0_STROBE	0x06000041
++				SC_P_EMMC0_RESET_B_CONN_EMMC0_RESET_B	0x00000021
++			>;
++		};
++
++		pinctrl_sata1_act: sata1actgrp {
++			fsl,pins = <
++				/* Apalis SATA1_ACT# */
++				SC_P_ESAI1_TX0_LSIO_GPIO2_IO08		0x00000021
++			>;
++		};
++
++		pinctrl_mmc1_cd: mmc1cdgrp {
++			fsl,pins = <
++				/* Apalis MMC1_CD# */
++				SC_P_ESAI1_TX1_LSIO_GPIO2_IO09		0x00000021
++			>;
++		};
++
++		pinctrl_usdhc2: usdhc2grp {
++			fsl,pins = <
++				SC_P_USDHC1_CLK_CONN_USDHC1_CLK		0x06000041
++				SC_P_USDHC1_CMD_CONN_USDHC1_CMD		0x00000021
++				SC_P_USDHC1_DATA0_CONN_USDHC1_DATA0	0x00000021
++				SC_P_USDHC1_DATA1_CONN_USDHC1_DATA1	0x00000021
++				SC_P_USDHC1_DATA2_CONN_USDHC1_DATA2	0x00000021
++				SC_P_USDHC1_DATA3_CONN_USDHC1_DATA3	0x00000021
++				SC_P_USDHC1_DATA4_CONN_USDHC1_DATA4	0x00000021
++				SC_P_USDHC1_DATA5_CONN_USDHC1_DATA5	0x00000021
++				SC_P_USDHC1_DATA6_CONN_USDHC1_DATA6	0x00000021
++				SC_P_USDHC1_DATA7_CONN_USDHC1_DATA7	0x00000021
++				/* On-module PMIC use */
++				SC_P_USDHC1_VSELECT_CONN_USDHC1_VSELECT	0x00000021
++			>;
++		};
++
++		pinctrl_sd1_cd: sd1cdgrp {
++			fsl,pins = <
++				/* Apalis SD1_CD# */
++				SC_P_USDHC2_CD_B_LSIO_GPIO4_IO12	0x00000021
++			>;
++		};
++
++		pinctrl_usdhc3: usdhc3grp {
++			fsl,pins = <
++				SC_P_USDHC2_CLK_CONN_USDHC2_CLK		0x06000041
++				SC_P_USDHC2_CMD_CONN_USDHC2_CMD		0x00000021
++				SC_P_USDHC2_DATA0_CONN_USDHC2_DATA0	0x00000021
++				SC_P_USDHC2_DATA1_CONN_USDHC2_DATA1	0x00000021
++				SC_P_USDHC2_DATA2_CONN_USDHC2_DATA2	0x00000021
++				SC_P_USDHC2_DATA3_CONN_USDHC2_DATA3	0x00000021
++				/* On-module PMIC use */
++				SC_P_USDHC2_VSELECT_CONN_USDHC2_VSELECT	0x00000021
++			>;
++		};
++	};
++};
++
++&fec1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_fec1>;
++	fsl,magic-packet;
++	phy-handle = <&ethphy0>;
++	phy-mode = "rgmii";
++	phy-reset-duration = <10>;
++	phy-reset-gpios = <&gpio1 11 1>;
++	status = "okay";
++
++	mdio {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		ethphy0: ethernet-phy@7 {
++			compatible = "ethernet-phy-ieee802.3-c22";
++			reg = <7>;
++		};
++	};
++};
++
++/* Apalis I2C2 (DDC) */
++&i2c0 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_lpi2c0>;
++	clock-frequency = <100000>;
++	status = "okay";
++};
++
++/* On-module I2C */
++&i2c1 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	clock-frequency = <100000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_lpi2c1>;
++	status = "okay";
++};
++
++/* Apalis I2C1 */
++&i2c2 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	clock-frequency = <100000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_lpi2c2>;
++	status = "okay";
++};
++
++/* Apalis I2C3 (CAM) */
++&i2c3 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	clock-frequency = <100000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_lpi2c3>;
++	status = "okay";
++};
++
++/* Apalis UART3 */
++&lpuart0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_lpuart0>;
++	status = "okay";
++};
++
++/* Apalis UART1 */
++&lpuart1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_lpuart1>;
++	status = "okay";
++};
++
++/* Apalis UART4 */
++&lpuart2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_lpuart2>;
++	status = "okay";
++};
++
++/* Apalis UART2 */
++&lpuart3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_lpuart3>;
++	status = "okay";
++};
++
++/* eMMC */
++&usdhc1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_usdhc1>;
++	bus-width = <8>;
++	non-removable;
++	status = "okay";
++};
++
++/* Apalis MMC1 */
++&usdhc2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_mmc1_cd>;
++	bus-width = <8>;
++	cd-gpios = <&gpio2 9 GPIO_ACTIVE_LOW>; /* Apalis MMC1_CD# */
++	status = "okay";
++};
++
++/* Apalis SD1 */
++&usdhc3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_usdhc3>, <&pinctrl_sd1_cd>;
++	bus-width = <4>;
++	cd-gpios = <&gpio4 12 GPIO_ACTIVE_LOW>; /* Apalis SD1_CD# */
++	status = "okay";
++};
+diff --git a/arch/arm/mach-imx/imx8/Kconfig b/arch/arm/mach-imx/imx8/Kconfig
+index 90223aaefc..c87f77fee6 100644
+--- a/arch/arm/mach-imx/imx8/Kconfig
++++ b/arch/arm/mach-imx/imx8/Kconfig
+@@ -27,6 +27,11 @@ choice
+ 	prompt "i.MX8 board select"
+ 	optional
+ 
++config TARGET_APALIS_IMX8QM
++	bool "Support Apalis iMX8QM module"
++	select BOARD_LATE_INIT
++	select IMX8QM
++
+ config TARGET_COLIBRI_IMX8QXP
+ 	bool "Support Colibri iMX8QXP module"
+ 	select BOARD_LATE_INIT
+@@ -46,6 +51,7 @@ endchoice
+ 
+ source "board/freescale/imx8qm_mek/Kconfig"
+ source "board/freescale/imx8qxp_mek/Kconfig"
++source "board/toradex/apalis-imx8qm/Kconfig"
+ source "board/toradex/colibri-imx8qxp/Kconfig"
+ 
+ endif
+diff --git a/board/toradex/apalis-imx8qm/Kconfig b/board/toradex/apalis-imx8qm/Kconfig
+new file mode 100644
+index 0000000000..38b64cd6e6
+--- /dev/null
++++ b/board/toradex/apalis-imx8qm/Kconfig
+@@ -0,0 +1,30 @@
++if TARGET_APALIS_IMX8QM
++
++config SYS_BOARD
++	default "apalis-imx8qm"
++
++config SYS_VENDOR
++	default "toradex"
++
++config SYS_CONFIG_NAME
++	default "apalis-imx8qm"
++
++config TDX_CFG_BLOCK
++	default y
++
++config TDX_HAVE_MMC
++	default y
++
++config TDX_CFG_BLOCK_DEV
++	default "0"
++
++config TDX_CFG_BLOCK_PART
++	default "1"
++
++# Toradex config block in eMMC, at the end of 1st "boot sector"
++config TDX_CFG_BLOCK_OFFSET
++	default "-512"
++
++source "board/toradex/common/Kconfig"
++
++endif
+diff --git a/board/toradex/apalis-imx8qm/MAINTAINERS b/board/toradex/apalis-imx8qm/MAINTAINERS
+new file mode 100644
+index 0000000000..f2a61236b8
+--- /dev/null
++++ b/board/toradex/apalis-imx8qm/MAINTAINERS
+@@ -0,0 +1,9 @@
++Apalis iMX8QM
++M:	Marcel Ziswiler <marcel.ziswiler@toradex.com>
++W:	http://developer.toradex.com/software/linux/linux-software
++S:	Maintained
++F:	arch/arm/dts/fsl-imx8qm-apalis.dts
++F:	arch/arm/dts/fsl-imx8qm-apalis-u-boot.dtsi
++F:	board/toradex/apalis-imx8qm/
++F:	configs/apalis-imx8qm_defconfig
++F:	include/configs/apalis-imx8qm.h
+diff --git a/board/toradex/apalis-imx8qm/Makefile b/board/toradex/apalis-imx8qm/Makefile
+new file mode 100644
+index 0000000000..d606a866b4
+--- /dev/null
++++ b/board/toradex/apalis-imx8qm/Makefile
+@@ -0,0 +1,6 @@
++# SPDX-License-Identifier: GPL-2.0+
++#
++# Copyright 2019 Toradex
++#
++
++obj-y += apalis-imx8qm.o
+diff --git a/board/toradex/apalis-imx8qm/README b/board/toradex/apalis-imx8qm/README
+new file mode 100644
+index 0000000000..e6e3dcb367
+--- /dev/null
++++ b/board/toradex/apalis-imx8qm/README
+@@ -0,0 +1,66 @@
++U-Boot for the Toradex Apalis iMX8QM V1.0B Module
++
++Quick Start
++===========
++
++- Build the ARM trusted firmware binary
++- Get scfw_tcm.bin and ahab-container.img
++- Build U-Boot
++- Load U-Boot binary using uuu
++- Flash U-Boot binary into the eMMC
++- Boot
++
++Get and Build the ARM Trusted Firmware
++======================================
++
++$ git clone -b imx_4.14.78_1.0.0_ga https://source.codeaurora.org/external/imx/imx-atf
++$ cd imx-atf/
++$ make PLAT=imx8qm bl31
++
++Get scfw_tcm.bin and ahab-container.img
++=======================================
++
++$ wget https://github.com/toradex/meta-fsl-bsp-release/blob/toradex-sumo-4.14.78-1.0.0_ga-bringup/imx/meta-bsp/recipes-bsp/imx-sc-firmware/files/mx8qm-apalis-scfw-tcm.bin?raw=true
++$ mv mx8qm-apalis-scfw-tcm.bin\?raw\=true mx8qm-apalis-scfw-tcm.bin
++$ wget https://www.nxp.com/lgfiles/NMG/MAD/YOCTO/firmware-imx-8.0.bin
++$ chmod +x firmware-imx-8.0.bin
++$ ./firmware-imx-8.0.bin
++
++Copy the following binaries to the U-Boot folder:
++
++$ cp imx-atf/build/imx8qm/release/bl31.bin .
++$ cp u-boot/u-boot.bin .
++
++Copy the following firmware to the U-Boot folder:
++
++$ cp firmware-imx-8.0/firmware/seco/ahab-container.img .
++
++Build U-Boot
++============
++
++$ make apalis-imx8qm_defconfig
++$ make u-boot-dtb.imx
++
++Load the U-Boot Binary Using UUU
++================================
++
++Get the latest version of the universal update utility (uuu) aka mfgtools 3.0:
++
++https://community.nxp.com/external-link.jspa?url=https%3A%2F%2Fgithub.com%2FNXPmicro%2Fmfgtools%2Freleases
++
++Put the module into USB recovery aka serial downloader mode, connect USB device
++to your host and execute uuu:
++
++sudo ./uuu u-boot/u-boot-dtb.imx
++
++Flash the U-Boot Binary into the eMMC
++=====================================
++
++Burn the u-boot-dtb.imx binary to the primary eMMC hardware boot area partition:
++
++load mmc 1:1 $loadaddr u-boot-dtb.imx
++setexpr blkcnt ${filesize} + 0x1ff && setexpr blkcnt ${blkcnt} / 0x200
++mmc dev 0 1
++mmc write ${loadaddr} 0x0 ${blkcnt}
++
++Boot
+diff --git a/board/toradex/apalis-imx8qm/apalis-imx8qm.c b/board/toradex/apalis-imx8qm/apalis-imx8qm.c
+new file mode 100644
+index 0000000000..f516e546a8
+--- /dev/null
++++ b/board/toradex/apalis-imx8qm/apalis-imx8qm.c
+@@ -0,0 +1,149 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright 2019 Toradex
++ */
++
++#include <common.h>
++
++#include <asm/arch/clock.h>
++#include <asm/arch/imx8-pins.h>
++#include <asm/arch/iomux.h>
++#include <asm/arch/sci/sci.h>
++#include <asm/arch/sys_proto.h>
++#include <asm/gpio.h>
++#include <asm/io.h>
++#include <environment.h>
++#include <errno.h>
++#include <linux/libfdt.h>
++
++#include "../common/tdx-cfg-block.h"
++
++DECLARE_GLOBAL_DATA_PTR;
++
++#define UART_PAD_CTRL	((SC_PAD_CONFIG_OUT_IN << PADRING_CONFIG_SHIFT) | \
++			 (SC_PAD_ISO_OFF << PADRING_LPCONFIG_SHIFT) | \
++			 (SC_PAD_28FDSOI_DSE_DV_HIGH << PADRING_DSE_SHIFT) | \
++			 (SC_PAD_28FDSOI_PS_PU << PADRING_PULL_SHIFT))
++
++static iomux_cfg_t uart1_pads[] = {
++	SC_P_UART1_RX | MUX_PAD_CTRL(UART_PAD_CTRL),
++	SC_P_UART1_TX | MUX_PAD_CTRL(UART_PAD_CTRL),
++};
++
++static void setup_iomux_uart(void)
++{
++	imx8_iomux_setup_multiple_pads(uart1_pads, ARRAY_SIZE(uart1_pads));
++}
++
++int board_early_init_f(void)
++{
++	sc_pm_clock_rate_t rate;
++	sc_err_t err = 0;
++
++	/* Power up UART1 */
++	err = sc_pm_set_resource_power_mode(-1, SC_R_UART_1, SC_PM_PW_MODE_ON);
++	if (err != SC_ERR_NONE)
++		return 0;
++
++	/* Set UART3 clock root to 80 MHz */
++	rate = 80000000;
++	err = sc_pm_set_clock_rate(-1, SC_R_UART_1, SC_PM_CLK_PER, &rate);
++	if (err != SC_ERR_NONE)
++		return 0;
++
++	/* Enable UART1 clock root */
++	err = sc_pm_clock_enable(-1, SC_R_UART_1, SC_PM_CLK_PER, true, false);
++	if (err != SC_ERR_NONE)
++		return 0;
++
++	setup_iomux_uart();
++
++	return 0;
++}
++
++#if IS_ENABLED(CONFIG_DM_GPIO)
++static void board_gpio_init(void)
++{
++	/* TODO */
++}
++#else
++static inline void board_gpio_init(void) {}
++#endif
++
++#if IS_ENABLED(CONFIG_FEC_MXC)
++#include <miiphy.h>
++
++int board_phy_config(struct phy_device *phydev)
++{
++	if (phydev->drv->config)
++		phydev->drv->config(phydev);
++
++	return 0;
++}
++#endif
++
++void build_info(void)
++{
++	u32 sc_build = 0, sc_commit = 0;
++
++	/* Get SCFW build and commit id */
++	sc_misc_build_info(-1, &sc_build, &sc_commit);
++	if (!sc_build) {
++		printf("SCFW does not support build info\n");
++		sc_commit = 0; /* Display 0 if build info not supported */
++	}
++	printf("Build: SCFW %x\n", sc_commit);
++}
++
++int checkboard(void)
++{
++	puts("Model: Toradex Apalis iMX8\n");
++
++	build_info();
++	print_bootinfo();
++
++	return 0;
++}
++
++int board_init(void)
++{
++	board_gpio_init();
++
++	return 0;
++}
++
++void detail_board_ddr_info(void)
++{
++	puts("\nDDR    ");
++}
++
++/*
++ * Board specific reset that is system reset.
++ */
++void reset_cpu(ulong addr)
++{
++	/* TODO */
++}
++
++#if defined(CONFIG_OF_LIBFDT) && defined(CONFIG_OF_BOARD_SETUP)
++int ft_board_setup(void *blob, bd_t *bd)
++{
++	return ft_common_board_setup(blob, bd);
++}
++#endif
++
++int board_mmc_get_env_dev(int devno)
++{
++	return devno;
++}
++
++int board_late_init(void)
++{
++#ifdef CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG
++/* TODO move to common */
++	env_set("board_name", "Apalis iMX8QM");
++	env_set("board_rev", "v1.0");
++#endif
++
++	return 0;
++}
+diff --git a/board/toradex/apalis-imx8qm/imximage.cfg b/board/toradex/apalis-imx8qm/imximage.cfg
+new file mode 100644
+index 0000000000..71981f8c55
+--- /dev/null
++++ b/board/toradex/apalis-imx8qm/imximage.cfg
+@@ -0,0 +1,24 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * Copyright 2019 Toradex
++ *
++ * Refer doc/README.imx8image for more details about how-to configure
++ * and create imx8image boot image
++ */
++
++#define __ASSEMBLY__
++
++/* Boot from SD, sector size 0x400 */
++BOOT_FROM EMMC_FASTBOOT 0x400
++/* SoC type IMX8QM */
++SOC_TYPE IMX8QM
++/* Append seco container image */
++APPEND mx8qm-ahab-container.img
++/* Create the 2nd container */
++CONTAINER
++/* Add scfw image with exec attribute */
++IMAGE SCU mx8qm-apalis-scfw-tcm.bin
++/* Add ATF image with exec attribute */
++IMAGE A35 bl31.bin 0x80000000
++/* Add U-Boot image with load attribute */
++DATA A35 u-boot-dtb.bin 0x80020000
+diff --git a/configs/apalis-imx8qm_defconfig b/configs/apalis-imx8qm_defconfig
+new file mode 100644
+index 0000000000..ae62b2d923
+--- /dev/null
++++ b/configs/apalis-imx8qm_defconfig
+@@ -0,0 +1,56 @@
++CONFIG_ARM=y
++CONFIG_ARCH_IMX8=y
++CONFIG_SYS_TEXT_BASE=0x80020000
++CONFIG_SYS_MALLOC_F_LEN=0x4000
++CONFIG_TARGET_APALIS_IMX8QM=y
++CONFIG_NR_DRAM_BANKS=3
++CONFIG_DISTRO_DEFAULTS=y
++CONFIG_FIT=y
++CONFIG_SYS_EXTRA_OPTIONS="IMX_CONFIG=board/toradex/apalis-imx8qm/imximage.cfg"
++CONFIG_LOG=y
++CONFIG_VERSION_VARIABLE=y
++# CONFIG_DISPLAY_BOARDINFO is not set
++CONFIG_BOARD_EARLY_INIT_F=y
++CONFIG_CMD_CPU=y
++# CONFIG_CMD_IMPORTENV is not set
++CONFIG_CMD_MEMTEST=y
++CONFIG_CMD_CLK=y
++CONFIG_CMD_DM=y
++CONFIG_CMD_FUSE=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_I2C=y
++CONFIG_CMD_MMC=y
++CONFIG_CMD_CACHE=y
++CONFIG_CMD_UUID=y
++CONFIG_CMD_EXT4_WRITE=y
++CONFIG_DEFAULT_DEVICE_TREE="fsl-imx8qm-apalis"
++CONFIG_ENV_IS_IN_MMC=y
++CONFIG_CLK_IMX8=y
++CONFIG_CPU=y
++CONFIG_DM_GPIO=y
++CONFIG_MXC_GPIO=y
++CONFIG_DM_I2C=y
++CONFIG_SYS_I2C_IMX_LPI2C=y
++CONFIG_MISC=y
++CONFIG_DM_MMC=y
++CONFIG_PHYLIB=y
++CONFIG_PHY_ADDR_ENABLE=y
++CONFIG_PHY_MICREL=y
++CONFIG_PHY_MICREL_KSZ90X1=y
++CONFIG_DM_ETH=y
++CONFIG_FEC_MXC_SHARE_MDIO=y
++CONFIG_FEC_MXC_MDIO_BASE=0x5B040000
++CONFIG_FEC_MXC=y
++CONFIG_MII=y
++CONFIG_PINCTRL=y
++CONFIG_PINCTRL_IMX8=y
++CONFIG_POWER_DOMAIN=y
++CONFIG_IMX8_POWER_DOMAIN=y
++CONFIG_DM_REGULATOR=y
++CONFIG_DM_REGULATOR_FIXED=y
++CONFIG_DM_REGULATOR_GPIO=y
++CONFIG_DM_SERIAL=y
++CONFIG_FSL_LPUART=y
++CONFIG_DM_THERMAL=y
++CONFIG_IMX_SCU_THERMAL=y
++# CONFIG_EFI_LOADER is not set
+diff --git a/include/configs/apalis-imx8qm.h b/include/configs/apalis-imx8qm.h
+new file mode 100644
+index 0000000000..f5cba2b1c1
+--- /dev/null
++++ b/include/configs/apalis-imx8qm.h
+@@ -0,0 +1,177 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * Copyright 2019 Toradex
++ */
++
++#ifndef __APALIS_IMX8QM_H
++#define __APALIS_IMX8QM_H
++
++#include <asm/arch/imx-regs.h>
++#include <linux/sizes.h>
++
++#define CONFIG_REMAKE_ELF
++
++#define CONFIG_DISPLAY_BOARDINFO_LATE
++
++#undef CONFIG_CMD_EXPORTENV
++#undef CONFIG_CMD_IMPORTENV
++#undef CONFIG_CMD_IMLS
++
++#undef CONFIG_CMD_CRC32
++#undef CONFIG_BOOTM_NETBSD
++
++#define CONFIG_FSL_ESDHC
++#define CONFIG_FSL_USDHC
++#define CONFIG_SYS_FSL_ESDHC_ADDR	0
++#define USDHC1_BASE_ADDR		0x5B010000
++#define USDHC2_BASE_ADDR		0x5B020000
++#define CONFIG_SUPPORT_EMMC_BOOT	/* eMMC specific */
++
++#define CONFIG_ENV_OVERWRITE
++
++#define CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG
++
++/* Networking */
++#define FEC_QUIRK_ENET_MAC
++
++#define CONFIG_IP_DEFRAG
++#define CONFIG_TFTP_BLOCKSIZE		SZ_4K
++#define CONFIG_TFTP_TSIZE
++
++#define CONFIG_IPADDR			192.168.10.2
++#define CONFIG_NETMASK			255.255.255.0
++#define CONFIG_SERVERIP			192.168.10.1
++
++#define MEM_LAYOUT_ENV_SETTINGS \
++	"fdt_addr_r=0x84000000\0" \
++	"kernel_addr_r=0x82000000\0" \
++	"ramdisk_addr_r=0x84100000\0"
++
++#define BOOT_TARGET_DEVICES(func) \
++	func(MMC, mmc, 0) \
++	func(MMC, mmc, 1) \
++	func(MMC, mmc, 2) \
++	func(DHCP, dhcp, na)
++#include <config_distro_bootcmd.h>
++#undef BOOTENV_RUN_NET_USB_START
++#define BOOTENV_RUN_NET_USB_START ""
++
++/* Initial environment variables */
++#define CONFIG_EXTRA_ENV_SETTINGS \
++	BOOTENV \
++	MEM_LAYOUT_ENV_SETTINGS \
++	"boot_fdt=try\0" \
++	"bootscript=echo Running bootscript from mmc ...; source\0" \
++	"console=ttyLP1 earlycon\0" \
++	"fdt_addr=0x83000000\0"	\
++	"fdt_file=fsl-imx8qm-apalis-eval.dtb\0" \
++	"fdt_high=0xffffffffffffffff\0"	\
++	"finduuid=part uuid mmc ${mmcdev}:2 uuid\0" \
++	"image=Image\0" \
++	"initrd_addr=0x83800000\0" \
++	"initrd_high=0xffffffffffffffff\0" \
++	"loadbootscript=fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} " \
++		"${script};\0" \
++	"loadfdt=fatload mmc ${mmcdev}:${mmcpart} ${fdt_addr} ${fdt_file}\0" \
++	"loadimage=fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} ${image}\0" \
++	"mmcargs=setenv bootargs console=${console},${baudrate} " \
++		"root=PARTUUID=${uuid} rootwait " \
++	"mmcautodetect=yes\0" \
++	"mmcboot=echo Booting from mmc ...; " \
++		"run finduuid; run mmcargs; " \
++		"if test ${boot_fdt} = yes || test ${boot_fdt} = try; then " \
++			"if run loadfdt; then " \
++				"booti ${loadaddr} - ${fdt_addr}; " \
++			"else " \
++				"echo WARN: Cannot load the DT; " \
++			"fi; " \
++		"else " \
++			"echo wait for boot; " \
++		"fi;\0" \
++	"mmcdev=" __stringify(CONFIG_SYS_MMC_ENV_DEV) "\0" \
++	"mmcpart=" __stringify(CONFIG_SYS_MMC_IMG_LOAD_PART) "\0" \
++	"netargs=setenv bootargs console=${console},${baudrate} " \
++		"root=/dev/nfs " \
++		"ip=dhcp nfsroot=${serverip}:${nfsroot},v3,tcp\0" \
++	"netboot=echo Booting from net ...; " \
++		"run netargs; " \
++		"if test ${ip_dyn} = yes; then " \
++			"setenv get_cmd dhcp; " \
++		"else " \
++			"setenv get_cmd tftp; " \
++		"fi; " \
++		"${get_cmd} ${loadaddr} ${image}; " \
++		"if test ${boot_fdt} = yes || test ${boot_fdt} = try; then " \
++			"if ${get_cmd} ${fdt_addr} ${fdt_file}; then " \
++				"booti ${loadaddr} - ${fdt_addr}; " \
++			"else " \
++				"echo WARN: Cannot load the DT; " \
++			"fi; " \
++		"else " \
++			"booti; " \
++		"fi;\0" \
++	"nfsboot=run netargs; dhcp ${loadaddr} ${image}; tftp ${fdt_addr} " \
++		"apalis-imx8qm/${fdt_file}; booti ${loadaddr} - " \
++		"${fdt_addr}\0" \
++	"panel=NULL\0" \
++	"script=boot.scr\0"
++
++#undef CONFIG_BOOTCOMMAND
++#define CONFIG_BOOTCOMMAND \
++	   "mmc dev ${mmcdev}; if mmc rescan; then " \
++		   "if run loadbootscript; then " \
++			   "run bootscript; " \
++		   "else " \
++			   "if run loadimage; then " \
++				   "run mmcboot; " \
++			   "else run netboot; " \
++			   "fi; " \
++		   "fi; " \
++	   "else booti ${loadaddr} - ${fdt_addr}; fi"
++
++/* Link Definitions */
++#define CONFIG_LOADADDR			0x80280000
++
++#define CONFIG_SYS_LOAD_ADDR		CONFIG_LOADADDR
++
++#define CONFIG_SYS_INIT_SP_ADDR		0x80200000
++
++#define CONFIG_SYS_MEMTEST_START	0x88000000
++#define CONFIG_SYS_MEMTEST_END		0x89000000
++
++/* Environment in eMMC, before config block at the end of 1st "boot sector" */
++#define CONFIG_ENV_SIZE			SZ_8K
++#define CONFIG_ENV_OFFSET		(-CONFIG_ENV_SIZE + \
++					 CONFIG_TDX_CFG_BLOCK_OFFSET)
++#define CONFIG_SYS_MMC_ENV_DEV		0	/* USDHC1 eMMC */
++#define CONFIG_SYS_MMC_ENV_PART		1
++
++#define CONFIG_SYS_MMC_IMG_LOAD_PART	1
++
++/* On Apalis iMX8 USDHC1 is eMMC, USDHC2 is 8-bit and USDHC3 is 4-bit MMC/SD */
++#define CONFIG_SYS_FSL_USDHC_NUM	3
++
++/* Size of malloc() pool */
++#define CONFIG_SYS_MALLOC_LEN		((CONFIG_ENV_SIZE + (32 * 1024)) * 1024)
++
++#define CONFIG_SYS_SDRAM_BASE		0x80000000
++#define PHYS_SDRAM_1			0x80000000
++#define PHYS_SDRAM_2			0x880000000
++#define PHYS_SDRAM_1_SIZE		SZ_2G		/* 2 GB */
++#define PHYS_SDRAM_2_SIZE		SZ_2G		/* 2 GB */
++
++/* Serial */
++#define CONFIG_BAUDRATE			115200
++
++/* Monitor Command Prompt */
++#define CONFIG_SYS_PROMPT_HUSH_PS2	"> "
++#define CONFIG_SYS_CBSIZE		SZ_2K
++#define CONFIG_SYS_MAXARGS		64
++#define CONFIG_SYS_BARGSIZE		CONFIG_SYS_CBSIZE
++#define CONFIG_SYS_PBSIZE		(CONFIG_SYS_CBSIZE + \
++					sizeof(CONFIG_SYS_PROMPT) + 16)
++
++/* Generic Timer Definitions */
++#define COUNTER_FREQUENCY		8000000	/* 8MHz */
++
++#endif /* __APALIS_IMX8QM_H */
+-- 
+2.14.5
+

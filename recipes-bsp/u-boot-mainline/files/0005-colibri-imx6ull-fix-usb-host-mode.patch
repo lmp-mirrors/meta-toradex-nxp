@@ -1,0 +1,37 @@
+From 853800ced8e96bfd2b57851226e528e342ec30e7 Mon Sep 17 00:00:00 2001
+From: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+Date: Thu, 28 Mar 2019 18:40:47 +0100
+Subject: [PATCH 05/19] colibri-imx6ull: fix usb host mode
+
+This fixes an issue with USB host mode.
+
+Signed-off-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+Reviewed-by: Igor Opaniuk <igor.opaniuk@toradex.com>
+
+Series-to: u-boot@lists.denx.de
+Series-cc: Stefano Babic <sbabic@denx.de>
+
+Commit-notes:
+I believe this is the one and only v3 change we missed as Stefano
+pulled v2 instead.
+END
+---
+ arch/arm/dts/imx6ull-colibri.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/dts/imx6ull-colibri.dts b/arch/arm/dts/imx6ull-colibri.dts
+index 4196cbdf22..6c847ab792 100644
+--- a/arch/arm/dts/imx6ull-colibri.dts
++++ b/arch/arm/dts/imx6ull-colibri.dts
+@@ -220,7 +220,7 @@
+ 
+ /* Colibri USBC */
+ &usbotg1 {
+-	dr_mode = "otg";
++	dr_mode = "host";
+ 	srp-disable;
+ 	hnp-disable;
+ 	adp-disable;
+-- 
+2.14.5
+

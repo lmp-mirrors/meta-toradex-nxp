@@ -1,0 +1,52 @@
+From a90cb933df44d2fa9ead3ce620313077f907b52a Mon Sep 17 00:00:00 2001
+From: Max Krummenacher <max.krummenacher@toradex.com>
+Date: Thu, 21 Sep 2017 15:29:33 +0200
+Subject: [PATCH 02/19] configs: apalis_imx6: don't configure video in spl
+
+The functionality is not needed in the SPL. It allows to remove
+code conditionally in the spl case in some drivers.
+
+Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
+
+Series-to: u-boot
+
+Series-cc: Anatolij Gustschin <agust@denx.de>, festevam@gmail.com <festevam@gmail.com>, sbabic@denx.de <sbabic@denx.de>
+Series-cc: jagan@openedev.com <jagan@openedev.com>, otavio@ossystems.com.br <otavio@ossystems.com.br>
+Series-cc: Marcel Ziswiler <marcel.ziswiler@toradex.com>, Stefan Agner <stefan.agner@toradex.com>
+
+Cover-letter:
+configs: apalis/colibri imx6: don't configure video in spl
+
+This series remove unneeded SPL config options. This is needed
+to successfully compile with the following patch applied:
+https://lists.denx.de/pipermail/u-boot/2017-August/304010.html
+
+This series is available at http://git.toradex.com/cgit/u-boot-toradex.git/log/?h=for-next
+END
+---
+ include/configs/apalis_imx6.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/include/configs/apalis_imx6.h b/include/configs/apalis_imx6.h
+index 91054d8c05..84d7c4b4f0 100644
+--- a/include/configs/apalis_imx6.h
++++ b/include/configs/apalis_imx6.h
+@@ -74,6 +74,7 @@
+ /* Client */
+ #define CONFIG_USBD_HS
+ 
++#if !defined(CONFIG_SPL_BUILD)
+ /* Framebuffer and LCD */
+ #define CONFIG_SYS_CONSOLE_OVERWRITE_ROUTINE
+ #define CONFIG_VIDEO_BMP_RLE8
+@@ -85,6 +86,7 @@
+ #define CONFIG_CONSOLE_MUX
+ #define CONFIG_IMX_HDMI
+ #define CONFIG_IMX_VIDEO_SKIP
++#endif
+ 
+ /* allow to overwrite serial and ethaddr */
+ #define CONFIG_ENV_OVERWRITE
+-- 
+2.14.5
+
