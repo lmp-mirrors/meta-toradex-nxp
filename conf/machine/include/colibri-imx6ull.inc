@@ -6,3 +6,5 @@ TORADEX_PRODUCT_IDS[0040] = "imx6ull-colibri-wifi-eval-v3.dtb"
 TORADEX_PRODUCT_IDS[0044] = "imx6ull-colibri-eval-v3.dtb"
 TORADEX_PRODUCT_IDS[0045] = "imx6ull-colibri-wifi-eval-v3.dtb"
 TORADEX_FLASH_TYPE = "rawnand"
+
+PREFERRED_PROVIDER_virtual/bootloader = "u-boot"

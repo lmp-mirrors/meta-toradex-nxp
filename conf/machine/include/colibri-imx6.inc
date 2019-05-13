@@ -8,6 +8,7 @@ OFFSET_SPL_PAYLOAD = "138"
 KERNEL_IMAGETYPE_${MACHINE} = "zImage"
 
 UBOOT_SUFFIX = "img"
+PREFERRED_PROVIDER_virtual/bootloader = "u-boot"
 
 PREFERRED_PROVIDER_virtual/libg2d_mx6 ?= "imx-gpu-g2d"
 

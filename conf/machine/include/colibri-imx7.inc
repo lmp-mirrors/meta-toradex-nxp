@@ -7,3 +7,5 @@ TORADEX_PRODUCT_IDS[0041] = "imx7d-colibri-eval-v3.dtb"
 TORADEX_FLASH_TYPE = "rawnand"
 
 MACHINE_FIRMWARE_remove = "firmware-imx-epdc"
+
+PREFERRED_PROVIDER_virtual/bootloader = "u-boot"

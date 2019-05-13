@@ -6,3 +6,5 @@ TORADEX_PRODUCT_IDS = "0039"
 TORADEX_FLASH_TYPE = "emmc"
 
 MACHINE_FIRMWARE_remove = "firmware-imx-epdc"
+
+PREFERRED_PROVIDER_virtual/bootloader = "u-boot"

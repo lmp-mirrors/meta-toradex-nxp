@@ -9,6 +9,7 @@ KERNEL_DEVICETREE_remove = "imx6q-apalis_v1_0-eval.dtb imx6q-apalis_v1_0-ixora.d
 KERNEL_IMAGETYPE_${MACHINE} = "zImage"
 
 UBOOT_SUFFIX = "img"
+PREFERRED_PROVIDER_virtual/bootloader = "u-boot"
 
 PREFERRED_PROVIDER_virtual/libg2d_mx6 ?= "imx-gpu-g2d"
 
