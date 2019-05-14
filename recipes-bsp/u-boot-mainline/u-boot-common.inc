@@ -13,8 +13,6 @@ SRCREV = "b4ee6daad7a2604ca9466b2ba48de86cc27d381f"
 SRC_URI = "git://git.denx.de/u-boot.git"
 
 SRC_URI += " \
-    file://0001-configs-colibri_imx6-don-t-configure-video-in-spl.patch \
-    file://0002-configs-apalis_imx6-don-t-configure-video-in-spl.patch \
     file://0003-usb-limit-USB_MAX_XFER_BLK-to-256.patch \
     file://0004-apalis_imx6-add-device-tree-to-makefile.patch \
     file://0005-colibri-imx6ull-fix-usb-host-mode.patch \
