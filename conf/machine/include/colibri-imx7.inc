@@ -9,3 +9,4 @@ TORADEX_FLASH_TYPE = "rawnand"
 MACHINE_FIRMWARE_remove = "firmware-imx-epdc"
 
 PREFERRED_PROVIDER_virtual/bootloader = "u-boot"
+UBOOT_MAKE_TARGET_colibri-imx7 = "u-boot.imx"
