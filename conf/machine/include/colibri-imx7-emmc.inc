@@ -5,6 +5,8 @@ OFFSET_BOOTROM_PAYLOAD = "2"
 TORADEX_PRODUCT_IDS = "0039"
 TORADEX_FLASH_TYPE = "emmc"
 
+MACHINE_NAME = "Colibri-iMX7-eMMC"
+
 MACHINE_FIRMWARE_remove = "firmware-imx-epdc"
 
 PREFERRED_PROVIDER_virtual/bootloader = "u-boot"
