@@ -1,5 +1,6 @@
 SUMMARY = "U-Boot bootloader with support for Toradex i.MX8 SoM"
 require recipes-bsp/u-boot/u-boot.inc
+require recipes-bsp/u-boot/u-boot-toradex-initial-env.inc
 inherit pythonnative
 
 PROVIDES += "u-boot"
