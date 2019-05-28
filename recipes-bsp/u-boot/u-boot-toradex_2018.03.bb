@@ -7,6 +7,8 @@ inherit pythonnative
 PROVIDES += "u-boot"
 DEPENDS_append = " python dtc-native"
 
+SRC_URI_append_apalis-imx8a0 = " file://0001-Revert-apalis-imx8-fused-modules-boot-from-emmc.patch"
+
 BOOT_TOOLS = "imx-boot-tools"
 
 UBOOT_NAME_mx6 = "u-boot-${MACHINE}.bin-${UBOOT_CONFIG}"
