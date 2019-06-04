@@ -1,0 +1,104 @@
+From 1686d60e877fcf86a0eaf564a47639cf7b563454 Mon Sep 17 00:00:00 2001
+From: Igor Opaniuk <igor.opaniuk@toradex.com>
+Date: Fri, 14 Jun 2019 10:59:10 +0300
+Subject: [PATCH 6/7] colibri/apalis tegra: drop DFU support
+
+We never really added a sensible DFU configuration for platforms
+based on eMMC. Most of the things one might want to do can also be done
+with UMS or fastboot, so drop the DFU configuration.
+
+Signed-off-by: Igor Opaniuk <igor.opaniuk@toradex.com>
+---
+ configs/apalis-tk1_defconfig  | 3 ---
+ configs/apalis_t30_defconfig  | 3 ---
+ configs/colibri_t20_defconfig | 3 ---
+ configs/colibri_t30_defconfig | 3 ---
+ 4 files changed, 12 deletions(-)
+
+diff --git a/configs/apalis-tk1_defconfig b/configs/apalis-tk1_defconfig
+index 946858e48e..e62cef713a 100644
+--- a/configs/apalis-tk1_defconfig
++++ b/configs/apalis-tk1_defconfig
+@@ -17,7 +17,6 @@ CONFIG_DISPLAY_BOARDINFO_LATE=y
+ CONFIG_SPL_TEXT_BASE=0x80108000
+ CONFIG_SYS_PROMPT="Apalis TK1 # "
+ # CONFIG_CMD_IMI is not set
+-CONFIG_CMD_DFU=y
+ # CONFIG_CMD_FLASH is not set
+ CONFIG_CMD_GPIO=y
+ CONFIG_CMD_I2C=y
+@@ -32,8 +31,6 @@ CONFIG_CMD_EXT4_WRITE=y
+ CONFIG_OF_LIVE=y
+ CONFIG_DEFAULT_DEVICE_TREE="tegra124-apalis"
+ CONFIG_SPL_DM=y
+-CONFIG_DFU_MMC=y
+-CONFIG_DFU_RAM=y
+ CONFIG_SYS_I2C_TEGRA=y
+ CONFIG_SUPPORT_EMMC_BOOT=y
+ CONFIG_TEGRA124_MMC_DISABLE_EXT_LOOPBACK=y
+diff --git a/configs/apalis_t30_defconfig b/configs/apalis_t30_defconfig
+index d231ccdb49..a4af07cfc7 100644
+--- a/configs/apalis_t30_defconfig
++++ b/configs/apalis_t30_defconfig
+@@ -14,7 +14,6 @@ CONFIG_ARCH_MISC_INIT=y
+ CONFIG_SPL_TEXT_BASE=0x80108000
+ CONFIG_SYS_PROMPT="Apalis T30 # "
+ # CONFIG_CMD_IMI is not set
+-CONFIG_CMD_DFU=y
+ # CONFIG_CMD_FLASH is not set
+ CONFIG_CMD_GPIO=y
+ CONFIG_CMD_I2C=y
+@@ -29,8 +28,6 @@ CONFIG_CMD_EXT4_WRITE=y
+ CONFIG_OF_LIVE=y
+ CONFIG_DEFAULT_DEVICE_TREE="tegra30-apalis"
+ CONFIG_SPL_DM=y
+-CONFIG_DFU_MMC=y
+-CONFIG_DFU_RAM=y
+ CONFIG_SYS_I2C_TEGRA=y
+ CONFIG_E1000=y
+ CONFIG_PCI=y
+diff --git a/configs/colibri_t20_defconfig b/configs/colibri_t20_defconfig
+index e652ebc5a5..199241000c 100644
+--- a/configs/colibri_t20_defconfig
++++ b/configs/colibri_t20_defconfig
+@@ -13,7 +13,6 @@ CONFIG_ARCH_MISC_INIT=y
+ CONFIG_SPL_TEXT_BASE=0x00108000
+ CONFIG_SYS_PROMPT="Colibri T20 # "
+ # CONFIG_CMD_IMI is not set
+-CONFIG_CMD_DFU=y
+ # CONFIG_CMD_FLASH is not set
+ CONFIG_CMD_GPIO=y
+ CONFIG_CMD_I2C=y
+@@ -37,8 +36,6 @@ CONFIG_OF_LIVE=y
+ CONFIG_DEFAULT_DEVICE_TREE="tegra20-colibri"
+ CONFIG_ENV_IS_IN_NAND=y
+ CONFIG_SPL_DM=y
+-CONFIG_DFU_MMC=y
+-CONFIG_DFU_RAM=y
+ CONFIG_SYS_I2C_TEGRA=y
+ CONFIG_MTD=y
+ CONFIG_MTD_UBI_FASTMAP=y
+diff --git a/configs/colibri_t30_defconfig b/configs/colibri_t30_defconfig
+index 99be27823d..f9f337457d 100644
+--- a/configs/colibri_t30_defconfig
++++ b/configs/colibri_t30_defconfig
+@@ -14,7 +14,6 @@ CONFIG_ARCH_MISC_INIT=y
+ CONFIG_SPL_TEXT_BASE=0x80108000
+ CONFIG_SYS_PROMPT="Colibri T30 # "
+ # CONFIG_CMD_IMI is not set
+-CONFIG_CMD_DFU=y
+ # CONFIG_CMD_FLASH is not set
+ CONFIG_CMD_GPIO=y
+ CONFIG_CMD_I2C=y
+@@ -28,8 +27,6 @@ CONFIG_CMD_EXT4_WRITE=y
+ CONFIG_OF_LIVE=y
+ CONFIG_DEFAULT_DEVICE_TREE="tegra30-colibri"
+ CONFIG_SPL_DM=y
+-CONFIG_DFU_MMC=y
+-CONFIG_DFU_RAM=y
+ CONFIG_SYS_I2C_TEGRA=y
+ CONFIG_SYS_NS16550=y
+ CONFIG_USB=y
+-- 
+2.13.6
+

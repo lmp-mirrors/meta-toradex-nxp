@@ -1,7 +1,7 @@
-From 70e00d1f20c331a1da991abc7b36f0f6a20751dc Mon Sep 17 00:00:00 2001
+From 0af97bbc0f71f00f63d2ef94ec54ade62f927cba Mon Sep 17 00:00:00 2001
 From: Peng Fan <peng.fan@nxp.com>
 Date: Mon, 6 Jun 2016 13:53:43 +0800
-Subject: [PATCH 03/19] usb: limit USB_MAX_XFER_BLK to 256
+Subject: [PATCH 01/15] usb: limit USB_MAX_XFER_BLK to 256
 
 For Some USB mass storage devices, such as:
 "
@@ -63,5 +63,5 @@ index 8c889bb1a6..4e284645f5 100644
  	blk = 20;
  #endif
 -- 
-2.14.5
+2.13.6
 

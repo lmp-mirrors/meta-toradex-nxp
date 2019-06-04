@@ -1,0 +1,37 @@
+From 60ebfc3c6aa4e04c2c0418a14b83c549a2828610 Mon Sep 17 00:00:00 2001
+From: Oliver Brown <oliver.brown@nxp.com>
+Date: Wed, 13 Dec 2017 17:12:45 -0600
+Subject: [PATCH 12/15] MLK-17205-2 video: imx: hdp: Adding HDP firmware
+ loading to the build
+
+Adding the HDP firmware loading to the build.
+
+Signed-off-by: Oliver Brown <oliver.brown@nxp.com>
+(cherry picked from downstream commit d4702582552aa1921fce58329ae40c24481fba3a)
+---
+ drivers/video/Kconfig | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+index c3781b160d..a40df01500 100644
+--- a/drivers/video/Kconfig
++++ b/drivers/video/Kconfig
+@@ -549,6 +549,15 @@ config VIDEO
+ 	  model. Video drivers typically provide a colour text console and
+ 	  cursor.
+ 
++config VIDEO_IMX_HDP_LOAD
++	bool "i.MX8 HDMI/DP firmware loading"
++	default n
++	depends on IMX8
++	help
++	  Support for HDMI/DP firmware loading for i.MX8QM processors. The
++	  firmware is copied from system memory to the HDMI/DP IRAM and
++	  DRAM memory.
++
+ config CFB_CONSOLE
+ 	bool "Enable colour frame buffer console"
+ 	depends on VIDEO
+-- 
+2.13.6
+

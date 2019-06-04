@@ -1,0 +1,2560 @@
+From 94ed34cb71d660718acae960328c510f71fbf3dc Mon Sep 17 00:00:00 2001
+From: Oliver Brown <oliver.brown@nxp.com>
+Date: Wed, 13 Dec 2017 17:09:14 -0600
+Subject: [PATCH 11/15] MLK-17205-1 video: imx: hdp: Adding support for HDP
+ firmware loading
+
+This adds a command to load the HDP firmware and supporting libraries.
+
+Signed-off-by: Oliver Brown <oliver.brown@nxp.com>
+(cherry picked from downstream commit 94c9c7022c5b6cffb74bb2e34336cffc2790d0d8)
+(cherry picked from downstream commit 21edff320e763585ebc6ab2d997c994561b69292)
+---
+ drivers/video/Makefile                  |   3 +
+ drivers/video/imx/Makefile              |   1 +
+ drivers/video/imx/hdp/API_General.c     | 477 ++++++++++++++++++++++++++++++++
+ drivers/video/imx/hdp/API_General.h     | 302 ++++++++++++++++++++
+ drivers/video/imx/hdp/Makefile          |   1 +
+ drivers/video/imx/hdp/address.h         | 109 ++++++++
+ drivers/video/imx/hdp/apb_cfg.h         | 185 +++++++++++++
+ drivers/video/imx/hdp/externs.h         |  81 ++++++
+ drivers/video/imx/hdp/general_handler.h | 162 +++++++++++
+ drivers/video/imx/hdp/opcodes.h         | 115 ++++++++
+ drivers/video/imx/hdp/test_base_sw.c    | 181 ++++++++++++
+ drivers/video/imx/hdp/util.c            | 329 ++++++++++++++++++++++
+ drivers/video/imx/hdp/util.h            | 278 +++++++++++++++++++
+ drivers/video/imx/hdp_load.c            | 107 +++++++
+ drivers/video/imx/scfw_utils.h          |  90 ++++++
+ 15 files changed, 2421 insertions(+)
+ create mode 100644 drivers/video/imx/hdp/API_General.c
+ create mode 100644 drivers/video/imx/hdp/API_General.h
+ create mode 100644 drivers/video/imx/hdp/Makefile
+ create mode 100644 drivers/video/imx/hdp/address.h
+ create mode 100644 drivers/video/imx/hdp/apb_cfg.h
+ create mode 100644 drivers/video/imx/hdp/externs.h
+ create mode 100644 drivers/video/imx/hdp/general_handler.h
+ create mode 100644 drivers/video/imx/hdp/opcodes.h
+ create mode 100644 drivers/video/imx/hdp/test_base_sw.c
+ create mode 100644 drivers/video/imx/hdp/util.c
+ create mode 100644 drivers/video/imx/hdp/util.h
+ create mode 100644 drivers/video/imx/hdp_load.c
+ create mode 100644 drivers/video/imx/scfw_utils.h
+
+diff --git a/drivers/video/Makefile b/drivers/video/Makefile
+index 349a207035..fdc57c71da 100644
+--- a/drivers/video/Makefile
++++ b/drivers/video/Makefile
+@@ -65,3 +65,6 @@ obj-$(CONFIG_VIDEO_VESA) += vesa.o
+ 
+ obj-y += bridge/
+ obj-y += sunxi/
++
++UBOOTINCLUDE += -I$(srctree)/drivers/video/imx/hdp
++obj-$(CONFIG_VIDEO_IMX_HDP_LOAD) += imx/hdp_load.o imx/hdp/
+diff --git a/drivers/video/imx/Makefile b/drivers/video/imx/Makefile
+index 179ea651fe..0f9d85f917 100644
+--- a/drivers/video/imx/Makefile
++++ b/drivers/video/imx/Makefile
+@@ -4,3 +4,4 @@
+ # Wolfgang Denk, DENX Software Engineering, wd@denx.de.
+ 
+ obj-y += mxc_ipuv3_fb.o ipu_common.o ipu_disp.o
++obj-$(CONFIG_VIDEO_IMX_HDP_LOAD) += hdp_load.o hdp/
+diff --git a/drivers/video/imx/hdp/API_General.c b/drivers/video/imx/hdp/API_General.c
+new file mode 100644
+index 0000000000..83458d7fae
+--- /dev/null
++++ b/drivers/video/imx/hdp/API_General.c
+@@ -0,0 +1,477 @@
++/******************************************************************************
++ *
++ * Copyright (C) 2016-2017 Cadence Design Systems, Inc.
++ * All rights reserved worldwide.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ *
++ * 1. Redistributions of source code must retain the above copyright notice,
++ * this list of conditions and the following disclaimer.
++ *
++ * 2. Redistributions in binary form must reproduce the above copyright notice,
++ * this list of conditions and the following disclaimer in the documentation
++ * and/or other materials provided with the distribution.
++ *
++ * 3. Neither the name of the copyright holder nor the names of its contributors
++ * may be used to endorse or promote products derived from this software without
++ * specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
++ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
++ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
++ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
++ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
++ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
++ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
++ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
++ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. THE SOFTWARE IS PROVIDED "AS IS",
++ * WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
++ * TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
++ * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
++ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
++ * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ *
++ * Copyright 2017 NXP
++ *
++ ******************************************************************************
++ *
++ * API_General.c
++ *
++ ******************************************************************************
++ */
++
++#include "API_General.h"
++#include "util.h"
++#ifndef __UBOOT__
++#include <string.h>
++#endif
++#include "address.h"
++#include "apb_cfg.h"
++#include "opcodes.h"
++#include "general_handler.h"
++#include "externs.h"
++#ifndef __UBOOT__
++#include <stdio.h>
++#endif
++
++extern state_struct state;
++
++void cdn_api_init(void)
++{
++	memset(&state, 0, sizeof(state_struct));
++}
++
++CDN_API_STATUS cdn_api_loadfirmware(unsigned char *imem, int imemsize,
++				    unsigned char *dmem, int dmemsize)
++{
++	int i;
++	for (i = 0; i < imemsize; i += 4)
++		if (cdn_apb_write(ADDR_IMEM + i,
++				  (unsigned int)imem[i] << 0 |
++				  (unsigned int)imem[i + 1] << 8 |
++				  (unsigned int)imem[i + 2] << 16 |
++				  (unsigned int)imem[i + 3] << 24))
++			return CDN_ERR;
++	for (i = 0; i < dmemsize; i += 4)
++		if (cdn_apb_write(ADDR_DMEM + i,
++				  (unsigned int)dmem[i] << 0 |
++				  (unsigned int)dmem[i + 1] << 8 |
++				  (unsigned int)dmem[i + 2] << 16 |
++				  (unsigned int)dmem[i + 3] << 24))
++			return CDN_ERR;
++	return CDN_OK;
++}
++
++CDN_API_STATUS cdn_api_general_test_echo(unsigned int val,
++					 CDN_BUS_TYPE bus_type)
++{
++	CDN_API_STATUS ret;
++	if (!state.running) {
++		if (!internal_apb_available())
++			return CDN_BSY;
++		state.bus_type = bus_type;
++		state.rxenable = 1;
++		internal_tx_mkfullmsg(MB_MODULE_ID_GENERAL, GENERAL_TEST_ECHO,
++				      1, 4, val);
++		return CDN_STARTED;
++	}
++	if (state.txenable && !internal_mbox_tx_process().txend)
++		return CDN_BSY;
++	if (state.rxenable && !internal_mbox_rx_process().rxend)
++		return CDN_BSY;
++	ret = internal_test_rx_head(MB_MODULE_ID_GENERAL, GENERAL_TEST_ECHO);
++	if (ret != CDN_OK) {
++		state.running = 0;
++		return ret;
++	}
++	state.running = 0;
++	if (val != internal_betoi(state.rxbuffer + INTERNAL_CMD_HEAD_SIZE, 4))
++		return CDN_ERR;
++	return CDN_OK;
++}
++
++CDN_API_STATUS cdn_api_general_test_echo_blocking(unsigned int val,
++						  CDN_BUS_TYPE bus_type)
++{
++	internal_block_function(cdn_api_general_test_echo(val, bus_type));
++}
++
++CDN_API_STATUS cdn_api_general_test_echo_ext(uint8_t const *msg, uint8_t *resp,
++					     uint16_t num_bytes,
++					     CDN_BUS_TYPE bus_type)
++{
++	CDN_API_STATUS ret;
++
++	if (!msg || !resp)
++		return CDN_ERR;
++
++	if ((num_bytes > GENERAL_TEST_ECHO_MAX_PAYLOAD) ||
++	    (num_bytes < GENERAL_TEST_ECHO_MIN_PAYLOAD))
++		return CDN_ERR;
++
++	if (!state.running) {
++		if (!internal_apb_available())
++			return CDN_BSY;
++
++		state.bus_type = bus_type;
++		state.rxenable = 1;
++
++		internal_tx_mkfullmsg(MB_MODULE_ID_GENERAL, GENERAL_TEST_ECHO,
++				      1, -num_bytes, msg);
++
++		return CDN_STARTED;
++	}
++
++	if (state.txenable && !internal_mbox_tx_process().txend)
++		return CDN_BSY;
++
++	if (state.rxenable && !internal_mbox_rx_process().rxend)
++		return CDN_BSY;
++
++	ret = internal_test_rx_head(MB_MODULE_ID_GENERAL, GENERAL_TEST_ECHO);
++
++	if (ret != CDN_OK) {
++		state.running = 0;
++		return ret;
++	}
++
++	state.running = 0;
++
++	memcpy(resp, state.rxbuffer + INTERNAL_CMD_HEAD_SIZE, num_bytes);
++
++	if (memcmp(msg, resp, num_bytes) != 0)
++		return CDN_ERR;
++
++	return CDN_OK;
++}
++
++CDN_API_STATUS cdn_api_general_test_echo_ext_blocking(uint8_t const *msg,
++						      uint8_t *resp,
++						      uint16_t num_bytes,
++						      CDN_BUS_TYPE bus_type)
++{
++	internal_block_function(cdn_api_general_test_echo_ext
++				(msg, resp, num_bytes, bus_type)
++	    );
++}
++
++CDN_API_STATUS cdn_api_general_getcurversion(unsigned short *ver,
++					     unsigned short *verlib)
++{
++	unsigned int vh, vl, vlh, vll;
++	if (cdn_apb_read(VER_L << 2, &vl))
++		return CDN_ERR;
++	if (cdn_apb_read(VER_H << 2, &vh))
++		return CDN_ERR;
++	if (cdn_apb_read(VER_LIB_L_ADDR << 2, &vll))
++		return CDN_ERR;
++	if (cdn_apb_read(VER_LIB_H_ADDR << 2, &vlh))
++		return CDN_ERR;
++	*ver = F_VER_MSB_RD(vh) << 8 | F_VER_LSB_RD(vl);
++	*verlib = F_SW_LIB_VER_H_RD(vlh) << 8 | F_SW_LIB_VER_L_RD(vll);
++	return CDN_OK;
++}
++
++CDN_API_STATUS cdn_api_get_event(uint32_t *events)
++{
++	uint32_t evt[4] = { 0 };
++
++	if (!events) {
++		printf("events pointer is NULL!\n");
++		return CDN_ERR;
++	}
++
++	if (cdn_apb_read(SW_EVENTS0 << 2, &evt[0]) ||
++	    cdn_apb_read(SW_EVENTS1 << 2, &evt[1]) ||
++	    cdn_apb_read(SW_EVENTS2 << 2, &evt[2]) ||
++	    cdn_apb_read(SW_EVENTS3 << 2, &evt[3])) {
++		printf("Failed to read events registers.\n");
++		return CDN_ERR;
++	}
++
++	*events = (evt[0] & 0xFF)
++	    | ((evt[1] & 0xFF) << 8)
++	    | ((evt[2] & 0xFF) << 16)
++	    | ((evt[3] & 0xFF) << 24);
++
++	return CDN_OK;
++}
++
++CDN_API_STATUS cdn_api_get_debug_reg_val(uint16_t *val)
++{
++	uint32_t dbg[2] = { 0 };
++
++	if (!val) {
++		printf("val pointer is NULL!\n");
++		return CDN_ERR;
++	}
++
++	if (cdn_apb_read(SW_DEBUG_L << 2, &dbg[0]) ||
++	    cdn_apb_read(SW_DEBUG_H << 2, &dbg[1])) {
++		printf("Failed to read debug registers.\n");
++		return CDN_ERR;
++	}
++
++	*val = (uint16_t) ((dbg[0] & 0xFF) | ((dbg[1] & 0xFF) << 8));
++
++	return CDN_OK;
++}
++
++CDN_API_STATUS cdn_api_checkalive(void)
++{
++	static unsigned int alive;
++	unsigned int newalive;
++	if (cdn_apb_read(KEEP_ALIVE << 2, &newalive))
++		return CDN_ERR;
++	if (alive == newalive)
++		return CDN_BSY;
++	alive = newalive;
++	return CDN_OK;
++}
++
++CDN_API_STATUS cdn_api_checkalive_blocking(void)
++{
++	internal_block_function(cdn_api_checkalive());
++}
++
++CDN_API_STATUS cdn_api_maincontrol(unsigned char mode, unsigned char *resp)
++{
++	if (!state.running) {
++		if (!internal_apb_available())
++			return CDN_BSY;
++		state.bus_type = CDN_BUS_TYPE_APB;
++		state.rxenable = 1;
++		internal_tx_mkfullmsg(MB_MODULE_ID_GENERAL,
++				      GENERAL_MAIN_CONTROL, 1, 1, mode);
++		return CDN_STARTED;
++	}
++	INTERNAL_PROCESS_MESSAGES;
++	internal_opcode_ok_or_return(MB_MODULE_ID_GENERAL,
++				     GENERAL_MAIN_CONTROL_RESP);
++	internal_readmsg(1, 1, resp);
++	return CDN_OK;
++}
++
++CDN_API_STATUS cdn_api_maincontrol_blocking(unsigned char mode,
++					    unsigned char *resp)
++{
++	internal_block_function(cdn_api_maincontrol(mode, resp));
++}
++
++CDN_API_STATUS cdn_api_apbconf(uint8_t dpcd_bus_sel, uint8_t dpcd_bus_lock,
++			       uint8_t hdcp_bus_sel, uint8_t hdcp_bus_lock,
++			       uint8_t capb_bus_sel, uint8_t capb_bus_lock,
++			       uint8_t *dpcd_resp, uint8_t *hdcp_resp,
++			       uint8_t *capb_resp)
++{
++	uint8_t resp;
++	uint8_t set = 0;
++
++	if (!state.running) {
++		if (!internal_apb_available())
++			return CDN_BSY;
++
++		state.bus_type = CDN_BUS_TYPE_APB;
++		state.rxenable = 1;
++
++		set |= (dpcd_bus_sel)
++		    ? (1 << GENERAL_BUS_SETTINGS_DPCD_BUS_BIT)
++		    : 0;
++		set |= (dpcd_bus_lock)
++		    ? (1 << GENERAL_BUS_SETTINGS_DPCD_BUS_LOCK_BIT)
++		    : 0;
++		set |= (hdcp_bus_sel)
++		    ? (1 << GENERAL_BUS_SETTINGS_HDCP_BUS_BIT)
++		    : 0;
++		set |= (hdcp_bus_lock)
++		    ? (1 << GENERAL_BUS_SETTINGS_HDCP_BUS_LOCK_BIT)
++		    : 0;
++		set |= (capb_bus_sel)
++		    ? (1 << GENERAL_BUS_SETTINGS_CAPB_OWNER_BIT)
++		    : 0;
++		set |= (capb_bus_lock)
++		    ? (1 << GENERAL_BUS_SETTINGS_CAPB_OWNER_LOCK_BIT)
++		    : 0;
++
++		internal_tx_mkfullmsg(MB_MODULE_ID_GENERAL,
++				      GENERAL_BUS_SETTINGS, 1, 1, set);
++
++		return CDN_STARTED;
++	}
++
++	INTERNAL_PROCESS_MESSAGES;
++	internal_opcode_ok_or_return(MB_MODULE_ID_GENERAL,
++				     GENERAL_BUS_SETTINGS_RESP);
++
++	/* Read one one-byte response */
++	internal_readmsg(1, 1, &resp);
++
++	*dpcd_resp =
++	    (resp & (1 << GENERAL_BUS_SETTINGS_RESP_DPCD_BUS_BIT)) ? 1 : 0;
++	*hdcp_resp =
++	    (resp & (1 << GENERAL_BUS_SETTINGS_RESP_HDCP_BUS_BIT)) ? 1 : 0;
++	*capb_resp =
++	    (resp & (1 << GENERAL_BUS_SETTINGS_RESP_CAPB_OWNER_BIT)) ? 1 : 0;
++
++	return CDN_OK;
++}
++
++CDN_API_STATUS cdn_api_apbconf_blocking(uint8_t dpcd_bus_sel,
++					uint8_t dpcd_bus_lock,
++					uint8_t hdcp_bus_sel,
++					uint8_t hdcp_bus_lock,
++					uint8_t capb_bus_sel,
++					uint8_t capb_bus_lock,
++					uint8_t *dpcd_resp,
++					uint8_t *hdcp_resp,
++					uint8_t *capb_resp)
++{
++	internal_block_function(cdn_api_apbconf(dpcd_bus_sel, dpcd_bus_lock,
++						hdcp_bus_sel, hdcp_bus_lock,
++						capb_bus_sel, capb_bus_lock,
++						dpcd_resp, hdcp_resp,
++						capb_resp));
++}
++
++CDN_API_STATUS cdn_api_setclock(unsigned char mhz)
++{
++	return cdn_apb_write(SW_CLK_H << 2, mhz);
++}
++
++CDN_API_STATUS cdn_api_general_read_register(unsigned int addr,
++					     GENERAL_READ_REGISTER_RESPONSE
++					     *resp)
++{
++	CDN_API_STATUS ret;
++	if (!state.running) {
++		if (!internal_apb_available())
++			return CDN_BSY;
++		internal_tx_mkfullmsg(MB_MODULE_ID_GENERAL,
++				      GENERAL_READ_REGISTER, 1, 4, addr);
++		state.bus_type = CDN_BUS_TYPE_APB;
++		state.rxenable = 1;
++		return CDN_STARTED;
++	}
++	INTERNAL_PROCESS_MESSAGES;
++	ret = internal_test_rx_head(MB_MODULE_ID_GENERAL,
++				    GENERAL_READ_REGISTER_RESP);
++	if (ret != CDN_OK)
++		return ret;
++	internal_readmsg(2, 4, &resp->addr, 4, &resp->val);
++	return CDN_OK;
++}
++
++CDN_API_STATUS
++cdn_api_general_read_register_blocking(unsigned int addr,
++				       GENERAL_READ_REGISTER_RESPONSE *resp)
++{
++	internal_block_function(cdn_api_general_read_register(addr, resp));
++}
++
++CDN_API_STATUS cdn_api_general_write_register(unsigned int addr,
++					      unsigned int val)
++{
++	if (!state.running) {
++		if (!internal_apb_available())
++			return CDN_BSY;
++		internal_tx_mkfullmsg(MB_MODULE_ID_GENERAL,
++				      GENERAL_WRITE_REGISTER, 2, 4, addr, 4,
++				      val);
++		state.bus_type = CDN_BUS_TYPE_APB;
++		return CDN_STARTED;
++	}
++	INTERNAL_PROCESS_MESSAGES;
++	return CDN_OK;
++}
++
++CDN_API_STATUS cdn_api_general_write_register_blocking(unsigned int addr,
++						       unsigned int val)
++{
++	internal_block_function(cdn_api_general_write_register(addr, val));
++}
++
++CDN_API_STATUS cdn_api_general_write_field(unsigned int addr,
++					   unsigned char startbit,
++					   unsigned char bitsno,
++					   unsigned int val)
++{
++	if (!state.running) {
++		if (!internal_apb_available())
++			return CDN_BSY;
++		internal_tx_mkfullmsg(MB_MODULE_ID_GENERAL, GENERAL_WRITE_FIELD,
++				      4, 4, addr, 1, startbit, 1, bitsno, 4,
++				      val);
++		state.bus_type = CDN_BUS_TYPE_APB;
++		return CDN_STARTED;
++	}
++	INTERNAL_PROCESS_MESSAGES;
++	return CDN_OK;
++}
++
++CDN_API_STATUS cdn_api_general_write_field_blocking(unsigned int addr,
++						    unsigned char startbit,
++						    unsigned char bitsno,
++						    unsigned int val)
++{
++	internal_block_function(cdn_api_general_write_field
++				(addr, startbit, bitsno, val));
++}
++
++CDN_API_STATUS cdn_api_general_phy_test_access(uint8_t *resp)
++{
++	CDN_API_STATUS ret;
++
++	*resp = 0;
++
++	if (!state.running) {
++		if (!internal_apb_available())
++			return CDN_BSY;
++
++		internal_tx_mkfullmsg(MB_MODULE_ID_GENERAL, GENERAL_TEST_ACCESS,
++				      0);
++		state.bus_type = CDN_BUS_TYPE_APB;
++		state.rxenable = 1;
++
++		return CDN_STARTED;
++	}
++
++	INTERNAL_PROCESS_MESSAGES;
++
++	ret = internal_test_rx_head(MB_MODULE_ID_GENERAL, GENERAL_TEST_ACCESS);
++
++	if (ret != CDN_OK)
++		return ret;
++
++	internal_readmsg(1, 1, resp);
++
++	return CDN_OK;
++}
++
++CDN_API_STATUS cdn_api_general_phy_test_access_blocking(uint8_t *resp)
++{
++	internal_block_function(cdn_api_general_phy_test_access(resp));
++}
+diff --git a/drivers/video/imx/hdp/API_General.h b/drivers/video/imx/hdp/API_General.h
+new file mode 100644
+index 0000000000..44e16e8ad7
+--- /dev/null
++++ b/drivers/video/imx/hdp/API_General.h
+@@ -0,0 +1,302 @@
++/******************************************************************************
++ *
++ * Copyright (C) 2016-2017 Cadence Design Systems, Inc.
++ * All rights reserved worldwide.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ *
++ * 1. Redistributions of source code must retain the above copyright notice,
++ * this list of conditions and the following disclaimer.
++ *
++ * 2. Redistributions in binary form must reproduce the above copyright notice,
++ * this list of conditions and the following disclaimer in the documentation
++ * and/or other materials provided with the distribution.
++ *
++ * 3. Neither the name of the copyright holder nor the names of its contributors
++ * may be used to endorse or promote products derived from this software without
++ * specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
++ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
++ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
++ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
++ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
++ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
++ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
++ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
++ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. THE SOFTWARE IS PROVIDED "AS IS",
++ * WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
++ * TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
++ * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
++ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
++ * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ *
++ * Copyright 2017 NXP
++ *
++ ******************************************************************************
++ *
++ * API_General.h
++ *
++ ******************************************************************************
++ */
++
++#ifndef API_GENERAL_H_
++#define API_GENERAL_H_
++
++#ifndef __UBOOT__
++#include <stdint.h>
++#else
++#include <common.h>
++#endif
++
++#define GENERAL_TEST_ECHO_MAX_PAYLOAD 100
++#define GENERAL_TEST_ECHO_MIN_PAYLOAD 1
++
++/**
++ * \addtogroup GENERAL_API
++ * \{
++ */
++/** status code returned by API calls */
++typedef enum {
++    /** operation succedded */
++	CDN_OK = 0,
++    /** CEC operation succedded */
++	CDN_CEC_ERR_NONE = 0,
++    /** mailbox is currently sending or receiving data */
++	CDN_BSY,
++    /** message set up and ready to be sent, no data sent yet */
++	CDN_STARTED,
++    /** error encountered while reading/writing APB */
++	CDN_ERR,
++    /** reply returned with bad opcode */
++	CDN_BAD_OPCODE,
++    /** reply returned with bad module */
++	CDN_BAD_MODULE,
++    /** reply not supported mode */
++	CDN_ERROR_NOT_SUPPORTED,
++    /** Invalid argument passed to CEC API function */
++	CDN_CEC_ERR_INVALID_ARG,
++    /**
++     * TX Buffer for CEC Messages is full. This is applicable only
++     * when TX Buffers for CEC Messages are implemented in the HW.
++     */
++	CDN_CEC_ERR_TX_BUFF_FULL,
++    /** No Messages in the RX Buffers are present. */
++	CDN_CEC_ERR_RX_BUFF_EMPTY,
++    /** Timeout during TX operation */
++	CDN_CEC_ERR_TX_TIMEOUT,
++    /** Timeout during RX operation */
++	CDN_CEC_ERR_RX_TIMEOUT,
++    /** Data transmision fail. */
++	CDN_CEC_ERR_TX_FAILED,
++    /** Data reception fail. */
++	CDN_CEC_ERR_RX_FAILED,
++    /** Operation aborted. */
++	CDN_CEC_ERR_ABORT,
++    /** All Logical Addresses are in use. */
++	CDN_CEC_ERR_ALL_LA_IN_USE,
++} CDN_API_STATUS;
++
++typedef enum {
++	CDN_BUS_TYPE_APB = 0,
++	CDN_BUS_TYPE_SAPB = 1
++} CDN_BUS_TYPE;
++
++/**
++ * GENERAL_Read_Register response struct
++ */
++typedef struct {
++	unsigned int addr;
++	unsigned int val;
++} GENERAL_READ_REGISTER_RESPONSE;
++
++/**
++ * \brief set up API, must be called before any other API call
++ */
++void cdn_api_init(void);
++
++/**
++ * \brief Loads firmware
++ *
++ * \param iMem - pointer to instruction memory
++ * \param imemSize - size of instruction memory buffer
++ * \param dMem - pointer to data memory
++ * \param dmemSize - size of data memory buffer
++ * \return 0 if success, 1 if apb error encountered, 2 if CPU
++ *         isn't alive after loading firmware
++ *
++ * This function does not require initialisation by #CDN_API_Init
++ */
++
++CDN_API_STATUS cdn_api_loadfirmware(unsigned char *imem,
++				    int imemsize,
++				    unsigned char *dmem, int dmemsize);
++/**
++ * \brief debug echo command for APB
++ * \param val - value to echo
++ * \return status
++ *
++ * will return #CDN_ERROR if reply message doesn't match request
++ */
++CDN_API_STATUS cdn_api_general_test_echo(unsigned int val,
++					 CDN_BUS_TYPE bus_type);
++
++/**
++ * \brief blocking version of #CDN_API_General_Test_Echo
++ */
++CDN_API_STATUS cdn_api_general_test_echo_blocking(unsigned int val,
++						  CDN_BUS_TYPE bus_type);
++
++/**
++ * \brief Extended Echo test for mailbox.
++ *
++ * This test will send msg buffer to firmware's mailbox and
++ * receive it back to the resp buffer. Received data will be
++ * check against data sent and status will be returned as well
++ * as received data.
++ *
++ * \param msg - Pointer to a buffer to send.
++ * \param resp - Pointer to buffer for receiving msg payload back.
++ * \param num_bytes - Number of bytes to send and receive.
++ * \param bus_type Bus type.
++ * \return status
++ *
++ * will return #CDN_ERROR if reply message doesn't match request or if
++ *  arguments are invalid.
++ */
++CDN_API_STATUS cdn_api_general_test_echo_ext(uint8_t const *msg, uint8_t *resp,
++					     uint16_t num_bytes,
++					     CDN_BUS_TYPE bus_type);
++
++/**
++ * \brief blocking version of #CDN_API_General_Test_Echo_Ext
++ */
++CDN_API_STATUS cdn_api_general_test_echo_ext_blocking(uint8_t const *msg,
++						      uint8_t *resp,
++						      uint16_t num_bytes,
++						      CDN_BUS_TYPE bus_type);
++
++/**
++ * \brief get current version
++ * \param [out] ver - fw version
++ * \param [out] libver - lib version
++ * \return status
++ *
++ * this fucntion does not require #CDN_API_Init
++ */
++CDN_API_STATUS cdn_api_general_getcurversion(unsigned short *ver,
++					     unsigned short *verlib);
++
++/**
++ * \brief read event value
++ * \param [out] event - pointer to store 32-bit events value
++ * \return status
++ *
++ * this function does not require #CDN_API_Init
++ */
++CDN_API_STATUS cdn_api_get_event(uint32_t *events);
++
++/**
++ * \brief read debug register value
++ * \param [out] val - pointer to store 16-bit debug reg value
++ * \return status
++ *
++ * this function does not require #CDN_API_Init
++ */
++CDN_API_STATUS cdn_api_get_debug_reg_val(uint16_t *val);
++
++/**
++ * \brief check if KEEP_ALIVE register changed
++ * \return #CDN_BSY if KEEP_ALIVE not changed, #CDN_OK if changed and #CDN_ERR
++ * if error occured while reading
++ */
++CDN_API_STATUS cdn_api_checkalive(void);
++
++/**
++ * \breif blocking version of #CDN_API_CheckAlive
++ * blocks untill KEEP_ALIVE register changes or error occurs while reading
++ */
++CDN_API_STATUS cdn_api_checkalive_blocking(void);
++
++/**
++ * \brief set cpu to standby or active
++ * \param [in] state - 1 for active, 0 for standby
++ * \return status
++ */
++CDN_API_STATUS cdn_api_maincontrol(unsigned char mode, unsigned char *resp);
++
++/**
++ * \breif blocking version of #CDN_API_MainControl
++ */
++CDN_API_STATUS cdn_api_maincontrol_blocking(unsigned char mode,
++					    unsigned char *resp);
++
++/**
++ * \brief settings for APB
++ *
++ * Sends GENERAL_APB_CONF Command via regular Mailbox.
++ * @param dpcd_bus_sel Set DPCD to use selected bus (0 for APB or 1 for SAPB)
++ * @param dpcd_bus_lock Lock bus type. Aftern that bus type cannot be changed
++ * by using this function.
++ * @param hdcp_bus_sel Same meaning as for DPCD but for HDCP.
++ * @param hdcp_bus_lock Same meaning as for DPCD but for HDCP.
++ * @param capb_bus_sel Same meaning as for DPCD but for Cipher APB.
++ * @param capb_bus_lock Same meaning as for DPCD but for Cipher APB.
++ * @param dpcd_resp [out] Status of the operation.
++ * If set to zero then DPCD bus type was successfuly changed.
++ * If not then error occurred, most likely due to locked DPCD bus.
++ * @param hdcp_resp [out] Same as for DPCD but for HDCP.
++ * @param capb_resp [out] Same as for DPCD but for Cipher APB.
++ *
++ * \return status
++ */
++CDN_API_STATUS cdn_api_apbconf(uint8_t dpcd_bus_sel, uint8_t dpcd_bus_lock,
++			       uint8_t hdcp_bus_sel, uint8_t hdcp_bus_lock,
++			       uint8_t capb_bus_sel, uint8_t capb_bus_lock,
++			       uint8_t *dpcd_resp, uint8_t *hdcp_resp,
++			       uint8_t *capb_resp);
++
++/**
++ * blocking version of #CDN_API_MainControl
++ */
++CDN_API_STATUS cdn_api_apbconf_blocking(uint8_t dpcd_bus_sel,
++					uint8_t dpcd_bus_lock,
++					uint8_t hdcp_bus_sel,
++					uint8_t hdcp_bus_lock,
++					uint8_t capb_bus_sel,
++					uint8_t capb_bus_lock,
++					uint8_t *dpcd_resp,
++					uint8_t *hdcp_resp,
++					uint8_t *capb_resp);
++
++/**
++ * \brief set the  xtensa clk, write this api before turn on the cpu
++ */
++CDN_API_STATUS cdn_api_setclock(unsigned char mhz);
++
++CDN_API_STATUS cdn_api_general_read_register(unsigned int addr,
++					     GENERAL_READ_REGISTER_RESPONSE
++					     *resp);
++CDN_API_STATUS
++cdn_api_general_read_register_blocking(unsigned int addr,
++				       GENERAL_READ_REGISTER_RESPONSE *resp);
++CDN_API_STATUS cdn_api_general_write_register(unsigned int addr,
++					      unsigned int val);
++CDN_API_STATUS cdn_api_general_write_register_blocking(unsigned int addr,
++						       unsigned int val);
++CDN_API_STATUS cdn_api_general_write_field(unsigned int addr,
++					   unsigned char startbit,
++					   unsigned char bitsno,
++					   unsigned int val);
++CDN_API_STATUS cdn_api_general_write_field_blocking(unsigned int addr,
++						    unsigned char startbit,
++						    unsigned char bitsno,
++						    unsigned int val);
++CDN_API_STATUS cdn_api_general_phy_test_access(uint8_t *resp);
++CDN_API_STATUS cdn_api_general_phy_test_access_blocking(uint8_t *resp);
++
++#endif
+diff --git a/drivers/video/imx/hdp/Makefile b/drivers/video/imx/hdp/Makefile
+new file mode 100644
+index 0000000000..13dcefdee5
+--- /dev/null
++++ b/drivers/video/imx/hdp/Makefile
+@@ -0,0 +1 @@
++obj-y += API_General.o util.o test_base_sw.o
+diff --git a/drivers/video/imx/hdp/address.h b/drivers/video/imx/hdp/address.h
+new file mode 100644
+index 0000000000..327e7a90e4
+--- /dev/null
++++ b/drivers/video/imx/hdp/address.h
+@@ -0,0 +1,109 @@
++/******************************************************************************
++ *
++ * Copyright (C) 2016-2017 Cadence Design Systems, Inc.
++ * All rights reserved worldwide.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ *
++ * 1. Redistributions of source code must retain the above copyright notice,
++ * this list of conditions and the following disclaimer.
++ *
++ * 2. Redistributions in binary form must reproduce the above copyright notice,
++ * this list of conditions and the following disclaimer in the documentation
++ * and/or other materials provided with the distribution.
++ *
++ * 3. Neither the name of the copyright holder nor the names of its contributors
++ * may be used to endorse or promote products derived from this software without
++ * specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
++ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
++ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
++ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
++ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
++ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
++ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
++ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
++ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. THE SOFTWARE IS PROVIDED "AS IS",
++ * WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
++ * TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
++ * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
++ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
++ * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ *
++ * Copyright 2017 NXP
++ *
++ ******************************************************************************
++ *
++ * address.h
++ *
++ ******************************************************************************
++ */
++
++#ifndef ADDRESS_H_
++# define ADDRESS_H_
++
++# define ADDR_IMEM 0x10000
++# define ADDR_DMEM 0x20000
++# define ADDR_CIPHER 0x60000
++# define BASE_CIPHER 0x600
++# define ADDR_APB_CFG 0x00000
++# define BASE_APB_CFG 0x000
++# define ADDR_SOURCE_AIF_DECODER 0x30000
++# define BASE_SOURCE_AIF_DECODER 0x300
++# define ADDR_SOURCE_AIF_SMPL2PCKT 0x30080
++# define BASE_SOURCE_AIF_SMPL2PCKT 0x300
++# define ADDR_AIF_ENCODER 0x30000
++# define BASE_AIF_ENCODER 0x300
++# define ADDR_SOURCE_PIF 0x30800
++# define BASE_SOURCE_PIF 0x308
++# define ADDR_SINK_PIF 0x30800
++# define BASE_SINK_PIF 0x308
++# define ADDR_APB_CFG 0x00000
++# define BASE_APB_CFG 0x000
++# define ADDR_SOURCE_CSC 0x40000
++# define BASE_SOURCE_CSC 0x400
++# define ADDR_UCPU_CFG 0x00000
++# define BASE_UCPU_CFG 0x000
++# define ADDR_SOURCE_CAR 0x00900
++# define BASE_SOURCE_CAR 0x009
++# define ADDR_SINK_CAR 0x00900
++# define BASE_SINK_CAR 0x009
++# define ADDR_CLOCK_METERS 0x00A00
++# define BASE_CLOCK_METERS 0x00A
++# define ADDR_SOURCE_VIF 0x00b00
++# define BASE_SOURCE_VIF 0x00b
++# define ADDR_SINK_MHL_HD 0x01000
++# define ADDR_SINK_VIDEO_HD 0x01800
++# define BASE_SINK_MHL_HD 0x010
++# define ADDR_SINK_CORE 0x07800
++# define BASE_SINK_CORE 0x078
++# define ADDR_DPTX_PHY 0x02000
++# define BASE_DPTX_PHY 0x020
++# define ADDR_DPTX_HPD 0x02100
++# define BASE_DPTX_HPD 0x021
++# define ADDR_DPTX_FRAMER 0x02200
++# define BASE_DPTX_FRAMER 0x022
++# define ADDR_DPTX_STREAM 0x02200
++# define BASE_DPTX_STREAM 0x022
++# define ADDR_DPTX_GLBL 0x02300
++# define BASE_DPTX_GLBL 0x023
++# define ADDR_DPTX_HDCP 0x02400
++# define BASE_DPTX_HDCP 0x024
++# define ADDR_DP_AUX 0x02800
++# define BASE_DP_AUX 0x028
++# define ADDR_CRYPTO 0x05800
++# define BASE_CRYPTO 0x058
++# define ADDR_CIPHER 0x60000
++# define BASE_CIPHER 0x600
++# define ADDR_SOURCE_MHL_HD 0x01000
++
++# define ADDR_AFE  (0x20000 * 4)
++# define ADDR_SOURCD_PHY  (0x800)
++
++#endif
++
+diff --git a/drivers/video/imx/hdp/apb_cfg.h b/drivers/video/imx/hdp/apb_cfg.h
+new file mode 100644
+index 0000000000..cdcbd76c01
+--- /dev/null
++++ b/drivers/video/imx/hdp/apb_cfg.h
+@@ -0,0 +1,185 @@
++/******************************************************************************
++ *
++ * Copyright (C) 2016-2017 Cadence Design Systems, Inc.
++ * All rights reserved worldwide.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ *
++ * 1. Redistributions of source code must retain the above copyright notice,
++ * this list of conditions and the following disclaimer.
++ *
++ * 2. Redistributions in binary form must reproduce the above copyright notice,
++ * this list of conditions and the following disclaimer in the documentation
++ * and/or other materials provided with the distribution.
++ *
++ * 3. Neither the name of the copyright holder nor the names of its contributors
++ * may be used to endorse or promote products derived from this software without
++ * specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
++ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
++ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
++ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
++ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
++ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
++ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
++ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
++ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. THE SOFTWARE IS PROVIDED "AS IS",
++ * WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
++ * TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
++ * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
++ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
++ * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ *
++ * Copyright 2017 NXP
++ *
++ ******************************************************************************
++ *
++ * This file was auto-generated. Do not edit it manually.
++ *
++ ******************************************************************************
++ *
++ * apb_cfg.h
++ *
++ ******************************************************************************
++ */
++
++#ifndef APB_CFG_H_
++#define APB_CFG_H_
++
++/* register APB_CTRL */
++#define APB_CTRL 0
++#define F_APB_XT_RESET(x) (((x) & ((1 << 1) - 1)) << 0)
++#define F_APB_XT_RESET_RD(x) (((x) & (((1 << 1) - 1) << 0)) >> 0)
++#define F_APB_DRAM_PATH(x) (((x) & ((1 << 1) - 1)) << 1)
++#define F_APB_DRAM_PATH_RD(x) (((x) & (((1 << 1) - 1) << 1)) >> 1)
++#define F_APB_IRAM_PATH(x) (((x) & ((1 << 1) - 1)) << 2)
++#define F_APB_IRAM_PATH_RD(x) (((x) & (((1 << 1) - 1) << 2)) >> 2)
++
++/* register XT_INT_CTRL */
++#define XT_INT_CTRL 1
++#define F_XT_INT_POLARITY(x) (((x) & ((1 << 2) - 1)) << 0)
++#define F_XT_INT_POLARITY_RD(x) (((x) & (((1 << 2) - 1) << 0)) >> 0)
++
++/* register MAILBOX_FULL_ADDR */
++#define MAILBOX_FULL_ADDR 2
++#define F_MAILBOX_FULL(x) (((x) & ((1 << 1) - 1)) << 0)
++#define F_MAILBOX_FULL_RD(x) (((x) & (((1 << 1) - 1) << 0)) >> 0)
++
++/* register MAILBOX_EMPTY_ADDR */
++#define MAILBOX_EMPTY_ADDR 3
++#define F_MAILBOX_EMPTY(x) (((x) & ((1 << 1) - 1)) << 0)
++#define F_MAILBOX_EMPTY_RD(x) (((x) & (((1 << 1) - 1) << 0)) >> 0)
++
++/* register MAILBOX0_WR_DATA */
++#define MAILBOX0_WR_DATA 4
++#define F_MAILBOX0_WR_DATA(x) (((x) & ((1 << 8) - 1)) << 0)
++#define F_MAILBOX0_WR_DATA_RD(x) (((x) & (((1 << 8) - 1) << 0)) >> 0)
++
++/* register MAILBOX0_RD_DATA */
++#define MAILBOX0_RD_DATA 5
++#define F_MAILBOX0_RD_DATA(x) (((x) & ((1 << 8) - 1)) << 0)
++#define F_MAILBOX0_RD_DATA_RD(x) (((x) & (((1 << 8) - 1) << 0)) >> 0)
++
++/* register KEEP_ALIVE */
++#define KEEP_ALIVE 6
++#define F_KEEP_ALIVE_CNT(x) (((x) & ((1 << 8) - 1)) << 0)
++#define F_KEEP_ALIVE_CNT_RD(x) (((x) & (((1 << 8) - 1) << 0)) >> 0)
++
++/* register VER_L */
++#define VER_L 7
++#define F_VER_LSB(x) (((x) & ((1 << 8) - 1)) << 0)
++#define F_VER_LSB_RD(x) (((x) & (((1 << 8) - 1) << 0)) >> 0)
++
++/* register VER_H */
++#define VER_H 8
++#define F_VER_MSB(x) (((x) & ((1 << 8) - 1)) << 0)
++#define F_VER_MSB_RD(x) (((x) & (((1 << 8) - 1) << 0)) >> 0)
++
++/* register VER_LIB_L_ADDR */
++#define VER_LIB_L_ADDR 9
++#define F_SW_LIB_VER_L(x) (((x) & ((1 << 8) - 1)) << 0)
++#define F_SW_LIB_VER_L_RD(x) (((x) & (((1 << 8) - 1) << 0)) >> 0)
++
++/* register VER_LIB_H_ADDR */
++#define VER_LIB_H_ADDR 10
++#define F_SW_LIB_VER_H(x) (((x) & ((1 << 8) - 1)) << 0)
++#define F_SW_LIB_VER_H_RD(x) (((x) & (((1 << 8) - 1) << 0)) >> 0)
++
++/* register SW_DEBUG_L */
++#define SW_DEBUG_L 11
++#define F_SW_DEBUG_7_0(x) (((x) & ((1 << 8) - 1)) << 0)
++#define F_SW_DEBUG_7_0_RD(x) (((x) & (((1 << 8) - 1) << 0)) >> 0)
++
++/* register SW_DEBUG_H */
++#define SW_DEBUG_H 12
++#define F_SW_DEBUG_15_8(x) (((x) & ((1 << 8) - 1)) << 0)
++#define F_SW_DEBUG_15_8_RD(x) (((x) & (((1 << 8) - 1) << 0)) >> 0)
++
++/* register MAILBOX_INT_MASK */
++#define MAILBOX_INT_MASK 13
++#define F_MAILBOX_INT_MASK(x) (((x) & ((1 << 2) - 1)) << 0)
++#define F_MAILBOX_INT_MASK_RD(x) (((x) & (((1 << 2) - 1) << 0)) >> 0)
++
++/* register MAILBOX_INT_STATUS */
++#define MAILBOX_INT_STATUS 14
++#define F_MAILBOX_INT_STATUS(x) (((x) & ((1 << 2) - 1)) << 0)
++#define F_MAILBOX_INT_STATUS_RD(x) (((x) & (((1 << 2) - 1) << 0)) >> 0)
++
++/* register SW_CLK_L */
++#define SW_CLK_L 15
++#define F_SW_CLOCK_VAL_L(x) (((x) & ((1 << 8) - 1)) << 0)
++#define F_SW_CLOCK_VAL_L_RD(x) (((x) & (((1 << 8) - 1) << 0)) >> 0)
++
++/* register SW_CLK_H */
++#define SW_CLK_H 16
++#define F_SW_CLOCK_VAL_H(x) (((x) & ((1 << 8) - 1)) << 0)
++#define F_SW_CLOCK_VAL_H_RD(x) (((x) & (((1 << 8) - 1) << 0)) >> 0)
++
++/* register SW_EVENTS0 */
++#define SW_EVENTS0 17
++#define F_SW_EVENTS7_0(x) (((x) & ((1 << 8) - 1)) << 0)
++#define F_SW_EVENTS7_0_RD(x) (((x) & (((1 << 8) - 1) << 0)) >> 0)
++
++/* register SW_EVENTS1 */
++#define SW_EVENTS1 18
++#define F_SW_EVENTS15_8(x) (((x) & ((1 << 8) - 1)) << 0)
++#define F_SW_EVENTS15_8_RD(x) (((x) & (((1 << 8) - 1) << 0)) >> 0)
++
++/* register SW_EVENTS2 */
++#define SW_EVENTS2 19
++#define F_SW_EVENTS23_16(x) (((x) & ((1 << 8) - 1)) << 0)
++#define F_SW_EVENTS23_16_RD(x) (((x) & (((1 << 8) - 1) << 0)) >> 0)
++
++/* register SW_EVENTS3 */
++#define SW_EVENTS3 20
++#define F_SW_EVENTS31_24(x) (((x) & ((1 << 8) - 1)) << 0)
++#define F_SW_EVENTS31_24_RD(x) (((x) & (((1 << 8) - 1) << 0)) >> 0)
++
++/* register XT_OCD_CTRL */
++#define XT_OCD_CTRL 24
++#define F_XT_DRESET(x) (((x) & ((1 << 1) - 1)) << 0)
++#define F_XT_DRESET_RD(x) (((x) & (((1 << 1) - 1) << 0)) >> 0)
++#define F_XT_OCDHALTONRESET(x) (((x) & ((1 << 1) - 1)) << 1)
++#define F_XT_OCDHALTONRESET_RD(x) (((x) & (((1 << 1) - 1) << 1)) >> 1)
++
++/* register XT_OCD_CTRL_RO */
++#define XT_OCD_CTRL_RO 25
++#define F_XT_XOCDMODE(x) (((x) & ((1 << 1) - 1)) << 0)
++#define F_XT_XOCDMODE_RD(x) (((x) & (((1 << 1) - 1) << 0)) >> 0)
++
++/* register APB_INT_MASK */
++#define APB_INT_MASK 27
++#define F_APB_INTR_MASK(x) (((x) & ((1 << 3) - 1)) << 0)
++#define F_APB_INTR_MASK_RD(x) (((x) & (((1 << 3) - 1) << 0)) >> 0)
++
++/* register APB_STATUS_MASK */
++#define APB_STATUS_MASK 28
++#define F_APB_INTR_STATUS(x) (((x) & ((1 << 3) - 1)) << 0)
++#define F_APB_INTR_STATUS_RD(x) (((x) & (((1 << 3) - 1) << 0)) >> 0)
++
++#endif	/*APB_CFG*/
+diff --git a/drivers/video/imx/hdp/externs.h b/drivers/video/imx/hdp/externs.h
+new file mode 100644
+index 0000000000..055f6ea2e8
+--- /dev/null
++++ b/drivers/video/imx/hdp/externs.h
+@@ -0,0 +1,81 @@
++/******************************************************************************
++ *
++ * Copyright (C) 2016-2017 Cadence Design Systems, Inc.
++ * All rights reserved worldwide.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ *
++ * 1. Redistributions of source code must retain the above copyright notice,
++ * this list of conditions and the following disclaimer.
++ *
++ * 2. Redistributions in binary form must reproduce the above copyright notice,
++ * this list of conditions and the following disclaimer in the documentation
++ * and/or other materials provided with the distribution.
++ *
++ * 3. Neither the name of the copyright holder nor the names of its contributors
++ * may be used to endorse or promote products derived from this software without
++ * specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
++ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
++ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
++ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
++ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
++ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
++ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
++ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
++ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. THE SOFTWARE IS PROVIDED "AS IS",
++ * WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
++ * TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
++ * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
++ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
++ * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ *
++ * Copyright 2017 NXP
++ *
++ ******************************************************************************
++ *
++ * externs.h
++ *
++ ******************************************************************************
++ */
++
++#ifndef EXTERNS_H_
++#define EXTERNS_H_
++
++#ifndef __UBOOT__
++#include <stdint.h>
++
++#else
++#include <common.h>
++#endif
++/**
++ * \addtogroup UTILS
++ * \{
++ */
++/**
++ * \brief read from apb
++ * \param addr - address to read
++ * \param value - pointer to store value
++ * \return non-zero value if error
++ */
++/*extern int cdn_bus_read(unsigned int addr, unsigned int* value);*/
++
++/**
++ * \brief write to apb
++ * \param addr - address to write
++ * \param value - value to write
++ * \return non-zero if error
++ */
++/*extern int cdn_bus_write(unsigned int addr, unsigned int value);*/
++
++uint32_t cdn_apb_read(uint32_t addr, uint32_t *value);
++uint32_t cdn_sapb_read(uint32_t addr, uint32_t *value);
++uint32_t cdn_apb_write(uint32_t addr, uint32_t value);
++uint32_t cdn_sapb_write(uint32_t addr, uint32_t value);
++#endif
++
+diff --git a/drivers/video/imx/hdp/general_handler.h b/drivers/video/imx/hdp/general_handler.h
+new file mode 100644
+index 0000000000..3656ef8848
+--- /dev/null
++++ b/drivers/video/imx/hdp/general_handler.h
+@@ -0,0 +1,162 @@
++/******************************************************************************
++ *
++ * Copyright (C) 2016-2017 Cadence Design Systems, Inc.
++ * All rights reserved worldwide.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ *
++ * 1. Redistributions of source code must retain the above copyright notice,
++ * this list of conditions and the following disclaimer.
++ *
++ * 2. Redistributions in binary form must reproduce the above copyright notice,
++ * this list of conditions and the following disclaimer in the documentation
++ * and/or other materials provided with the distribution.
++ *
++ * 3. Neither the name of the copyright holder nor the names of its contributors
++ * may be used to endorse or promote products derived from this software without
++ * specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
++ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
++ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
++ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
++ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
++ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
++ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
++ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
++ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. THE SOFTWARE IS PROVIDED "AS IS",
++ * WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
++ * TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
++ * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
++ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
++ * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ *
++ * Copyright 2017 NXP
++ *
++ ******************************************************************************
++ *
++ * general_handler.h
++ *
++ ******************************************************************************
++ */
++
++#ifndef GENERAL_HANDLER_H
++#define GENERAL_HANDLER_H
++
++/**
++ *  \file
++ *  \brief general handler, checks available messages, receives
++ *         it from mailbox, handles requests and sends response
++ *         to the host
++ */
++#define DP_TX_MAIL_HANDLER_REQUEST_BUFFER_LEN 256
++
++/**
++ *  \brief opcode defines host->controller
++ */
++#define GENERAL_MAIN_CONTROL            0x01
++#define GENERAL_TEST_ECHO               0x02
++#define GENERAL_BUS_SETTINGS            0x03
++#define GENERAL_TEST_ACCESS             0x04
++
++#define GENERAL_WRITE_REGISTER          0x05
++#define GENERAL_WRITE_FIELD             0x06
++#define GENERAL_READ_REGISTER           0x07
++
++#define GENERAL_TEST_TRNG_SIMPLE        0xF0
++
++#define GENERAL_MAIN_CONTROL_SET_ACTIVE_BIT         0
++#define GENERAL_MAIN_CONTROL_SET_ALT_CIPHER_ADDR    1
++#define GENERAL_MAIN_CONTROL_SET_FAST_HDCP_DELAYS   2
++
++#define GENERAL_BUS_SETTINGS_DPCD_BUS_BIT           0
++#define GENERAL_BUS_SETTINGS_DPCD_BUS_LOCK_BIT      1
++#define GENERAL_BUS_SETTINGS_HDCP_BUS_BIT           2
++#define GENERAL_BUS_SETTINGS_HDCP_BUS_LOCK_BIT      3
++#define GENERAL_BUS_SETTINGS_CAPB_OWNER_BIT         4
++#define GENERAL_BUS_SETTINGS_CAPB_OWNER_LOCK_BIT    5
++
++/**
++ *  \brief opcode defines controller->host
++ */
++
++#define GENERAL_MAIN_CONTROL_RESP        0x01
++#define GENERAL_TEST_ECHO_RESP           0x02
++#define GENERAL_BUS_SETTINGS_RESP        0x03
++
++#define GENERAL_READ_REGISTER_RESP       0x07
++
++#define GENERAL_BUS_SETTINGS_RESP_DPCD_BUS_BIT      0
++#define GENERAL_BUS_SETTINGS_RESP_HDCP_BUS_BIT      1
++#define GENERAL_BUS_SETTINGS_RESP_CAPB_OWNER_BIT    2
++
++#define GENERAL_BUS_SETTINGS_RESP_SUCCESS           0
++#define GENERAL_BUS_SETTINGS_RESP_LOCK_ERROR        1
++
++typedef struct {
++	unsigned char dpcd_locked;
++	unsigned char hdcp_locked;
++	unsigned char capb_locked;
++	unsigned char active_mode;
++} S_GENERAL_HANDLER_DATA;
++
++/**
++ *  \brief event id sent to the host
++ */
++typedef enum {
++	EVENT_ID_DPTX_HPD = 0,
++	EVENT_ID_HDMI_TX_HPD = 0,
++	EVENT_ID_HDMI_RX_5V = 0,
++
++	EVENT_ID_DPTX_TRAINING = 1,
++	EVENT_ID_HDMI_RX_SCDC_CHANGE = 1,
++
++	EVENT_ID_RESERVE0 = 2,
++	EVENT_ID_RESERVE1 = 3,
++
++	EVENT_ID_HDCPTX_STATUS = 4,
++	EVENT_ID_HDCPRX_STATUS = 4,
++
++	EVENT_ID_HDCPTX_IS_KM_STORED = 5,
++	EVENT_ID_HDCPTX_STORE_KM = 6,
++	EVENT_ID_HDCPTX_IS_RECEIVER_ID_VALID = 7,
++	EVENT_ID_HDMITX_READ_REQUEST = 8,
++} EVENT_ID;
++
++/**
++ * \brief convert bank id and register number to address and write to ptr
++ */
++
++#define select_reg_old(bank, reg_no, ptr) \
++do { \
++	ptr = 0; \
++	if ((bank == 0x22) || (bank == 0x20) || (bank == 0x0b) || \
++	    (bank == 0x09) || (bank == 0x0A)) \
++		ptr = (unsigned int *)(bank << 8 | reg_no); \
++} while (0)
++
++#define select_reg(bank, reg_no, ptr) \
++	ptr = (unsigned int *)(bank << 8 | reg_no)
++
++#define select_reg4(pmsb, p2, p3, plsb, ptr) \
++	ptr = (unsigned int *)((pmsb << 24) | (p2 << 16) | \
++			       (p3 << 8) | (plsb << 0))
++
++
++#define EVENTS_DPTX_CNT 2
++#define EVENTS_HDCPTX_CNT 4
++
++void general_handler_set_active_mode(void);
++void general_handler_set_standby_mode(void);
++
++/**
++ *  \brief request sending en event to the host
++ *  \param [in] eventId
++ *  \param [in] eventCode
++ */
++
++#endif				/* GENERAL_HANDLER_H */
+diff --git a/drivers/video/imx/hdp/opcodes.h b/drivers/video/imx/hdp/opcodes.h
+new file mode 100644
+index 0000000000..e0e7d93412
+--- /dev/null
++++ b/drivers/video/imx/hdp/opcodes.h
+@@ -0,0 +1,115 @@
++/******************************************************************************
++ *
++ * Copyright (C) 2016-2017 Cadence Design Systems, Inc.
++ * All rights reserved worldwide.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ *
++ * 1. Redistributions of source code must retain the above copyright notice,
++ * this list of conditions and the following disclaimer.
++ *
++ * 2. Redistributions in binary form must reproduce the above copyright notice,
++ * this list of conditions and the following disclaimer in the documentation
++ * and/or other materials provided with the distribution.
++ *
++ * 3. Neither the name of the copyright holder nor the names of its contributors
++ * may be used to endorse or promote products derived from this software without
++ * specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
++ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
++ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
++ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
++ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
++ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
++ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
++ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
++ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. THE SOFTWARE IS PROVIDED "AS IS",
++ * WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
++ * TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
++ * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
++ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
++ * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ *
++ * Copyright 2017 NXP
++ *
++ ******************************************************************************
++ *
++ * This file was auto-generated. Do not edit it manually.
++ *
++ ******************************************************************************
++ *
++ * opcodes.h
++ *
++ ******************************************************************************
++ */
++
++#ifndef OPCODES_H_
++# define OPCODES_H_
++
++# define DP_TX_MAIL_HANDLER_H
++# define DP_TX_MAIL_HANDLER_REQUEST_BUFFER_LEN 256
++# define DPTX_SET_POWER_MNG              0x00
++# define DPTX_SET_HOST_CAPABILITIES      0x01
++# define DPTX_GET_EDID                   0x02
++# define DPTX_READ_DPCD                  0x03
++# define DPTX_WRITE_DPCD                 0x04
++# define DPTX_ENABLE_EVENT               0x05
++# define DPTX_WRITE_REGISTER             0x06
++# define DPTX_READ_REGISTER              0x07
++# define DPTX_WRITE_FIELD                0x08
++# define DPTX_TRAINING_CONTROL           0x09
++# define DPTX_READ_EVENT                 0x0A
++# define DPTX_READ_LINK_STAT                0x0B
++# define DPTX_SET_VIDEO                    0x0C
++# define DPTX_SET_AUDIO                    0x0D
++# define DPTX_GET_LAST_AUX_STAUS            0x0E
++# define DPTX_SET_LINK_BREAK_POINT        0x0F
++# define DPTX_FORCE_LANES                0x10
++# define DPTX_HPD_STATE                             0x11
++# define DPTX_DBG_SET                               0xF0
++# define DP_TX_OPCODE_READ_I2C_REQUEST              0xA5
++# define DP_TX_OPCODE_WRITE_I2C_REQUEST             0xA6
++# define DP_TX_OPCODE_MESSAGE_FILTER                0xA7
++# define DPTX_EDID_RESP                             0x02
++# define DPTX_DPCD_READ_RESP                        0x03
++# define DPTX_DPCD_WRITE_RESP                       0x04
++# define DPTX_READ_EVENT_RESP                       0x0A
++# define DPTX_READ_REGISTER_RESP                    0x07
++# define DP_TX_OPCODE_MESSAGE                       0x10
++# define DP_TX_OPCODE_READ_I2C_RESPONSE             0x50
++# define DP_TX_OPCODE_WRITE_I2C_RESPONSE            0x60
++# define DP_TX_OPCODE_LOOPBACK_TEST                 0xFE
++# define DP_TX_OPCODE_BIT_TEST                      0xFF
++# define DP_TX_EVENT_ENABLE_HPD_BIT                 0x00
++# define DP_TX_EVENT_ENABLE_TRAINING_BIT            0x01
++# define DP_TX_EVENT_CODE_HPD_HIGH                  0x01
++# define DP_TX_EVENT_CODE_HPD_LOW                   0x02
++# define DP_TX_EVENT_CODE_HPD_PULSE                 0x04
++# define DP_TX_EVENT_CODE_HPD_STATE_HIGH            0x08
++# define DP_TX_EVENT_CODE_HPD_STATE_LOW             0x00
++# define DP_TX_EVENT_CODE_TRAINING_FULL_STARTED     0x01
++# define DP_TX_EVENT_CODE_TRAINING_FAST_STARTED     0x02
++# define DP_TX_EVENT_CODE_TRAINING_FINISHED_CR      0x04
++# define DP_TX_EVENT_CODE_TRAINING_FINISHED_EQ      0x08
++# define DP_TX_EVENT_CODE_TRAINING_FINISHED_FAST    0x10
++# define DP_TX_EVENT_CODE_TRAINING_FAILED_CR        0x20
++# define DP_TX_EVENT_CODE_TRAINING_FAILED_EQ        0x40
++# define DP_TX_EVENT_CODE_TRAINING_FAILED_FAST      0x80
++# define MB_MODULE_ID_DP_TX                         0x01
++# define MB_MODULE_ID_DP_RX                         0x02
++# define MB_MODULE_ID_HDMI_TX                       0x03
++# define MB_MODULE_ID_HDMI_RX                       0x04
++# define MB_MODULE_ID_MHL_TX                        0x05
++# define MB_MODULE_ID_MHL_RX                        0x06
++# define MB_MODULE_ID_HDCP_TX                       0x07
++# define MB_MODULE_ID_HDCP_RX                       0x08
++# define MB_MODULE_ID_HDCP_GENERAL                  0x09
++# define MB_MODULE_ID_GENERAL                       0x0A
++# define MB_MODULE_ID                               1
++
++#endif
+diff --git a/drivers/video/imx/hdp/test_base_sw.c b/drivers/video/imx/hdp/test_base_sw.c
+new file mode 100644
+index 0000000000..7618323cd8
+--- /dev/null
++++ b/drivers/video/imx/hdp/test_base_sw.c
+@@ -0,0 +1,181 @@
++/******************************************************************************
++ *
++ * Copyright (C) 2016-2017 Cadence Design Systems, Inc.
++ * All rights reserved worldwide.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ *
++ * 1. Redistributions of source code must retain the above copyright notice,
++ * this list of conditions and the following disclaimer.
++ *
++ * 2. Redistributions in binary form must reproduce the above copyright notice,
++ * this list of conditions and the following disclaimer in the documentation
++ * and/or other materials provided with the distribution.
++ *
++ * 3. Neither the name of the copyright holder nor the names of its contributors
++ * may be used to endorse or promote products derived from this software without
++ * specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
++ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
++ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
++ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
++ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
++ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
++ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
++ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
++ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. THE SOFTWARE IS PROVIDED "AS IS",
++ * WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
++ * TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
++ * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
++ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
++ * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ *
++ * Copyright 2017 NXP
++ *
++ ******************************************************************************
++ *
++ * test_base_sw.c
++ *
++ ******************************************************************************
++ */
++
++#ifndef __UBOOT__
++#include <stdlib.h>
++#include <string.h>
++#include <stdio.h>
++#else
++#include <common.h>
++#include <asm/io.h>
++
++#ifdef CONFIG_ARCH_IMX8M
++/* mscale */
++#define HDMI_BASE     0x32c00000
++#define HDMI_PHY_BASE 0x32c80000
++#define HDMI_SEC_BASE 0x32e40000
++#endif
++#ifdef CONFIG_ARCH_IMX8
++/* QM */
++#define HDMI_BASE 0x56268000
++#define HDMI_SEC_BASE 0x56269000
++#define HDMI_OFFSET_ADDR 0x56261008
++#define HDMI_SEC_OFFSET_ADDR 0x5626100c
++#endif
++
++#endif
++
++#ifdef CONFIG_ARCH_IMX8M
++int cdn_apb_read(unsigned int addr, unsigned int *value)
++{
++	unsigned int temp;
++	uint64_t tmp_addr = addr + HDMI_BASE;
++	temp = __raw_readl(tmp_addr);
++	*value = temp;
++	return 0;
++}
++
++int cdn_apb_write(unsigned int addr, unsigned int value)
++{
++	uint64_t tmp_addr = addr + HDMI_BASE;
++
++	__raw_writel(value, tmp_addr);
++	return 0;
++}
++
++int cdn_sapb_read(unsigned int addr, unsigned int *value)
++{
++	unsigned int temp;
++	uint64_t tmp_addr = addr + HDMI_SEC_BASE;
++	temp = __raw_readl(tmp_addr);
++	*value = temp;
++	return 0;
++}
++
++int cdn_sapb_write(unsigned int addr, unsigned int value)
++{
++	uint64_t tmp_addr = addr + HDMI_SEC_BASE;
++	__raw_writel(value, tmp_addr);
++	return 0;
++}
++
++void cdn_sleep(uint32_t ms)
++{
++	mdelay(ms);
++}
++
++void cdn_usleep(uint32_t us)
++{
++	udelay(us);
++}
++#endif
++#ifdef CONFIG_ARCH_IMX8
++int cdn_apb_read(unsigned int addr, unsigned int *value)
++{
++	unsigned int temp;
++	uint64_t tmp_addr = (addr & 0xfff) + HDMI_BASE;
++
++	/* printf("%s():%d addr = 0x%08x, tmp_addr = 0x%08x, offset = 0x%08x\n",
++	      __func__, __LINE__, addr, (unsigned int)tmp_addr, addr>>12); */
++
++	__raw_writel(addr >> 12, HDMI_OFFSET_ADDR);
++
++	temp = __raw_readl(tmp_addr);
++	/* printf("%s():%d temp = 0x%08x\n", __func__, __LINE__, temp ); */
++
++	*value = temp;
++	return 0;
++}
++
++int cdn_apb_write(unsigned int addr, unsigned int value)
++{
++	uint64_t tmp_addr = (addr & 0xfff) + HDMI_BASE;
++
++	/*printf("%s():%d addr=0x%08x, taddr=0x%08x, off=0x%08x, val=0x%08x\n",
++	      __func__, __LINE__, addr, (unsigned int)tmp_addr,
++	      addr>>12,  value);*/
++
++	__raw_writel(addr >> 12, HDMI_OFFSET_ADDR);
++
++	/* printf("%s():%d\n", __func__, __LINE__); */
++	__raw_writel(value, tmp_addr);
++
++	return 0;
++}
++
++int cdn_sapb_read(unsigned int addr, unsigned int *value)
++{
++	unsigned int temp;
++	uint64_t tmp_addr = (addr & 0xfff) + HDMI_SEC_BASE;
++
++	__raw_writel(addr >> 12, HDMI_SEC_OFFSET_ADDR);
++
++	temp = __raw_readl(tmp_addr);
++	*value = temp;
++	return 0;
++}
++
++int cdn_sapb_write(unsigned int addr, unsigned int value)
++{
++	uint64_t tmp_addr = (addr & 0xfff) + HDMI_SEC_BASE;
++
++	__raw_writel(addr >> 12, HDMI_SEC_OFFSET_ADDR);
++	__raw_writel(value, tmp_addr);
++
++	return 0;
++}
++
++void cdn_sleep(uint32_t ms)
++{
++	mdelay(ms);
++}
++
++void cdn_usleep(uint32_t us)
++{
++	udelay(us);
++}
++#endif
++
+diff --git a/drivers/video/imx/hdp/util.c b/drivers/video/imx/hdp/util.c
+new file mode 100644
+index 0000000000..727946a796
+--- /dev/null
++++ b/drivers/video/imx/hdp/util.c
+@@ -0,0 +1,329 @@
++/******************************************************************************
++ *
++ * Copyright (C) 2016-2017 Cadence Design Systems, Inc.
++ * All rights reserved worldwide.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ *
++ * 1. Redistributions of source code must retain the above copyright notice,
++ * this list of conditions and the following disclaimer.
++ *
++ * 2. Redistributions in binary form must reproduce the above copyright notice,
++ * this list of conditions and the following disclaimer in the documentation
++ * and/or other materials provided with the distribution.
++ *
++ * 3. Neither the name of the copyright holder nor the names of its contributors
++ * may be used to endorse or promote products derived from this software without
++ * specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
++ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
++ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
++ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
++ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
++ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
++ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
++ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
++ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. THE SOFTWARE IS PROVIDED "AS IS",
++ * WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
++ * TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
++ * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
++ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
++ * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ *
++ * Copyright 2017 NXP
++ *
++ ******************************************************************************
++ *
++ * util.c
++ *
++ ******************************************************************************
++ */
++
++#include "util.h"
++#include "API_General.h"
++#include "externs.h"
++#ifndef __UBOOT__
++#include <string.h>
++#endif
++#include "apb_cfg.h"
++#include "opcodes.h"
++#ifndef __UBOOT__
++#include <stdio.h>
++
++#endif
++state_struct state;
++
++int cdn_bus_read(unsigned int addr, unsigned int *value)
++{
++	return state.bus_type ?
++	    cdn_sapb_read(addr, value) : cdn_apb_read(addr, value);
++}
++
++int cdn_bus_write(unsigned int addr, unsigned int value)
++{
++	return state.bus_type ?
++	    cdn_sapb_write(addr, value) : cdn_apb_write(addr, value);
++}
++
++void internal_itobe(int val, volatile unsigned char *dest, int bytes)
++{
++	int i;
++	for (i = bytes - 1; i >= 0; --i) {
++		dest[i] = (unsigned char)val;
++		val >>= 8;
++	}
++}
++
++uint32_t internal_betoi(volatile uint8_t const *src, uint8_t bytes)
++{
++	uint32_t ret = 0;
++	int i;
++
++	if (bytes > sizeof(ret)) {
++		printf("Warning. Read request for payload larger then supported.\n");
++		bytes = sizeof(ret);
++	}
++
++	for (i = 0; i < bytes; ++i) {
++		ret <<= 8;
++		ret |= (unsigned int)src[i];
++	}
++
++	return ret;
++}
++
++unsigned int internal_mkmsg(volatile unsigned char *dest, int valno, ...)
++{
++	va_list vl;
++	unsigned int len = 0;
++	va_start(vl, valno);
++	len = internal_vmkmsg(dest, valno, vl);
++	va_end(vl);
++	return len;
++}
++
++unsigned int internal_vmkmsg(volatile unsigned char *dest, int valno,
++			     va_list vl)
++{
++	unsigned int len = 0;
++	int i;
++	for (i = 0; i < valno; ++i) {
++		int size = va_arg(vl, int);
++		if (size > 0) {
++			internal_itobe(va_arg(vl, int), dest, size);
++			dest += size;
++			len += size;
++		} else {
++			memcpy((void *)dest, va_arg(vl, void *), -size);
++			dest -= size;
++			len -= size;
++		}
++	}
++	return len;
++}
++
++void internal_tx_mkfullmsg(unsigned char module, unsigned char opcode,
++			   int valno, ...)
++{
++	va_list vl;
++	va_start(vl, valno);
++	internal_vtx_mkfullmsg(module, opcode, valno, vl);
++	va_end(vl);
++}
++
++void internal_vtx_mkfullmsg(unsigned char module, unsigned char opcode,
++			    int valno, va_list vl)
++{
++	unsigned int len =
++	    internal_vmkmsg(state.txbuffer + INTERNAL_CMD_HEAD_SIZE, valno, vl);
++	internal_mbox_tx_enable(module, opcode, len);
++	state.txenable = 1;
++	state.running = 1;
++}
++
++void internal_readmsg(int valno, ...)
++{
++	va_list vl;
++	va_start(vl, valno);
++	internal_vreadmsg(valno, vl);
++	va_end(vl);
++}
++
++void internal_vreadmsg(int valno, va_list vl)
++{
++	uint8_t *src = state.rxbuffer + INTERNAL_CMD_HEAD_SIZE;
++	size_t i;
++
++	for (i = 0; i < (size_t) valno; ++i) {
++		int size = va_arg(vl, int);
++		void *ptr = va_arg(vl, void *);
++
++		if (!ptr) {
++			src += size;
++		} else if (!size) {
++			*((unsigned char **)ptr) = src;
++		} else if (size > 0) {
++			switch ((size_t) size) {
++			case sizeof(uint8_t):
++				*((uint8_t *)ptr) = internal_betoi(src, size);
++				break;
++			case sizeof(uint16_t):
++				*((uint16_t *)ptr) = internal_betoi(src, size);
++				break;
++			case 3:	/* 3-byte value (e.g. DPCD address)
++				can be safely converted from BE.*/
++			case sizeof(uint32_t):
++				*((uint32_t *)ptr) = internal_betoi(src, size);
++				break;
++			default:
++				printf("Warning. Unsupported variable size.\n");
++				memcpy(ptr, src, size);
++			};
++
++			src += size;
++		} else {
++			memcpy(ptr, src, -size);
++			src -= size;
++		}
++	}
++}
++
++INTERNAL_MBOX_STATUS mailbox_write(unsigned char val)
++{
++	INTERNAL_MBOX_STATUS ret;
++	unsigned int full;
++	if (cdn_bus_read(MAILBOX_FULL_ADDR << 2, &full)) {
++		ret.tx_status = CDN_TX_APB_ERROR;
++		return ret;
++	}
++	if (full) {
++		ret.tx_status = CDN_TX_FULL;
++		return ret;
++	}
++	if (cdn_bus_write(MAILBOX0_WR_DATA << 2, val)) {
++		ret.tx_status = CDN_TX_APB_ERROR;
++		return ret;
++	}
++	ret.tx_status = CDN_TX_WRITE;
++	return ret;
++}
++
++INTERNAL_MBOX_STATUS mailbox_read(volatile unsigned char *val)
++{
++	INTERNAL_MBOX_STATUS ret;
++	unsigned int empty;
++	unsigned int rd;
++	if (cdn_bus_read(MAILBOX_EMPTY_ADDR << 2, &empty)) {
++		ret.rx_status = CDN_RX_APB_ERROR;
++		return ret;
++	}
++	if (empty) {
++		ret.rx_status = CDN_RX_EMPTY;
++		return ret;
++	}
++	if (cdn_bus_read(MAILBOX0_RD_DATA << 2, &rd)) {
++		ret.rx_status = CDN_RX_APB_ERROR;
++		return ret;
++	}
++	*val = (unsigned char)rd;
++	ret.rx_status = CDN_RX_READ;
++	return ret;
++}
++
++INTERNAL_MBOX_STATUS internal_mbox_tx_process(void)
++{
++	unsigned int txcount = 0;
++	unsigned int length =
++	    (unsigned int)state.txbuffer[2] << 8 | (unsigned int)state.
++	    txbuffer[3];
++	INTERNAL_MBOX_STATUS ret = {.txend = 0 };
++	ret.tx_status = CDN_TX_NOTHING;
++	INTERNAL_MBOX_STATUS tx_ret;
++	if (!state.txenable)
++		return ret;
++	while ((tx_ret.tx_status =
++		mailbox_write(state.txbuffer[state.txi]).tx_status) ==
++	       CDN_TX_WRITE) {
++		txcount++;
++		if (++state.txi >= length + 4) {
++			state.txenable = 0;
++			state.txi = 0;
++			ret.txend = 1;
++			break;
++		}
++	}
++	if (txcount && tx_ret.tx_status == CDN_TX_FULL)
++		ret.tx_status = CDN_TX_WRITE;
++	else
++		ret.tx_status = tx_ret.tx_status;
++	return ret;
++}
++
++INTERNAL_MBOX_STATUS internal_mbox_rx_process(void)
++{
++	unsigned int rxcount = 0;
++	INTERNAL_MBOX_STATUS ret = { 0, 0, 0, 0 };
++	INTERNAL_MBOX_STATUS rx_ret;
++	while ((rx_ret.rx_status =
++		mailbox_read(state.rxbuffer + state.rxi).rx_status) ==
++	       CDN_RX_READ) {
++		rxcount++;
++		if (++state.rxi >= 4 +
++		    ((unsigned int)state.rxbuffer[2] << 8 |
++		     (unsigned int)state.rxbuffer[3])) { /* end of message */
++			state.rxi = 0;
++			ret.rxend = 1;
++			state.rxenable = 0;
++			break;
++		}
++	}
++	ret.rx_status = rxcount ? CDN_RX_READ : CDN_RX_EMPTY;
++	return ret;
++}
++
++unsigned int internal_apb_available(void)
++{
++	return !(state.rxenable || state.txenable);
++}
++
++void internal_mbox_tx_enable(unsigned char module, unsigned char opcode,
++			     unsigned short length)
++{
++	state.txbuffer[0] = opcode;
++	state.txbuffer[1] = module;
++	state.txbuffer[2] = (unsigned char)(length >> 8);
++	state.txbuffer[3] = (unsigned char)length;
++	state.txenable = 1;
++}
++
++CDN_API_STATUS internal_test_rx_head(unsigned char module, unsigned char opcode)
++{
++	if (opcode != state.rxbuffer[0])
++		return CDN_BAD_OPCODE;
++	if (module != state.rxbuffer[1])
++		return CDN_BAD_MODULE;
++	return CDN_OK;
++}
++
++CDN_API_STATUS internal_test_rx_head_match(void)
++{
++	return internal_test_rx_head(state.txbuffer[1], state.txbuffer[0]);
++}
++
++void print_fw_ver(void)
++{
++	unsigned short ver, verlib;
++	cdn_api_general_getcurversion(&ver, &verlib);
++	printf("FIRMWARE VERSION: %d, LIB VERSION: %d\n", ver, verlib);
++}
++
++unsigned short internal_get_msg_len(void)
++{
++	return ((unsigned short)state.rxbuffer[2] << 8) | (unsigned short)state.
++	    rxbuffer[3];
++}
+diff --git a/drivers/video/imx/hdp/util.h b/drivers/video/imx/hdp/util.h
+new file mode 100644
+index 0000000000..605f0f933b
+--- /dev/null
++++ b/drivers/video/imx/hdp/util.h
+@@ -0,0 +1,278 @@
++/******************************************************************************
++ *
++ * Copyright (C) 2016-2017 Cadence Design Systems, Inc.
++ * All rights reserved worldwide.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ *
++ * 1. Redistributions of source code must retain the above copyright notice,
++ * this list of conditions and the following disclaimer.
++ *
++ * 2. Redistributions in binary form must reproduce the above copyright notice,
++ * this list of conditions and the following disclaimer in the documentation
++ * and/or other materials provided with the distribution.
++ *
++ * 3. Neither the name of the copyright holder nor the names of its contributors
++ * may be used to endorse or promote products derived from this software without
++ * specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
++ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
++ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
++ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
++ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
++ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
++ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
++ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
++ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. THE SOFTWARE IS PROVIDED "AS IS",
++ * WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
++ * TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
++ * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
++ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
++ * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ *
++ * Copyright 2017 NXP
++ *
++ ******************************************************************************
++ *
++ * util.h
++ *
++ ******************************************************************************
++ */
++
++#ifndef UTIL_H_
++#define UTIL_H_
++
++#include "API_General.h"
++#ifndef __UBOOT__
++#include <stdarg.h>
++#include <stdint.h>
++#else
++#include <common.h>
++#endif
++/**
++ * \addtogroup UTILS
++ * \{
++ */
++#define INTERNAL_CMD_HEAD_SIZE 4
++
++/**
++ * \brief expands to blocking function body
++ * \param x - function call
++ */
++#define internal_block_function(x)		\
++do {						\
++	CDN_API_STATUS ret;			\
++	do {					\
++		ret = x;			\
++	} while (ret == CDN_BSY || ret == CDN_STARTED); \
++	return ret;				\
++} while (0)
++
++/**
++ * \brief write message and write response (if any), non-blocking way. Also sets state.running = 0
++ */
++#define INTERNAL_PROCESS_MESSAGES				\
++do {								\
++	if (state.txenable && !internal_mbox_tx_process().txend)	\
++		return CDN_BSY;					\
++	if (state.rxenable && !internal_mbox_rx_process().rxend)	\
++		return CDN_BSY;					\
++	state.running = 0;					\
++} while (0)
++
++#define internal_opcode_ok_or_return(module, opcode)			\
++do {									\
++	CDN_API_STATUS ret = internal_test_rx_head(module, opcode);	\
++	if (ret != CDN_OK)						\
++		return ret;						\
++} while (0)
++
++#define internal_opcode_match_or_return()			\
++do {								\
++	CDN_API_STATUS ret = internal_test_rx_head_match();	\
++	if (ret != CDN_OK)	\
++		return ret;					\
++} while (0)
++
++/* macro for simple tx only command, command format as in mkfullmsg
++   (with count) */
++#define internal_macro_command_tx(module, opcode, bustype, command...)	\
++do {									\
++	if (!state.running) {						\
++		internal_tx_mkfullmsg(module, opcode, command);		\
++		state.bus_type = bustype;				\
++		return CDN_STARTED;					\
++	}								\
++	INTERNAL_PROCESS_MESSAGES;					\
++} while (0)
++
++/* macro for command with response with matching opcode, command format as in
++   mkfullmsg (with count) */
++#define internal_macro_command_txrx(module, opcode, bustype, command...) \
++do {									\
++	if (!state.running) {						\
++		internal_tx_mkfullmsg(module, opcode, command);		\
++		state.bus_type = bustype;				\
++		state.rxenable = 1;					\
++		return CDN_STARTED;					\
++	}								\
++	INTERNAL_PROCESS_MESSAGES;					\
++	internal_opcode_match_or_return();				\
++} while (0)
++
++typedef struct {
++	/** apb write status */
++	enum tx_status_enum {
++	/** one or more bytes written */
++		CDN_TX_WRITE = 0,
++	/** nothing to write */
++		CDN_TX_NOTHING = 1,
++	/** mailbox full, 0 bytes written */
++		CDN_TX_FULL = 2,
++	/** APB error while writing */
++		CDN_TX_APB_ERROR = 3
++	} tx_status:3;
++	/** apb read status */
++	enum rx_status_enum {
++	/** 1 or more bytes read */
++		CDN_RX_READ = 0,
++	/** mailbox empty, 0 bytes read */
++		CDN_RX_EMPTY = 1,
++	/** apb error while reading */
++		CDN_RX_APB_ERROR = 2
++	} rx_status:2;
++	/** indicates end of currenly recived message */
++	unsigned char rxend:1;
++	/** end of tx message reached */
++	unsigned char txend:1;
++} INTERNAL_MBOX_STATUS;
++
++/**
++ * \brief put val into dest in big endian format
++ * \param val - value to put
++ * \param dest - place to put value
++ * \param bytes - true size of val in bytes. for example if
++ *        bytes = 2 val is treated as short int
++ */
++void internal_itobe(int val, volatile unsigned char *dest, int bytes);
++
++/**
++ * \brief read big endian value from src and return it
++ * \param src - source to read from
++ * \param bytes - size of read value
++ * \return result
++ */
++uint32_t internal_betoi(volatile uint8_t const *src, uint8_t bytes);
++
++/**
++ * \brief create message from size and value pairs; also sets
++ *        state.running and state.txEnable
++ * \param dest - pointer to write message to
++ * \param valNo - number of values to write
++ * \param ... - pairs of size and value, each value is written
++ *        after another. if size is positive value, value is
++ *        written with #internal_itobe, if size is negative,
++ *        value is treated as src pointer for memcpy
++ *
++ * example:
++ *
++ *  unsigned short x = 0xAABB;
++ *
++ *  internal_mkmsg(dest, 3, 1, 1, 2, 3, -2, &x);
++ *
++ *  will write 01 00 03 AA BB to dest
++ */
++unsigned int internal_mkmsg(volatile unsigned char *dest, int valno, ...);
++unsigned int internal_vmkmsg(volatile unsigned char *dest, int valno,
++			     va_list vl);
++
++/**
++ * \brief setup message header in txBuffer, set txEnable = 1
++ */
++void internal_mbox_tx_enable(unsigned char module, unsigned char opcode,
++			     unsigned short length);
++
++/**
++ * \brief write from txBuffer to mailbox untill full or end of message.
++ *
++ * when txEnable == 0 writes nothing
++ * when write reaches end of message set txEnable = 0
++ */
++
++/**
++ * \brief combination of #internal_mkmsg and #internal_mbox_tx_enable
++ *
++ * #internal_mkmsg dest and #internal_mbox_tx_enable length are determined
++ * automaticly this function also sets state.txEnable = 1 and
++ * state.running
++ */
++void internal_tx_mkfullmsg(unsigned char module, unsigned char opcode,
++			   int valno, ...);
++void internal_vtx_mkfullmsg(unsigned char module, unsigned char opcode,
++			    int valno, va_list vl);
++
++/**
++ * \brief read from state.txBuffer and store results in specified pointers
++ * \param valNo - numbero of values to read
++ * \param ... - pairs of size and ptr
++ *
++ * this function is similar to #internal_mkmsg -
++ *
++ * when size is positive read value using #internal_betoi
++ * when size is negative mempcy from txBuffer to ptr -size bytes
++ * when size is 0 write to ptr addres of current position in rxbuffer
++ * when ptr is NULL ignore size bytes (if size is negative this
++ * will rewind buffer)
++ */
++void internal_readmsg(int valno, ...);
++void internal_vreadmsg(int valno, va_list vl);
++
++INTERNAL_MBOX_STATUS internal_mbox_tx_process(void);
++/**
++ * \brief read to rxBuffer from mailbox untill empty or end of message
++ *
++ * when rxEnable == 0 reads nothing
++ * when end of message reached sets rxEnable = 0
++ */
++INTERNAL_MBOX_STATUS internal_mbox_rx_process(void);
++
++/**
++ * \brief check if apb is available
++ * \return !(rxEnable && txEable)
++ */
++unsigned int internal_apb_available(void);
++
++/**
++ * \brief test if parameters match module and opcode in rxBuffer
++ * \return CDN_OK or CDN_BAD_OPCODE or CDN_BAD_MODULE
++ */
++CDN_API_STATUS internal_test_rx_head(unsigned char module,
++				     unsigned char opcode);
++
++CDN_API_STATUS internal_test_rx_head_match(void);
++
++/**
++ * \brief print current fw and lib version
++ */
++void print_fw_ver(void);
++
++typedef struct {
++	unsigned char txbuffer[1024];
++	unsigned char rxbuffer[1024];
++	unsigned int txi;	/* iterators */
++	unsigned int rxi;
++	unsigned char txenable;	/*data readt to send*/
++	unsigned char rxenable;
++	unsigned char running;
++	CDN_BUS_TYPE bus_type;
++	unsigned int tmp;
++} state_struct;
++
++unsigned short internal_get_msg_len(void);
++
++#endif
+diff --git a/drivers/video/imx/hdp_load.c b/drivers/video/imx/hdp_load.c
+new file mode 100644
+index 0000000000..d5eea2cf72
+--- /dev/null
++++ b/drivers/video/imx/hdp_load.c
+@@ -0,0 +1,107 @@
++/*
++ * Copyright 2017-2018 NXP
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
++
++#include <common.h>
++#include <command.h>
++
++#include "API_General.h"
++#include "scfw_utils.h"
++
++DECLARE_GLOBAL_DATA_PTR;
++
++#define ON  1
++#define OFF 0
++
++static void display_set_power(int onoff)
++{
++	sc_ipc_t ipcHndl = -1;
++
++	SC_PM_SET_RESOURCE_POWER_MODE(ipcHndl, SC_R_DC_0, onoff);
++	SC_PM_SET_RESOURCE_POWER_MODE(ipcHndl, SC_R_HDMI, onoff);
++}
++
++static void display_set_clocks(void)
++{
++	sc_ipc_t ipcHndl = -1;
++	const sc_pm_clock_rate_t pll = 1188000000;
++	const sc_pm_clock_rate_t hdmi_core_clock = pll / 10;
++	const sc_pm_clock_rate_t hdmi_bus_clock = pll / 14;
++
++	SC_PM_SET_RESOURCE_POWER_MODE(ipcHndl,
++				      SC_R_HDMI_PLL_0, SC_PM_PW_MODE_OFF);
++	SC_PM_SET_CLOCK_RATE(ipcHndl,
++			     SC_R_HDMI_PLL_0, SC_PM_CLK_PLL, pll);
++	SC_PM_SET_RESOURCE_POWER_MODE(ipcHndl,
++				      SC_R_HDMI_PLL_0, SC_PM_PW_MODE_ON);
++
++	/* HDMI DI Bus Clock  */
++	SC_PM_SET_CLOCK_RATE(ipcHndl,
++			     SC_R_HDMI, SC_PM_CLK_MISC4, hdmi_bus_clock);
++	/* HDMI DI Core Clock  */
++	SC_PM_SET_CLOCK_RATE(ipcHndl,
++			     SC_R_HDMI, SC_PM_CLK_MISC2, hdmi_core_clock);
++}
++
++static void display_enable_clocks(int enable)
++{
++	sc_ipc_t ipcHndl = -1;
++
++	SC_PM_CLOCK_ENABLE(ipcHndl, SC_R_HDMI_PLL_0, SC_PM_CLK_PLL, enable);
++	SC_PM_CLOCK_ENABLE(ipcHndl, SC_R_HDMI, SC_PM_CLK_MISC2, enable);
++	SC_PM_CLOCK_ENABLE(ipcHndl, SC_R_HDMI, SC_PM_CLK_MISC4, enable);
++}
++
++int do_hdp(cmd_tbl_t *cmdtp, int flag, int argc, char *const argv[])
++{
++	if (argc < 2)
++		return 0;
++
++	if (strncmp(argv[1], "tracescfw", 9) == 0) {
++		g_debug_scfw = 1;
++		printf("Enabled SCFW API tracing\n");
++	} else if (strncmp(argv[1], "load", 4) == 0) {
++		unsigned long address = 0;
++		unsigned long offset  = 0x2000;
++		const int iram_size   = 0x10000;
++		const int dram_size   = 0x8000;
++
++		if (argc > 2) {
++			address = simple_strtoul(argv[2], NULL, 0);
++			if (argc > 3)
++				offset = simple_strtoul(argv[3], NULL, 0);
++		} else
++			printf("Missing address\n");
++
++		printf("Loading hdp firmware from 0x%016lx offset 0x%016lx\n",
++			address, offset);
++		display_set_power(SC_PM_PW_MODE_ON);
++		display_set_clocks();
++		display_enable_clocks(ON);
++		cdn_api_loadfirmware((unsigned char *)(address + offset),
++				     iram_size,
++				     (unsigned char *)(address + offset +
++						       iram_size),
++				     dram_size);
++		display_enable_clocks(OFF);
++		printf("Loading hdp firmware Complete\n");
++		/* do not turn off hdmi power or firmware load will be lost */
++	} else {
++		printf("test error argc %d\n", argc);
++	}
++
++	return 0;
++}
++/***************************************************/
++
++U_BOOT_CMD(
++	hdp,  CONFIG_SYS_MAXARGS, 1, do_hdp,
++	"load hdmi firmware ",
++	"[<command>] ...\n"
++	"hdpload [address] [<offset>]\n"
++	"        address - address where the binary image starts\n"
++	"        <offset> - IRAM offset in the binary image (8192 default)\n"
++	"tracescfw - Trace SCFW API calls for video commands\n"
++	);
+diff --git a/drivers/video/imx/scfw_utils.h b/drivers/video/imx/scfw_utils.h
+new file mode 100644
+index 0000000000..a583d26a78
+--- /dev/null
++++ b/drivers/video/imx/scfw_utils.h
+@@ -0,0 +1,90 @@
++/*
++ * Copyright 2017 NXP
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
++#ifndef _SCFW_UTILS_H_
++#define _SCFW_UTILS_H_
++
++#include <common.h>
++#include <asm/arch/sci/sci.h>
++
++static int g_debug_scfw;	/* set to one to turn on SCFW API tracing */
++
++#define SC_PM_SET_CLOCK_PARENT(__ipcHndl__, __res__, __clk__, __parent__) \
++do { \
++	char _res_str[]	= #__res__;\
++	char _clk_str[]	= #__clk__;\
++	sc_err_t _ret;\
++	if (g_debug_scfw) \
++		printf("(%4d) sc_pm_set_clock_parent %s:%s -> %d\n",\
++		       __LINE__, _res_str, _clk_str, __parent__);\
++	_ret = sc_pm_set_clock_parent(__ipcHndl__,\
++		__res__, __clk__, __parent__);\
++	if (_ret != SC_ERR_NONE) \
++		printf("(%d)>> sc_pm_set_clock_parent failed! %s:%s -> %d (error = %d)\n",\
++		       __LINE__, _res_str, _clk_str, __parent__, _ret);\
++} while (0)
++
++#define SC_PM_SET_CLOCK_RATE(__ipcHndl__, __res__, __clk__, __rate__) \
++do { \
++	char _res_str[]	= #__res__;\
++	char _clk_str[]	= #__clk__;\
++	sc_err_t _ret;\
++	sc_pm_clock_rate_t _actual = __rate__;\
++	if (g_debug_scfw) \
++		printf("(%4d) sc_pm_set_clock_rate %s:%s -> %d\n",\
++		       __LINE__, _res_str, _clk_str,  __rate__);\
++	_ret = sc_pm_set_clock_rate(__ipcHndl__, __res__, __clk__, &_actual);\
++	if (_ret != SC_ERR_NONE)\
++		printf("(%4d)>> sc_pm_set_clock_rate failed! %s:%s -> %d (error = %d)\n",\
++		       __LINE__, _res_str, _clk_str, __rate__, _ret);\
++	if (_actual != __rate__)\
++		printf("(%4d)>> Actual rate for %s:%s is %d instead of %d\n", \
++		       __LINE__, _res_str, _clk_str, _actual, __rate__);  \
++} while (0)
++
++#define SC_PM_CLOCK_ENABLE(__ipcHndl__, __res__, __clk__, __enable__) \
++do { \
++	char _res_str[]	= #__res__;\
++	char _clk_str[]	= #__clk__;\
++	sc_err_t _ret;\
++	if (g_debug_scfw) \
++		printf("(%4d) sc_pm_clock_enable %s:%s -> %d\n",\
++		       __LINE__, _res_str, _clk_str, __enable__);\
++	_ret = sc_pm_clock_enable(ipcHndl,\
++				 __res__, __clk__, __enable__, false);\
++	if (_ret != SC_ERR_NONE)\
++		printf("(%4d)>> sc_pm_clock_enable failed! %s:%s -> %d (error = %d)\n",\
++			__LINE__, _res_str, _clk_str, __enable__, _ret);\
++} while (0) \
++
++#define SC_MISC_SET_CONTROL(__ipcHndl__, __res__, __clk__, __value__) \
++do { \
++	char _res_str[]	= #__res__; \
++	char _clk_str[]	= #__clk__; \
++	sc_err_t _ret; \
++	if (g_debug_scfw) \
++			printf("(%4d) sc_misc_set_control %s:%s -> %d\n",\
++			       __LINE__, _res_str, _clk_str, __value__);\
++	_ret = sc_misc_set_control(ipcHndl, \
++				 __res__, __clk__, __value__); \
++	if (_ret != SC_ERR_NONE) \
++		printf("(%4d)>> sc_misc_set_control failed! %s:%s -> %d (error = %d)\n", \
++			__LINE__, _res_str, _clk_str, __value__, _ret); \
++} while (0)
++
++#define SC_PM_SET_RESOURCE_POWER_MODE(__ipcHndl__, __res__, __enable__) \
++do { \
++	char _res_str[]	= #__res__; \
++	sc_err_t _ret; \
++	if (g_debug_scfw) \
++			printf("(%4d) sc_pm_set_resource_power_mode %s -> %d\n",\
++			       __LINE__, _res_str, __enable__);\
++	_ret = sc_pm_set_resource_power_mode(ipcHndl, __res__, __enable__);\
++	if (_ret != SC_ERR_NONE) \
++		printf("(%4d)>> sc_pm_set_resource_power_mode failed! %s -> %d (error = %d)\n", \
++		       __LINE__, _res_str, __enable__, _ret);\
++} while (0)
++
++#endif /*_SCFW_UTILS_H_ */
+-- 
+2.13.6
+

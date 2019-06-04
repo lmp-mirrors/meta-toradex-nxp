@@ -1,7 +1,7 @@
-From 978f589e7c40976f78f177d312d50d9fb3e18303 Mon Sep 17 00:00:00 2001
+From 9151a1401de39c05cbad1270517c31c41bfb576b Mon Sep 17 00:00:00 2001
 From: Peng Fan <peng.fan@nxp.com>
-Date: Fri, 12 Apr 2019 07:55:03 +0000
-Subject: [PATCH 11/19] thermal: add i.MX8 thermal driver
+Date: Sun, 5 May 2019 13:23:54 +0000
+Subject: [PATCH 03/15] thermal: add i.MX8 thermal driver
 
 Add i.MX8 thermal driver to support get temperature from SCU.
 
@@ -253,5 +253,5 @@ index 0000000000..7e17377b69
 +	.flags  = DM_FLAG_PRE_RELOC,
 +};
 -- 
-2.14.5
+2.13.6
 

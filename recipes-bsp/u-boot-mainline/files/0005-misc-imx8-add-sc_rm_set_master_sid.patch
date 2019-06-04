@@ -1,0 +1,63 @@
+From 611fb0b83ccf05b05d9dfce6722349a182f60890 Mon Sep 17 00:00:00 2001
+From: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+Date: Thu, 30 May 2019 16:57:19 +0300
+Subject: [PATCH 05/15] misc: imx8: add sc_rm_set_master_sid
+
+Add sc_rm_set_master_sid to support setting stream IDs.
+
+Signed-off-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+---
+ arch/arm/include/asm/arch-imx8/sci/sci.h |  2 ++
+ drivers/misc/imx8/scu_api.c              | 26 ++++++++++++++++++++++++++
+ 2 files changed, 28 insertions(+)
+
+diff --git a/arch/arm/include/asm/arch-imx8/sci/sci.h b/arch/arm/include/asm/arch-imx8/sci/sci.h
+index 901b90d705..d24993690b 100644
+--- a/arch/arm/include/asm/arch-imx8/sci/sci.h
++++ b/arch/arm/include/asm/arch-imx8/sci/sci.h
+@@ -80,6 +80,8 @@ sc_bool_t sc_rm_is_memreg_owned(sc_ipc_t ipc, sc_rm_mr_t mr);
+ int sc_rm_get_memreg_info(sc_ipc_t ipc, sc_rm_mr_t mr, sc_faddr_t *addr_start,
+ 			  sc_faddr_t *addr_end);
+ sc_bool_t sc_rm_is_resource_owned(sc_ipc_t ipc, sc_rsrc_t resource);
++sc_err_t sc_rm_set_master_sid(sc_ipc_t ipc, sc_rsrc_t resource,
++			      sc_rm_sid_t sid);
+ 
+ /* PAD API */
+ int sc_pad_set(sc_ipc_t ipc, sc_pad_t pad, u32 val);
+diff --git a/drivers/misc/imx8/scu_api.c b/drivers/misc/imx8/scu_api.c
+index 031bc0048b..f2abae3f34 100644
+--- a/drivers/misc/imx8/scu_api.c
++++ b/drivers/misc/imx8/scu_api.c
+@@ -393,3 +393,29 @@ sc_bool_t sc_rm_is_resource_owned(sc_ipc_t ipc, sc_rsrc_t resource)
+ 
+ 	return !!result;
+ }
++
++sc_err_t sc_rm_set_master_sid(sc_ipc_t ipc, sc_rsrc_t resource, sc_rm_sid_t sid)
++{
++	struct udevice *dev = gd->arch.scu_dev;
++	int size = sizeof(struct sc_rpc_msg_s);
++	struct sc_rpc_msg_s msg;
++	int ret;
++	u8 result;
++
++	if (!dev)
++		hang();
++
++	RPC_VER(&msg) = SC_RPC_VERSION;
++	RPC_SVC(&msg) = (u8)SC_RPC_SVC_RM;
++	RPC_FUNC(&msg) = (u8)RM_FUNC_SET_MASTER_SID;
++	RPC_U16(&msg, 0U) = (u16)resource;
++	RPC_U16(&msg, 2U) = (u16)sid;
++	RPC_SIZE(&msg) = 2U;
++
++	ret = misc_call(dev, SC_FALSE, &msg, size, &msg, size);
++	if (ret)
++		printf("%s: res:%d res:%d\n", __func__, resource,
++		       RPC_R8(&msg));
++	result = RPC_R8(&msg);
++	return (sc_err_t) result;
++}
+-- 
+2.13.6
+

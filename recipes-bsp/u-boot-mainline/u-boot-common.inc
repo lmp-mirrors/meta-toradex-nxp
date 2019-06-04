@@ -8,28 +8,41 @@ PE = "1"
 
 # We use the revision in order to avoid having to fetch it from the
 # repo during parse
-SRCREV = "b4ee6daad7a2604ca9466b2ba48de86cc27d381f"
+SRCREV = "77f6e2dd0551d8a825bab391a1bd6b838874bcd4"
 
 SRC_URI = "git://git.denx.de/u-boot.git"
 
+# patches in flight
 SRC_URI += " \
-    file://0001-imx-Use-a-convenient-default-value-for-SYS_MALLOC_F_.patch \
-    file://0003-usb-limit-USB_MAX_XFER_BLK-to-256.patch \
-    file://0004-apalis_imx6-add-device-tree-to-makefile.patch \
-    file://0005-colibri-imx6ull-fix-usb-host-mode.patch \
-    file://0006-net-fec_mxc-not-access-reserved-register-on-i.MX8.patch \
-    file://0007-imx-fix-building-for-i.mx8-without-spl.patch \
-    file://0008-board-toradex-add-colibri-imx8qxp-2gb-wb-it-v1.0b-mo.patch \
-    file://0009-board-toradex-drop-support.arm-maintainer-email.patch \
-    file://0010-misc-imx8-add-sc_misc_get_temp.patch \
-    file://0011-thermal-add-i.MX8-thermal-driver.patch \
-    file://0012-imx8-cpu-get-temperature-when-print-cpu-desc.patch \
-    file://0013-imx-imx8dx-qxp-enable-thermal.patch \
-    file://0014-arm-dts-imx8qm-add-lpuart1-lpuart2-lpuart3-lpuart4.patch \
-    file://0015-arm-dts-imx8qm-add-support-for-i2c0-i2c1-i2c2-i2c3-a.patch \
-    file://0016-clk-imx8qm-fix-usdhc2-clocks.patch \
-    file://0017-imx8qm-fix-cpu-frequency-reporting.patch \
-    file://0018-imx8-fuse-fix-fuse-driver.patch \
-    file://0019-board-toradex-add-apalis-imx8qm-4gb-wb-it-v1.0b-modu.patch \
+    file://0001-usb-limit-USB_MAX_XFER_BLK-to-256.patch \
+    file://0002-misc-imx8-add-sc_misc_get_temp.patch \
+    file://0003-thermal-add-i.MX8-thermal-driver.patch \
+    file://0004-imx-imx8dx-qxp-enable-thermal.patch \
+    file://0005-misc-imx8-add-sc_rm_set_master_sid.patch \
+    file://0006-MLK-14938-8-imx8-Add-SMMU-setup-to-Soc-codes.patch \
+    file://0007-apalis-imx8-enable-smmu-setup.patch \
+    file://0008-MLK-16087-imx8qm-qxp-Disable-kernel-FDT-nodes-for-th.patch \
+    file://0009-MLK-16560-1-imx8-Configure-sids-based-on-iommu-prope.patch \
+    file://0010-apalis-imx8-enable-of_system_setup.patch \
+    file://0011-MLK-17205-1-video-imx-hdp-Adding-support-for-HDP-fir.patch \
+    file://0012-MLK-17205-2-video-imx-hdp-Adding-HDP-firmware-loadin.patch \
+    file://0013-MLK-17205-3-video-imx-hdp-Adding-configs-for-HDP-fir.patch \
+    file://0014-apalis-imx8-enable-hdp-firmware-loading.patch \
+    \
+    file://0001-imx8-cpu-fix-warning-for-cpu_imx_get_temp.patch \
+    file://0002-video-fsl_dcu_fb-refactor-init-functions.patch \
+    file://0003-video-fsl_dcu_fb-add-DM_VIDEO-support.patch \
+    file://0004-ARM-dts-colibri_vf-Add-dcu0-node.patch \
+    file://0005-colibri_vf-enable-DM_VIDEO.patch \
+    file://0006-colibri-apalis-tegra-drop-DFU-support.patch \
+    file://0007-colibri-apalis-imx-drop-DFU-support.patch \
+    \
+    file://0001-video-mxsfb-fix-mxsfb-fbdev-binding-issues.patch \
+    file://0002-ARM-dts-colibri_imx7-Fix-lcdif-node-definition.patch \
+    file://0003-configs-colibri_imx7-enable-DM_VIDEO.patch \
+    file://0004-colibri-imx6ull-support-building-with-DM_VIDEO-y.patch \
+    file://0005-ARM-dts-colibri-imx6ull-extend-lcdif-node.patch \
+    file://0006-configs-colibri-imx6ull-switch-to-DM_VIDEO.patch \
 "
+
 S = "${WORKDIR}/git"

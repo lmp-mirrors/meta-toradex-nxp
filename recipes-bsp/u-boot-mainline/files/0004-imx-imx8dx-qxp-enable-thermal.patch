@@ -1,7 +1,7 @@
-From ca9e4fef07365d39566288a45670c75d320e2f32 Mon Sep 17 00:00:00 2001
+From cdd878eee2db385e97ffa4dd11d9dce77e44c615 Mon Sep 17 00:00:00 2001
 From: Peng Fan <peng.fan@nxp.com>
-Date: Fri, 12 Apr 2019 07:55:09 +0000
-Subject: [PATCH 13/19] imx: imx8dx/qxp: enable thermal
+Date: Sun, 5 May 2019 13:24:00 +0000
+Subject: [PATCH 04/15] imx: imx8dx/qxp: enable thermal
 
 Add thermal dts node
 Enable thermal in defconfig
@@ -87,10 +87,10 @@ index 715abb413d..4fc87a9fc8 100644
  
  &A35_0 {
 diff --git a/configs/imx8qxp_mek_defconfig b/configs/imx8qxp_mek_defconfig
-index 2fb2fdf7ff..6101f62087 100644
+index d735d34b8b..076f9acd6c 100644
 --- a/configs/imx8qxp_mek_defconfig
 +++ b/configs/imx8qxp_mek_defconfig
-@@ -74,5 +74,7 @@ CONFIG_DM_REGULATOR_GPIO=y
+@@ -77,5 +77,7 @@ CONFIG_DM_REGULATOR_GPIO=y
  CONFIG_SPL_DM_REGULATOR_GPIO=y
  CONFIG_DM_SERIAL=y
  CONFIG_FSL_LPUART=y
@@ -99,5 +99,5 @@ index 2fb2fdf7ff..6101f62087 100644
  CONFIG_SPL_TINY_MEMSET=y
  # CONFIG_EFI_LOADER is not set
 -- 
-2.14.5
+2.13.6
 

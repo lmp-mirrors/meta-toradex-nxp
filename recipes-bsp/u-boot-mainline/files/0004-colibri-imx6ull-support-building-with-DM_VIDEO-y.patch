@@ -1,0 +1,44 @@
+From 501c39b579c901989d6ef6f4463bb5ea1572fa09 Mon Sep 17 00:00:00 2001
+From: Igor Opaniuk <igor.opaniuk@toradex.com>
+Date: Wed, 19 Jun 2019 11:47:08 +0300
+Subject: [PATCH 4/6] colibri-imx6ull: support building with DM_VIDEO=y
+
+1. This fixes linking issues when building with DM_VIDEO enabled mxsfb
+driver.
+2. Provide proper defines for both VIDEO=y and DM_VIDEO=y.
+
+Signed-off-by: Igor Opaniuk <igor.opaniuk@toradex.com>
+---
+ arch/arm/mach-imx/mx6/soc.c       | 2 +-
+ include/configs/colibri-imx6ull.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/mach-imx/mx6/soc.c b/arch/arm/mach-imx/mx6/soc.c
+index e80f1d484b..86a9eeba0c 100644
+--- a/arch/arm/mach-imx/mx6/soc.c
++++ b/arch/arm/mach-imx/mx6/soc.c
+@@ -549,7 +549,7 @@ const struct boot_mode soc_boot_modes[] = {
+ void reset_misc(void)
+ {
+ #ifndef CONFIG_SPL_BUILD
+-#ifdef CONFIG_VIDEO_MXS
++#if defined(CONFIG_VIDEO_MXS) && !defined(CONFIG_DM_VIDEO)
+ 	lcdif_power_down();
+ #endif
+ #endif
+diff --git a/include/configs/colibri-imx6ull.h b/include/configs/colibri-imx6ull.h
+index b221e118fa..37bd78ea2e 100644
+--- a/include/configs/colibri-imx6ull.h
++++ b/include/configs/colibri-imx6ull.h
+@@ -172,7 +172,7 @@
+ #define CONFIG_SYS_DFU_DATA_BUF_SIZE	SZ_16M
+ #define DFU_DEFAULT_POLL_TIMEOUT	300
+ 
+-#ifdef CONFIG_VIDEO
++#if defined(CONFIG_VIDEO) || defined(CONFIG_DM_VIDEO)
+ #define CONFIG_VIDEO_MXS
+ #define MXS_LCDIF_BASE MX6UL_LCDIF1_BASE_ADDR
+ #define CONFIG_VIDEO_LOGO
+-- 
+2.13.6
+

@@ -1,7 +1,7 @@
-From 286d5ccf4ab601c8b93be40acaaeb4af6f6b2d49 Mon Sep 17 00:00:00 2001
+From d8ee868c17170e39d36e61fb0bb77def1786724b Mon Sep 17 00:00:00 2001
 From: Peng Fan <peng.fan@nxp.com>
-Date: Fri, 12 Apr 2019 07:55:00 +0000
-Subject: [PATCH 10/19] misc: imx8: add sc_misc_get_temp
+Date: Sun, 5 May 2019 13:23:51 +0000
+Subject: [PATCH 02/15] misc: imx8: add sc_misc_get_temp
 
 Add sc_misc_get_temp to support get temperature
 
@@ -76,5 +76,5 @@ index d9c4d5d784..031bc0048b 100644
  sc_bool_t sc_rm_is_memreg_owned(sc_ipc_t ipc, sc_rm_mr_t mr)
  {
 -- 
-2.14.5
+2.13.6
 

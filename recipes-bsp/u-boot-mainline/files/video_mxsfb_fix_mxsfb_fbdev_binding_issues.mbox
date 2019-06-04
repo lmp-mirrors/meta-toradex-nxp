@@ -1,0 +1,1140 @@
+From igor.opaniuk@gmail.com Wed Jun 19 08:47:15 2019
+Received: from DBBPR05MB6474.eurprd05.prod.outlook.com
+ (2603:10a6:209:8b::37) by AM6PR0502MB3688.eurprd05.prod.outlook.com with
+ HTTPS via AM6P191CA0024.EURP191.PROD.OUTLOOK.COM; Wed, 19 Jun 2019 08:47:15
+ +0000
+Received: from AM3PR05CA0142.eurprd05.prod.outlook.com
+ (2603:10a6:207:3::20) by DBBPR05MB6474.eurprd05.prod.outlook.com
+ (2603:10a6:10:cc::10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1987.11; Wed, 19 Jun
+ 2019 08:47:14 +0000
+Received: from DB5EUR01FT025.eop-EUR01.prod.protection.outlook.com
+ (2a01:111:f400:7e02::200) by AM3PR05CA0142.outlook.office365.com
+ (2603:10a6:207:3::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.20.1987.13 via Frontend
+ Transport; Wed, 19 Jun 2019 08:47:14 +0000
+Authentication-Results: spf=softfail (sender IP is 91.209.104.157)
+ smtp.mailfrom=gmail.com; toradex.com; dkim=pass (signature was verified)
+ header.d=gmail.com;toradex.com; dmarc=pass action=none
+ header.from=gmail.com;compauth=pass reason=100
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ gmail.com discourages use of 91.209.104.157 as permitted sender)
+Received: from dispatch1-eu1.ppe-hosted.com (91.209.104.157) by
+ DB5EUR01FT025.mail.protection.outlook.com (10.152.4.240) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384)
+ id 15.20.2008.13 via Frontend Transport; Wed, 19 Jun 2019 08:47:14 +0000
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com
+ [209.85.221.66]) (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256
+ (128/128 bits)) (No client certificate requested) by mx1-eu1.ppe-hosted.com
+ (PPE Hosted ESMTP Server) with ESMTPS id 8D6CA800077; Wed, 19 Jun 2019
+ 08:47:13 +0000 (UTC)
+Received: by mail-wr1-f66.google.com with SMTP id p11so2400969wre.7;
+        Wed, 19 Jun 2019 01:47:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com;
+ s=20161025; h=from:to:cc:subject:date:message-id:in-reply-to:references;
+ bh=+ky1e8NbOQ4HXdCozTskKppJj59ix/nasaCKDIQ96x0=;
+ b=pa5mFM5Cjok0jbjbzDLhTtk+yGPnoQv1h9iKRzWJ+g1ZEBnmN5gA7HeZtzNUll6W2h
+ tX2Ct+mhaXELhKbwsorKHwGqSXERqFE5KuXMh4Nnl8G5vbpmX3ThDQYvTvuHtKDHaS3w
+ bdxUMV/mMC/mLJqCvdcP/1gJ3fcEG02ZIYWSMArT/PHZnCijbbjpgjOTNbJseNhyqFZu
+ 5XASFZmLLQkXacLc+epYHzsrKShjM+8ifqOfMM+en7Y7x5spyq3vvuwzIQq6TXO2njSj
+ NfbzFdoYbSViF0D6ONO731nUHdBx1d/QzWFtp8IShzkIgWVKmW2Oj5WSlj11NLWBD7Bc YqeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references; bh=+ky1e8NbOQ4HXdCozTskKppJj59ix/nasaCKDIQ96x0=;
+ b=rBxfOdhGpaltB6IuBBPtUh/GC77CmifCvfQMF3nWvvyUbtT0EYb7mMYW1GMY45YGuq
+ 9clIvvcgBbQQSjFFhUdEGghu9goUQDi9one39Om3guvTIAgJQ/GNIoJWcdAD+ib+AHAw
+ /Lh3/iCUsOK0JQcf35FgBoVOvHpu5k+kuhFCuYEbkn21Ek3b87ykcExL3WMe2MyO+6Gn
+ hB7YoKjnhWuBGUgMCxVpYpcuyDMuhT33RL1ci+dCrfCJDRXiUR4XL7+YIhJRhVJi17+/
+ ogihzH1KkVUkw3gXg31Q5U2JpOptqYOBvl959R7lDrM+rAym+ojAT32TLS918EaAZTfn eLSA==
+X-Gm-Message-State:
+ APjAAAWLmOriVFf2twrayRUiaWZ9CymkVyb5nyb+cmhw33llHzaWsfXR
+ RQNQ1Qr2xoogdlb9dPdSjwE=
+X-Google-Smtp-Source:
+ APXvYqxqf+ZmdHhDyGeHuoBSBdiecNPglHyDhxmdkYM/09LCtPcXaIkI+NfOd+5Ww/oCmSkvDSyriQ==
+X-Received: by 2002:adf:b60f:: with SMTP id
+ f15mr19687083wre.283.1560934033132; Wed, 19 Jun 2019 01:47:13 -0700 (PDT)
+Received: from localhost ([194.105.145.90]) by smtp.gmail.com with ESMTPSA
+ id r3sm20076998wrr.61.2019.06.19.01.47.12 (version=TLS1_2
+ cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256); Wed, 19 Jun 2019 01:47:12
+ -0700 (PDT)
+From: Igor Opaniuk <igor.opaniuk@gmail.com>
+To: u-boot@lists.denx.de
+Cc: agust@denx.de,
+	albert.u.boot@aribaud.net,
+	sbabic@denx.de,
+	festevam@gmail.com,
+	uboot-imx@nxp.com,
+	peng.fan@nxp.com,
+	jagan@amarulasolutions.com,
+	marcel.ziswiler@toradex.com,
+	stefan@agner.ch,
+	max.krummenacher@toradex.com
+Subject: [PATCH 1/6] video: mxsfb: fix mxsfb fbdev binding issues
+Message-Id: <20190619084710.19074-2-igor.opaniuk@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190619084710.19074-1-igor.opaniuk@gmail.com>
+References: <20190619084710.19074-1-igor.opaniuk@gmail.com>
+X-MDID: 1560934034-1SIYzjPIaBSY
+Return-Path: igor.opaniuk@gmail.com
+X-MS-Exchange-Organization-ExpirationStartTime: 19 Jun 2019 08:47:14.3918
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id:
+ 2a4bed9d-c604-4a64-1f8c-08d6f492ba16
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: d9995866-0d9b-4251-8315-093f062abab4:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-Forefront-Antispam-Report:
+ CIP:91.209.104.157;IPV:NLI;CTRY:GB;EFV:NLI;SFV:NSPM;SFS:(2980300002)(199004)(189003)(73392003)(2361001)(2351001)(61266001)(1096003)(95326003)(76506005)(57986006)(26005)(16003)(2160300002)(356004)(76176011)(7636002)(86362001)(44832011)(47776003)(336012)(246002)(956004)(426003)(446003)(126002)(6666004)(50466002)(48376002)(36756003)(2616005)(16586007)(7596002)(11346002)(82202003)(486006)(60626007)(50226002)(60616004)(8676002)(55446002)(450100002)(305945005)(5660300002)(34206002)(51416003)(73972006)(1076003)(83322999)(476003)(59536001)(76482006)(4326008);DIR:INB;SFP:;SCL:1;SRVR:DBBPR05MB6474;H:dispatch1-eu1.ppe-hosted.com;FPR:;SPF:SoftFail;LANG:en;PTR:dispatch1-eu1.ppe-hosted.com;A:1;MX:1;
+Content-Type: text/plain
+X-MS-Exchange-Organization-AuthSource:
+ DB5EUR01FT025.eop-EUR01.prod.protection.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id:
+ 2a4bed9d-c604-4a64-1f8c-08d6f492ba16
+X-Microsoft-Antispam:
+ BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(5600148)(711020)(4605104)(4709080)(8001031)(1402095)(71702078);SRVR:DBBPR05MB6474;
+X-MS-TrafficTypeDiagnostic: DBBPR05MB6474:
+X-MS-Oob-TLC-OOBClassifiers: OLM:2089;
+X-MS-Exchange-Organization-SCL: 1
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2019 08:47:14.3147
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id:
+ 2a4bed9d-c604-4a64-1f8c-08d6f492ba16
+X-MS-Exchange-CrossTenant-Id: d9995866-0d9b-4251-8315-093f062abab4
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR05MB6474
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:01.3268693
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.1987.013
+X-Microsoft-Antispam-Mailbox-Delivery:
+ ucf:0;jmr:0;ex:0;auth:0;dest:I;ENG:(20160514016)(750119)(520011016)(944506303)(944626516);
+X-Microsoft-Antispam-Message-Info:
+ RxF0PDFExWB5QCDuLwuxkqX2AI9JgAu7ErJk2I6wwJTvqB7H088Zf4OL22pPXMNFbO3WFoJX1gGjKXg3bap9khngCJMqxa/mUY3NCf1JRH7DqRPkC7aa1eGPBhholtMp7qd4IVAZ51dtO+hS1GbzYOtwsFGvC5+DwhGAGksES6rzNnKyTb/kr16aksTgMUeOboC9YRO6yt2+WrSZ5w3LpIH436alRHCXIRpSFxdHLiw6yxS/Ex145Y3LtsfKZXejhnxXjE+BA+cm8Vwfzbe0Gx1w2f7rgQOkVJE1yrCu76jABC76z5p3TrWuHk/Kh4TvtNWPhM3rbr/Iqtv28QcYA756ataxSc3GvPooUObHfjzxzkHtsVDKuXj8cC2eUnpyVH74KAK8xlYxv3LkbnNdOzfSDtiGvSxS7TfUlAUWRFJW1hIU9JR4Y/6cxCZcK0G7ACF+tjafigiFUqva4v0u91BlQCQ2qcnr7adBt3wZmDuAiQhhSlWL0k38PBTI2xcX8puilFyvLL4EddBzSgTkHPHa+5slfShfo5dVcmvkvTmtjd4RITDxVWSST1D/2LmfQFN5bQHz3n5RXK/H38TGWTCJ7S7/wPI64WqeiHvM95weT5HoX2HfioIo9KlAutU7cSm9vtr7w8QlTrNIc4P5zI/gFU9/NQiClz1BJDpyAN0nGs6myX5BoX0uvLILfASSZw8ndMCIeTaLXi43FDjaqZn3torrKm/BVfJkS9n4cIMYlGzbld1tcp/4XLD87FlxpGxfGQwGdxXPCFcEOue1eFAthxDPSCH5CxLaqSgquq+AKWFaRMEFlHzLz5uTnkz8uZXgZOS9GMyxrTUexu+I7nZLUGOmzTTUIZ1i0KvFsJSE0V5XK3lrEhfx+KP6Iw9qqMbj1IqZl8Yo5Dhd8mI9yDYQ2h8prpJofYcQz4K4PKyh2R32//6gfdxTj8yYL/oA
+MIME-Version: 1.0
+Date: Wed, 19 Jun 2019 11:47:05 +0300
+X-Evolution-Source: 1468251588.7413.5@roman-pc.toradex.int
+Content-Transfer-Encoding: 8bit
+
+From: Igor Opaniuk <igor.opaniuk@toradex.com>
+
+Add support for display and bits-per-pixel properties.
+
+Signed-off-by: Igor Opaniuk <igor.opaniuk@toradex.com>
+---
+ drivers/video/mxsfb.c | 74 ++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 62 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/video/mxsfb.c b/drivers/video/mxsfb.c
+index f02ba20138..6c9a7c05e8 100644
+--- a/drivers/video/mxsfb.c
++++ b/drivers/video/mxsfb.c
+@@ -271,6 +271,42 @@ dealloc_fb:
+ }
+ #else /* ifndef CONFIG_DM_VIDEO */
+ 
++static int mxs_of_get_timings(struct udevice *dev,
++			      struct display_timing *timings,
++			      u32 *bpp)
++{
++	int ret = 0;
++	u32 display_phandle;
++	ofnode display_node;
++
++	ret = ofnode_read_u32(dev_ofnode(dev), "display", &display_phandle);
++	if (ret) {
++		dev_err(dev, "required display property isn't provided\n");
++		return -EINVAL;
++	}
++
++	display_node = ofnode_get_by_phandle(display_phandle);
++	if (!ofnode_valid(display_node)) {
++		dev_err(dev, "failed to find display subnode\n");
++		return -EINVAL;
++	}
++
++	ret = ofnode_read_u32(display_node, "bits-per-pixel", bpp);
++	if (ret) {
++		dev_err(dev,
++			"required bits-per-pixel property isn't provided\n");
++		return -EINVAL;
++	}
++
++	ret = ofnode_decode_display_timing(display_node, 0, timings);
++	if (ret) {
++		dev_err(dev, "failed to get any display timings\n");
++		return -EINVAL;
++	}
++
++	return ret;
++}
++
+ static int mxs_video_probe(struct udevice *dev)
+ {
+ 	struct video_uc_platdata *plat = dev_get_uclass_platdata(dev);
+@@ -278,18 +314,16 @@ static int mxs_video_probe(struct udevice *dev)
+ 
+ 	struct ctfb_res_modes mode;
+ 	struct display_timing timings;
+-	int bpp = -1;
++	u32 bpp = 0;
+ 	u32 fb_start, fb_end;
+ 	int ret;
+ 
+ 	debug("%s() plat: base 0x%lx, size 0x%x\n",
+ 	       __func__, plat->base, plat->size);
+ 
+-	ret = ofnode_decode_display_timing(dev_ofnode(dev), 0, &timings);
+-	if (ret) {
+-		dev_err(dev, "failed to get any display timings\n");
+-		return -EINVAL;
+-	}
++	ret = mxs_of_get_timings(dev, &timings, &bpp);
++	if (ret)
++		return ret;
+ 
+ 	mode.xres = timings.hactive.typ;
+ 	mode.yres = timings.vactive.typ;
+@@ -301,13 +335,12 @@ static int mxs_video_probe(struct udevice *dev)
+ 	mode.vsync_len = timings.vsync_len.typ;
+ 	mode.pixclock = HZ2PS(timings.pixelclock.typ);
+ 
+-	bpp = BITS_PP;
+-
+ 	ret = mxs_probe_common(&mode, bpp, plat->base);
+ 	if (ret)
+ 		return ret;
+ 
+ 	switch (bpp) {
++	case 32:
+ 	case 24:
+ 	case 18:
+ 		uc_priv->bpix = VIDEO_BPP32;
+@@ -341,15 +374,32 @@ static int mxs_video_bind(struct udevice *dev)
+ {
+ 	struct video_uc_platdata *plat = dev_get_uclass_platdata(dev);
+ 	struct display_timing timings;
++	u32 bpp = 0;
++	u32 bytes_pp = 0;
+ 	int ret;
+ 
+-	ret = ofnode_decode_display_timing(dev_ofnode(dev), 0, &timings);
+-	if (ret) {
+-		dev_err(dev, "failed to get any display timings\n");
++	ret = mxs_of_get_timings(dev, &timings, &bpp);
++	if (ret)
++		return ret;
++
++	switch (bpp) {
++	case 32:
++	case 24:
++	case 18:
++		bytes_pp = 4;
++		break;
++	case 16:
++		bytes_pp = 2;
++		break;
++	case 8:
++		bytes_pp = 1;
++		break;
++	default:
++		dev_err(dev, "invalid bpp specified (bpp = %i)\n", bpp);
+ 		return -EINVAL;
+ 	}
+ 
+-	plat->size = timings.hactive.typ * timings.vactive.typ * BYTES_PP;
++	plat->size = timings.hactive.typ * timings.vactive.typ * bytes_pp;
+ 
+ 	return 0;
+ }
+-- 
+2.17.1
+
+
+From igor.opaniuk@gmail.com Wed Jun 19 08:47:17 2019
+Received: from AM0PR05MB6466.eurprd05.prod.outlook.com
+ (2603:10a6:20b:3a::32) by AM6PR0502MB3688.eurprd05.prod.outlook.com with
+ HTTPS via AM6PR0202CA0055.EURPRD02.PROD.OUTLOOK.COM; Wed, 19 Jun 2019
+ 08:47:17 +0000
+Received: from HE1PR0501CA0006.eurprd05.prod.outlook.com
+ (2603:10a6:3:1a::16) by AM0PR05MB6466.eurprd05.prod.outlook.com
+ (2603:10a6:208:13e::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1987.11; Wed, 19 Jun
+ 2019 08:47:16 +0000
+Received: from DB5EUR01FT028.eop-EUR01.prod.protection.outlook.com
+ (2a01:111:f400:7e02::209) by HE1PR0501CA0006.outlook.office365.com
+ (2603:10a6:3:1a::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1987.12 via Frontend
+ Transport; Wed, 19 Jun 2019 08:47:15 +0000
+Authentication-Results: spf=softfail (sender IP is 185.132.181.6)
+ smtp.mailfrom=gmail.com; toradex.com; dkim=pass (signature was verified)
+ header.d=gmail.com;toradex.com; dmarc=pass action=none
+ header.from=gmail.com;compauth=pass reason=100
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ gmail.com discourages use of 185.132.181.6 as permitted sender)
+Received: from dispatch1-eu1.ppe-hosted.com (185.132.181.6) by
+ DB5EUR01FT028.mail.protection.outlook.com (10.152.4.237) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384)
+ id 15.20.2008.13 via Frontend Transport; Wed, 19 Jun 2019 08:47:15 +0000
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail-wr1-f67.google.com (mail-wr1-f67.google.com
+ [209.85.221.67]) (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256
+ (128/128 bits)) (No client certificate requested) by mx1-eu1.ppe-hosted.com
+ (PPE Hosted ESMTP Server) with ESMTPS id 98193A40066; Wed, 19 Jun 2019
+ 08:47:14 +0000 (UTC)
+Received: by mail-wr1-f67.google.com with SMTP id n4so2359002wrw.13;
+        Wed, 19 Jun 2019 01:47:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com;
+ s=20161025; h=from:to:cc:subject:date:message-id:in-reply-to:references;
+ bh=Og6Tyqh06wltZnx6uI4Uz0VzGdRmJQzlnAcslpN+uYs=;
+ b=rUNzx1MgbKqLB82I0ChPSZSBsgAgIpdxe3aORefI7ewNdZSUjsXAoeYOPnWBiZrJbq
+ Cjn6YqnYnvH7VWGKVNfrYmef9qHQ3cuIKquNHKkrKTlkmSlgPFFLZiRHBZlpCvJusbEB
+ 3YQo3z2IXmZ6zL0iQ0HHEMPNfPG7RGjJ5utlNfyQ12IQ0P5SRw0mcTg6Dq+iNviEGYRu
+ u9fmsFMIDjteSn8iowH9GmCvL1eJ6AyHPFSnzoM2L2pAPkL4InnN19dvCei5EYkhYMLd
+ S+h6TV/OH2z7YSg6Q4+fs2kM7h9MiNAZBtKMAmq1d+GPwRFrxbe0wDtPcnzACDNlJ4PG ixYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references; bh=Og6Tyqh06wltZnx6uI4Uz0VzGdRmJQzlnAcslpN+uYs=;
+ b=iXomlqSauw4Z54FQVcPu1N0W+/AOZELVqjXvLzT42HBI7LBd5lQucELQbD5ek1LYES
+ 5dqgcolwTWBiGqfB5H6+IvS84I7cpTLZYp0K93YqTQ9k5iSx6bh3PDZz1UeUKzhKqjz3
+ HXt8itNsUxDjqApRQn2JeT8rMwk0x5r/MYps/KD9ud1wqOm8pe1LEpC/USyMrreO9WKy
+ MJkJd2ssPUHePOvSKqp8eSe9d3ae1WcEi6IHdnMU4/Yv7YZyFvYsFd+3RX894QE0WKI7
+ TONLC88NoeLEjQ+nCGipzcRo+bnQBTFLc7HTvJpHeiR5YN5NKIPSon70suDhOcrAm8bK Y8vA==
+X-Gm-Message-State:
+ APjAAAVBb4PdrmmblCxz3AAj7xZ3UHtSuveCPf7ERjoHiSwoDbb9aOgo
+ eWJquonXNfCA1HMebq4+1Fc=
+X-Google-Smtp-Source:
+ APXvYqxtj1uUlxozlRfpix2OJSBh/rf48E8qXzOqIpBIhNWgirGOwh1leRYMHVLdpEZaf7as9Agn0A==
+X-Received: by 2002:adf:ce03:: with SMTP id
+ p3mr61373726wrn.94.1560934034265; Wed, 19 Jun 2019 01:47:14 -0700 (PDT)
+Received: from localhost ([194.105.145.90]) by smtp.gmail.com with ESMTPSA
+ id s63sm755665wme.17.2019.06.19.01.47.13 (version=TLS1_2
+ cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256); Wed, 19 Jun 2019 01:47:13
+ -0700 (PDT)
+From: Igor Opaniuk <igor.opaniuk@gmail.com>
+To: u-boot@lists.denx.de
+Cc: agust@denx.de,
+	albert.u.boot@aribaud.net,
+	sbabic@denx.de,
+	festevam@gmail.com,
+	uboot-imx@nxp.com,
+	peng.fan@nxp.com,
+	jagan@amarulasolutions.com,
+	marcel.ziswiler@toradex.com,
+	stefan@agner.ch,
+	max.krummenacher@toradex.com
+Subject: [PATCH 2/6] ARM: dts: colibri_imx7: Fix lcdif node definition
+Message-Id: <20190619084710.19074-3-igor.opaniuk@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190619084710.19074-1-igor.opaniuk@gmail.com>
+References: <20190619084710.19074-1-igor.opaniuk@gmail.com>
+X-MDID: 1560934035-0AIPggVIhb44
+Return-Path: igor.opaniuk@gmail.com
+X-MS-Exchange-Organization-ExpirationStartTime: 19 Jun 2019 08:47:15.5176
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id:
+ 6d6c71b7-c5f6-4329-e878-08d6f492bac1
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: d9995866-0d9b-4251-8315-093f062abab4:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-Forefront-Antispam-Report:
+ CIP:185.132.181.6;IPV:CAL;SCL:-1;CTRY:NL;EFV:NLI;SFV:SKN;SFS:;DIR:INB;SFP:;SCL:-1;SRVR:AM0PR05MB6466;H:dispatch1-eu1.ppe-hosted.com;FPR:;SPF:None;LANG:en;
+X-MS-Exchange-Organization-SCL: -1
+Content-Type: text/plain
+X-MS-Exchange-Organization-AuthSource:
+ DB5EUR01FT028.eop-EUR01.prod.protection.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id:
+ 6d6c71b7-c5f6-4329-e878-08d6f492bac1
+X-Microsoft-Antispam:
+ BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(5600148)(711020)(4605104)(4709080)(8001031)(1402095)(71702078);SRVR:AM0PR05MB6466;
+X-MS-TrafficTypeDiagnostic: AM0PR05MB6466:
+X-MS-Exchange-PUrlCount: 1
+X-MS-Oob-TLC-OOBClassifiers: OLM:2512;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2019 08:47:15.4025
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id:
+ 6d6c71b7-c5f6-4329-e878-08d6f492bac1
+X-MS-Exchange-CrossTenant-Id: d9995866-0d9b-4251-8315-093f062abab4
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR05MB6466
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:01.8981251
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.1987.013
+X-Microsoft-Antispam-Mailbox-Delivery:
+ ucf:0;jmr:0;ex:0;auth:0;dest:I;ENG:(750119)(520011016)(944506303)(944626516);
+X-Microsoft-Antispam-Message-Info:
+	=?iso-8859-1?Q?qHqHra3t8MWayuGiWjplQcOHDMzEtloWMwssJ641P4LVbtIP+/zK00fYH3?=
+ =?iso-8859-1?Q?EC/FgBkjEc3fuPW9AsfeG6aszm6Y9wlTFcH8IS8gSVrYvOhg8jtejDFff3?=
+ =?iso-8859-1?Q?WLBXPD/uBmHxQ1TVo3TLnAI4d7KWLGejWyDShEx7Vi/KJh1m94LmI1BoFJ?=
+ =?iso-8859-1?Q?uQwxEbMVIltLmW0Kfbw2Cx2GwGmESy62pOqHAZxWYlgSd0bK0Zeq0YLnv2?=
+ =?iso-8859-1?Q?pov/ZEBccOzWcfOieoVqq6kwOyteP3SexG5tbbTlgTdZulF3MfvgEVbHP3?=
+ =?iso-8859-1?Q?c+XwIT3+FkcfSkJmU9LE+7PnnzLiuxASRM33GpWLIgZeNfOWnr2ofzWntI?=
+ =?iso-8859-1?Q?rixv35A6eGWmisHnd8nZyppRDX0FX4l+KA0+umSiSwVlyFboQBwEnUn40+?=
+ =?iso-8859-1?Q?ND+aiSXguIQ97TgmO51UWrkj56RpASdKgFpAHzMrigShfl1Ku8VPnzDO/0?=
+ =?iso-8859-1?Q?R0+jqpN3/ZFYcwgRudfFtY+4kqNzOcNZgBXhLIlRdaVJ2xBKLhJ+ubCE2l?=
+ =?iso-8859-1?Q?oC5uG/PXp/GlenwNqrWkIZ1/5rE2d8hTOpbjIYN1J9E24nj/HygiLX5qnG?=
+ =?iso-8859-1?Q?hvRq87kF4YWKNiv1S9zYMLpjJaE+QT2xNO1WIBI48mCRv+e0PQNYyK3P4L?=
+ =?iso-8859-1?Q?rjjZsRwPx+nw1KHEdtwngSkVtoy8pczE46zQfft0u9ZRjhFVdNdkxfnNj3?=
+ =?iso-8859-1?Q?vH/IXs4eXySGWsin1dM3JOCdLhzInwztxQo/GBXv1tdDSK2q//8LrdVsFw?=
+ =?iso-8859-1?Q?zpCZmMGeDgjwe0rgpY/4zczElN6xEgs0rwV+yH/VOTWmp1A83sV/9zPRa9?=
+ =?iso-8859-1?Q?pnKlSF6u0+th96oIrNokOBn2sHSYvAzDHEWE39BDBm3LrBrU1ujfuUasR1?=
+ =?iso-8859-1?Q?XzT3yozvMvefVAW7ECafsWjQnalI3+W6Ic8I4Zr+OeWKzY1xHQqRPsY/SO?=
+ =?iso-8859-1?Q?WwvYAPKp+/+sJ4uTktexMSdy8Hdn381eSz3q9DcAYDmh3OCKnbhbkIs40P?=
+ =?iso-8859-1?Q?JN7P3R6la+bYM5SER72LYYo65eRVLM6Uj/7q0nFtGc/uwJ+Vpb00PGqD9I?=
+ =?iso-8859-1?Q?iPA7pgAKB+e0h8va7PeapWPY1rARWWgBdM/9SQwz22kD/lHOfhJJVDn1W7?=
+ =?iso-8859-1?Q?xmtgqlsg=3D=3D?=
+MIME-Version: 1.0
+Date: Wed, 19 Jun 2019 11:47:06 +0300
+X-Evolution-Source: 1468251588.7413.5@roman-pc.toradex.int
+Content-Transfer-Encoding: 8bit
+
+From: Igor Opaniuk <igor.opaniuk@toradex.com>
+
+Fix lcdif DT node and make it conform to the structure defined in the
+Linux devicetree bindings [1]. Currently there is support only for
+old style lcdif node definitions.
+
+[1] https://www.kernel.org/doc/Documentation/devicetree/bindings/display/mxsfb.txt
+
+Signed-off-by: Igor Opaniuk <igor.opaniuk@toradex.com>
+---
+ arch/arm/dts/imx7-colibri.dtsi | 47 +++++++++++++++++++---------------
+ 1 file changed, 26 insertions(+), 21 deletions(-)
+
+diff --git a/arch/arm/dts/imx7-colibri.dtsi b/arch/arm/dts/imx7-colibri.dtsi
+index 81717c233d..308e0b2a63 100644
+--- a/arch/arm/dts/imx7-colibri.dtsi
++++ b/arch/arm/dts/imx7-colibri.dtsi
+@@ -113,29 +113,34 @@
+ };
+ 
+ &lcdif {
+-	u-boot,dm-pre-reloc;
+ 	status = "okay";
++	display = <&display0>;
++	u-boot,dm-pre-reloc;
+ 
+-	display-timings {
+-		native-mode = <&timing_vga>;
+-
+-		/* Standard VGA timing */
+-		timing_vga: 640x480 {
+-			u-boot,dm-pre-reloc;
+-			clock-frequency = <25175000>;
+-			hactive = <640>;
+-			vactive = <480>;
+-			hback-porch = <48>;
+-			hfront-porch = <16>;
+-			vback-porch = <33>;
+-			vfront-porch = <10>;
+-			hsync-len = <96>;
+-			vsync-len = <2>;
+-
+-			de-active = <1>;
+-			hsync-active = <0>;
+-			vsync-active = <0>;
+-			pixelclk-active = <0>;
++	display0: display0 {
++		bits-per-pixel = <18>;
++		bus-width = <24>;
++		status = "okay";
++
++		display-timings {
++			native-mode = <&timing_vga>;
++			timing_vga: 640x480 {
++				u-boot,dm-pre-reloc;
++				clock-frequency = <25175000>;
++				hactive = <640>;
++				vactive = <480>;
++				hback-porch = <48>;
++				hfront-porch = <16>;
++				vback-porch = <33>;
++				vfront-porch = <10>;
++				hsync-len = <96>;
++				vsync-len = <2>;
++
++				de-active = <1>;
++				hsync-active = <0>;
++				vsync-active = <0>;
++				pixelclk-active = <0>;
++			};
+ 		};
+ 	};
+ };
+-- 
+2.17.1
+
+
+From igor.opaniuk@gmail.com Wed Jun 19 08:47:17 2019
+Received: from DBBPR05MB6476.eurprd05.prod.outlook.com
+ (2603:10a6:203:69::11) by AM6PR0502MB3688.eurprd05.prod.outlook.com with
+ HTTPS via AM5PR0202CA0001.EURPRD02.PROD.OUTLOOK.COM; Wed, 19 Jun 2019
+ 08:47:17 +0000
+Received: from AM3PR05CA0128.eurprd05.prod.outlook.com
+ (2603:10a6:207:2::30) by DBBPR05MB6476.eurprd05.prod.outlook.com
+ (2603:10a6:10:cc::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1987.11; Wed, 19 Jun
+ 2019 08:47:17 +0000
+Received: from DB5EUR01FT054.eop-EUR01.prod.protection.outlook.com
+ (2a01:111:f400:7e02::200) by AM3PR05CA0128.outlook.office365.com
+ (2603:10a6:207:2::30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1987.12 via Frontend
+ Transport; Wed, 19 Jun 2019 08:47:16 +0000
+Authentication-Results: spf=softfail (sender IP is 185.132.181.6)
+ smtp.mailfrom=gmail.com; toradex.com; dkim=pass (signature was verified)
+ header.d=gmail.com;toradex.com; dmarc=pass action=none
+ header.from=gmail.com;compauth=pass reason=100
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ gmail.com discourages use of 185.132.181.6 as permitted sender)
+Received: from dispatch1-eu1.ppe-hosted.com (185.132.181.6) by
+ DB5EUR01FT054.mail.protection.outlook.com (10.152.5.133) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384)
+ id 15.20.2008.13 via Frontend Transport; Wed, 19 Jun 2019 08:47:16 +0000
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail-wr1-f68.google.com (mail-wr1-f68.google.com
+ [209.85.221.68]) (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256
+ (128/128 bits)) (No client certificate requested) by mx1-eu1.ppe-hosted.com
+ (PPE Hosted ESMTP Server) with ESMTPS id C71EE34006D; Wed, 19 Jun 2019
+ 08:47:15 +0000 (UTC)
+Received: by mail-wr1-f68.google.com with SMTP id x17so2389694wrl.9;
+        Wed, 19 Jun 2019 01:47:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com;
+ s=20161025; h=from:to:cc:subject:date:message-id:in-reply-to:references;
+ bh=FfJuEkJ29yu/c0XTbT3mNGR6L49aAUIGpxPuXL6wOxo=;
+ b=PkOXo8yrpyvbimKEN4Abs6fyVrfPwc53t1v6YLlddNvyxz2ZrYEfKhEZnWCD8zF7+Y
+ UdQDo7bK1ZHRjAb8n6w2Avgun48mAkZ4pJEG34P3Opub89ZmxryYDdxvBrLm9sSTTTW/
+ l0mGnyy+3xjjTms7qTxUeUNJ6KSroUQg8lfd9MqhKL9f+HzPKUvawgs3oOyEuayqACK4
+ HuzoARpi5D7yDk7QI9Qorwytieu2cAxSL2okUYbRH6o9W6d9aJTIMGUq4kEQdWh0CRZe
+ vPKQstRk0We0yMVOuXezIzgvuDo9u49McBpyugNZJMFOTbLSiBRXeNd96MaxWjlK/2R7 g5vQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references; bh=FfJuEkJ29yu/c0XTbT3mNGR6L49aAUIGpxPuXL6wOxo=;
+ b=dmgY1Q7OYCvnadRE7MxQpPih4CLoOToxVGSuinKtdOJfWWu/kFqVTrlZ4WgkoU3gpW
+ WgjnUgVwxtjCIoVVBTdAfvoQDKP49cOIHAvR/iJoeah/E3BwBwROaYxvdzOT/GOMPmTu
+ 7RCAL9In+4F37/UhWfU56KZ5WIr/bNls8O0o8klF27lMK7jR25u2H6jEEv54Hw2YPX0J
+ bwMNiZ/yAzvqgIJCN1I9GIj3UY2yFPWZ41Sw/DtKWJ1ypK2mqTbN+sIkmY+MIPPOlpui
+ KkQM9/FmP8Mhj4cdstNBAVgUTaXdkM2rRbhJEgaXOGc0ODMphAJr8Mk/WQ39uZRdTDCS RHXA==
+X-Gm-Message-State:
+ APjAAAVUY6E37p7f2CX8bINXmu1XpWCa1yXyNkKBTcToFKDQ7GFevMsr
+ 2AsbCSkR172A1cA1C9UxUg8=
+X-Google-Smtp-Source:
+ APXvYqy27QzjNAdmxyexCR+EtSrgfx/CPMWkbu35r6fj+uGo7DxQRbO+rd8bUqc5QPMRbn6ELManVQ==
+X-Received: by 2002:a5d:65c5:: with SMTP id
+ e5mr29286544wrw.266.1560934035472; Wed, 19 Jun 2019 01:47:15 -0700 (PDT)
+Received: from localhost ([194.105.145.90]) by smtp.gmail.com with ESMTPSA
+ id c1sm1202740wrh.1.2019.06.19.01.47.14 (version=TLS1_2
+ cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256); Wed, 19 Jun 2019 01:47:14
+ -0700 (PDT)
+From: Igor Opaniuk <igor.opaniuk@gmail.com>
+To: u-boot@lists.denx.de
+Cc: agust@denx.de,
+	albert.u.boot@aribaud.net,
+	sbabic@denx.de,
+	festevam@gmail.com,
+	uboot-imx@nxp.com,
+	peng.fan@nxp.com,
+	jagan@amarulasolutions.com,
+	marcel.ziswiler@toradex.com,
+	stefan@agner.ch,
+	max.krummenacher@toradex.com
+Subject: [PATCH 3/6] configs: colibri_imx7: enable DM_VIDEO
+Message-Id: <20190619084710.19074-4-igor.opaniuk@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190619084710.19074-1-igor.opaniuk@gmail.com>
+References: <20190619084710.19074-1-igor.opaniuk@gmail.com>
+X-MDID: 1560934036-48RNLTRy7JUa
+Return-Path: igor.opaniuk@gmail.com
+X-MS-Exchange-Organization-ExpirationStartTime: 19 Jun 2019 08:47:16.7174
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id:
+ 9c5ecfd9-cb9f-43d0-f9e7-08d6f492bb78
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: d9995866-0d9b-4251-8315-093f062abab4:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-Forefront-Antispam-Report:
+ CIP:185.132.181.6;IPV:CAL;SCL:-1;CTRY:NL;EFV:NLI;SFV:SKN;SFS:;DIR:INB;SFP:;SCL:-1;SRVR:DBBPR05MB6476;H:dispatch1-eu1.ppe-hosted.com;FPR:;SPF:None;LANG:en;
+X-MS-Exchange-Organization-SCL: -1
+Content-Type: text/plain
+X-MS-Exchange-Organization-AuthSource:
+ DB5EUR01FT054.eop-EUR01.prod.protection.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id:
+ 9c5ecfd9-cb9f-43d0-f9e7-08d6f492bb78
+X-Microsoft-Antispam:
+ BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(5600148)(711020)(4605104)(4709080)(8001031)(1402095)(71702078);SRVR:DBBPR05MB6476;
+X-MS-TrafficTypeDiagnostic: DBBPR05MB6476:
+X-MS-Oob-TLC-OOBClassifiers: OLM:469;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2019 08:47:16.6253
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id:
+ 9c5ecfd9-cb9f-43d0-f9e7-08d6f492bb78
+X-MS-Exchange-CrossTenant-Id: d9995866-0d9b-4251-8315-093f062abab4
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR05MB6476
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:01.0161314
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.1987.013
+X-Microsoft-Antispam-Mailbox-Delivery:
+ ucf:0;jmr:0;ex:0;auth:0;dest:I;ENG:(750119)(520011016)(944506303)(944626516);
+X-Microsoft-Antispam-Message-Info:
+	=?iso-8859-1?Q?1PxXVj1J3BBrKnxco1QX2WcYi1p6DC7e6lWkv9dLarOOnOUDWWsdaGN+0w?=
+ =?iso-8859-1?Q?HR5IcVZs5sE+81lWVLsh5j8c5M8QxwopTPCP9I5O4P/5MdCryQsAnnfjy6?=
+ =?iso-8859-1?Q?1UNnBTZCmN8HyywJ9SVPTf9TudX8mq4JXIMHcwBFl8pKfXtYmZ1b29n1Xl?=
+ =?iso-8859-1?Q?c7O49yXB2FTyNxyJqZMEp7u34OmqMaLH9dA1Jy0rXrGs0ZGbziyoJqaK/1?=
+ =?iso-8859-1?Q?iSKUM1bSVbsaXnANS6FNP7FlI6/oTRi6jh3SgFkVvCzMrxAXXsLKq/dmzT?=
+ =?iso-8859-1?Q?xrWXeXfkeoqeZG+ZEsgXDJ9IHjudRt95Qj/KIm7O1B6POVUAqbsJ+7CbgY?=
+ =?iso-8859-1?Q?hSKwb0dWpEsOWOkcNENIDrWgwh8rcWbyYQjZxuBnt4pcjIzPH/J6LCPmkB?=
+ =?iso-8859-1?Q?znqY301Oz+LgWztjalo7/FkmVBBLjpb3ZEbph1437NYY4kDsq+fOSb+Jbl?=
+ =?iso-8859-1?Q?NeT0gMIkWHHZ2bGy+y5WSEACe4XvbVA3I+dgUUmQhfBEN3FJuEh6QT3rdh?=
+ =?iso-8859-1?Q?5foizDDU2tyk28+vbzDOsfHyMOYfhjOvvGrbYePTrOGGZTkIV2VS/gjbg8?=
+ =?iso-8859-1?Q?Ls6B6+zSnndfVFtRVb9awPtYxmmT76x+rsGo2LMej2ipxxo41Lb2QDBUxE?=
+ =?iso-8859-1?Q?BN/AHJSsd1DFgAoVZmSxMwmc17fXWfgPah6ketrAC5v5KtTjNqbS4oh1zS?=
+ =?iso-8859-1?Q?uNIoBJ22b6jiHpKB4AiFlcpXSmNv8J6CxIMZAAf3dwBFioc+6Y0HYD3LMM?=
+ =?iso-8859-1?Q?IDViI5AgU5Vvas+Wx5klzecsM+0ahXSfGp8sdM+rVDrWo09nLPnCHVWCCg?=
+ =?iso-8859-1?Q?Mi1FrXQI5kJZcsIWDEKvDPgZ50ho/OB86SNXr4wi9pU4C/+wIKsS3DfsDr?=
+ =?iso-8859-1?Q?H1ZdOH8keVB/lbry61w0xOXwT5dCYhL9ky0q97YXL624r4LJW6KWaCtHi9?=
+ =?iso-8859-1?Q?QSwR+1I2T6OgP6a3RmrfUS4VMs48GOzsWDjKZ+g2oLUCYvvDdwO+lnqguZ?=
+ =?iso-8859-1?Q?1bwIDY7NK/1fKhrC6wW0WF/rjKynRHREyDlF/WnFXREVqJUL5vjnXWmS4u?=
+ =?iso-8859-1?Q?OEiVK6cYviFWWgMoe5drF3A=3D?=
+MIME-Version: 1.0
+Date: Wed, 19 Jun 2019 11:47:07 +0300
+X-Evolution-Source: 1468251588.7413.5@roman-pc.toradex.int
+Content-Transfer-Encoding: 8bit
+
+From: Igor Opaniuk <igor.opaniuk@toradex.com>
+
+Enable DM_VIDEO support for Colibri iMX7 NAND version.
+
+Signed-off-by: Igor Opaniuk <igor.opaniuk@toradex.com>
+---
+ configs/colibri_imx7_defconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configs/colibri_imx7_defconfig b/configs/colibri_imx7_defconfig
+index efbf5f55a3..6d1a1afc56 100644
+--- a/configs/colibri_imx7_defconfig
++++ b/configs/colibri_imx7_defconfig
+@@ -75,6 +75,6 @@ CONFIG_USB_GADGET_VENDOR_NUM=0x1b67
+ CONFIG_USB_GADGET_PRODUCT_NUM=0x4000
+ CONFIG_CI_UDC=y
+ CONFIG_USB_GADGET_DOWNLOAD=y
+-CONFIG_VIDEO=y
++CONFIG_DM_VIDEO=y
+ CONFIG_OF_LIBFDT_OVERLAY=y
+ CONFIG_FDT_FIXUP_PARTITIONS=y
+-- 
+2.17.1
+
+
+From igor.opaniuk@gmail.com Wed Jun 19 08:47:21 2019
+Received: from HE1PR0502MB3692.eurprd05.prod.outlook.com
+ (2603:10a6:203:91::13) by AM6PR0502MB3688.eurprd05.prod.outlook.com with
+ HTTPS via AM5PR0502CA0003.EURPRD05.PROD.OUTLOOK.COM; Wed, 19 Jun 2019
+ 08:47:21 +0000
+Received: from HE1PR05CA0308.eurprd05.prod.outlook.com (2603:10a6:7:93::39)
+ by HE1PR0502MB3692.eurprd05.prod.outlook.com (2603:10a6:7:85::26) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1987.12; Wed, 19 Jun
+ 2019 08:47:19 +0000
+Received: from DB5EUR01FT044.eop-EUR01.prod.protection.outlook.com
+ (2a01:111:f400:7e02::201) by HE1PR05CA0308.outlook.office365.com
+ (2603:10a6:7:93::39) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1965.12 via Frontend
+ Transport; Wed, 19 Jun 2019 08:47:19 +0000
+Authentication-Results: spf=softfail (sender IP is 91.209.104.157)
+ smtp.mailfrom=gmail.com; toradex.com; dkim=pass (signature was verified)
+ header.d=gmail.com;toradex.com; dmarc=pass action=none
+ header.from=gmail.com;compauth=pass reason=100
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ gmail.com discourages use of 91.209.104.157 as permitted sender)
+Received: from dispatch1-eu1.ppe-hosted.com (91.209.104.157) by
+ DB5EUR01FT044.mail.protection.outlook.com (10.152.4.182) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384)
+ id 15.20.2008.13 via Frontend Transport; Wed, 19 Jun 2019 08:47:18 +0000
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com
+ [209.85.128.65]) (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256
+ (128/128 bits)) (No client certificate requested) by mx1-eu1.ppe-hosted.com
+ (PPE Hosted ESMTP Server) with ESMTPS id F0C3B28005D; Wed, 19 Jun 2019
+ 08:47:16 +0000 (UTC)
+Received: by mail-wm1-f65.google.com with SMTP id c6so863461wml.0;
+        Wed, 19 Jun 2019 01:47:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com;
+ s=20161025; h=from:to:cc:subject:date:message-id:in-reply-to:references;
+ bh=rDby15+5kWd7VRumMDoT9sWqpIU8cleR+raBPZ6DtQQ=;
+ b=eo1ZOR63prvVNqpyCnfSj45vT4QXf8c94TTDINKgrLGzePkY0ez3H/QPKVliy4YHQO
+ UCyS8g55gROwIjgb9hfAJGYSqOGrsmBZISAatyax5UdnFpUs3kmzaAoT4VOw8ZdtZHXz
+ BPm5QThOz72pEVrZ8icsPYJvAOCsVr1ZDq50kf+Z+cej2n/7eLsEhjDfY0rHVz3LI9wV
+ MVAP3ym9jiVYWcBkbhHNG97h+A2reRbBaevc4z7gR2/Lzuaflo9/QVJL7d9F/SByioNC
+ OBt38w499qZ7nDQagUigBsJlYgOpjI6f4uH9Nd7FYKHESVkH+mhXi57CPc663wlVB4EV 3bag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references; bh=rDby15+5kWd7VRumMDoT9sWqpIU8cleR+raBPZ6DtQQ=;
+ b=kjJ+Xx6VubN9NrD94lFaJQeWbrUnQEMlB3XfHfh/lp0BR7bxEfJBFfhijQPZ0ib9AS
+ JjC8CgnN4I5/NQ9tRKQY1kGjnXLEEvK6GJqBYvFIOyGkRBGelZVdr3pOoqQb+hilUhJm
+ UQPFVMJ+xjlDjcSt+J6ORUJ8PGFjIW9wC//tzuPWht2VRLfEJiKhBj+t4KotsXKiOz87
+ 1INBReF9jBoBfybYU+rupaCMo87yg3sp2RMfd5nRw7fUrwjJC+u1il+XRnSrCaFNOBzK
+ y9CE/KCbY9zIFXXAGgM14AC8PhTa0F1l0L1bQBcGo45lshd8I1vzHxR8lp1+jLCX413P HphQ==
+X-Gm-Message-State:
+ APjAAAUpHNUgT6EAG8w7ep9KNzLm2fm7kTannX1j8EzeYFH2QK0BDrrr
+ H7D5SKYdPAvWLJTE6Phz1dA=
+X-Google-Smtp-Source:
+ APXvYqxNt1XTzbcno94NDXI6dYbfrybeRPCpqWM+rngu3ExuBoC/13COM1nEupYeefUeeE/yPaMb2A==
+X-Received: by 2002:a1c:e0c4:: with SMTP id
+ x187mr6908137wmg.177.1560934036610; Wed, 19 Jun 2019 01:47:16 -0700 (PDT)
+Received: from localhost ([194.105.145.90]) by smtp.gmail.com with ESMTPSA
+ id t6sm831141wmb.29.2019.06.19.01.47.15 (version=TLS1_2
+ cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256); Wed, 19 Jun 2019 01:47:16
+ -0700 (PDT)
+From: Igor Opaniuk <igor.opaniuk@gmail.com>
+To: u-boot@lists.denx.de
+Cc: agust@denx.de,
+	albert.u.boot@aribaud.net,
+	sbabic@denx.de,
+	festevam@gmail.com,
+	uboot-imx@nxp.com,
+	peng.fan@nxp.com,
+	jagan@amarulasolutions.com,
+	marcel.ziswiler@toradex.com,
+	stefan@agner.ch,
+	max.krummenacher@toradex.com
+Subject: [PATCH 4/6] colibri-imx6ull: support building with DM_VIDEO=y
+Message-Id: <20190619084710.19074-5-igor.opaniuk@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190619084710.19074-1-igor.opaniuk@gmail.com>
+References: <20190619084710.19074-1-igor.opaniuk@gmail.com>
+X-MDID: 1560934038-IPsMFvB-gl6M
+Return-Path: igor.opaniuk@gmail.com
+X-MS-Exchange-Organization-ExpirationStartTime: 19 Jun 2019 08:47:18.8261
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id:
+ cad5879a-4679-4588-bdd5-08d6f492bcba
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: d9995866-0d9b-4251-8315-093f062abab4:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-Forefront-Antispam-Report:
+ CIP:91.209.104.157;IPV:NLI;CTRY:GB;EFV:NLI;SFV:NSPM;SFS:(2980300002)(199004)(189003)(34206002)(61266001)(336012)(57986006)(4326008)(450100002)(426003)(6666004)(55446002)(47776003)(1076003)(356004)(83322999)(16003)(82202003)(95326003)(59536001)(5660300002)(76482006)(2160300002)(7596002)(7636002)(305945005)(86362001)(126002)(51416003)(16586007)(60626007)(956004)(2616005)(26005)(476003)(486006)(48376002)(2351001)(44832011)(36756003)(1096003)(11346002)(246002)(76506005)(73972006)(50226002)(446003)(73392003)(8676002)(50466002)(2361001)(76176011)(60616004);DIR:INB;SFP:;SCL:1;SRVR:HE1PR0502MB3692;H:dispatch1-eu1.ppe-hosted.com;FPR:;SPF:SoftFail;LANG:en;PTR:dispatch1-eu1.ppe-hosted.com;A:1;MX:1;
+Content-Type: text/plain
+X-MS-Exchange-Organization-AuthSource:
+ DB5EUR01FT044.eop-EUR01.prod.protection.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id:
+ cad5879a-4679-4588-bdd5-08d6f492bcba
+X-Microsoft-Antispam:
+ BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(5600148)(711020)(4605104)(4709080)(8001031)(1402095)(71702078);SRVR:HE1PR0502MB3692;
+X-MS-TrafficTypeDiagnostic: HE1PR0502MB3692:
+X-MS-Oob-TLC-OOBClassifiers: OLM:1303;
+X-MS-Exchange-Organization-SCL: 1
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2019 08:47:18.7480
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id:
+ cad5879a-4679-4588-bdd5-08d6f492bcba
+X-MS-Exchange-CrossTenant-Id: d9995866-0d9b-4251-8315-093f062abab4
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: HE1PR0502MB3692
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:02.2615145
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.1987.013
+X-Microsoft-Antispam-Mailbox-Delivery:
+ ucf:0;jmr:0;ex:0;auth:0;dest:I;ENG:(20160514016)(750119)(520011016)(944506303)(944626516);
+X-Microsoft-Antispam-Message-Info:
+ P/OobbA80fiKh8Nc3BPrpssHdjhsBMkqMj92P6CfBo7tPqG2L7AIYfr50q2YGFN5ZowUChDcE4Fc/ZxFMZ8gQ1byfQRDzPfGfhGjss4OM/Z/fFLu4r0VdRHnZmL35im49QUGmsdpdKMqpeoSVACra1cFz4lTRdW8f7dH5dLJwZ4NYhBcNmd7++Zqz6nggTzJ6AMhlGAx/Ta59hlUL5nBnV4ojtA2fCKfGfhP2nm6XrLmI/3YnV9Jo/WLydjJp8EFvwZPvdPguDwNOsUy5sbmQle/85PzUYL0EDbcCah1gqIGlwmjdbnYW9x4YNziB42oowHsPCYbGT3Ur4xhZNKLysxNEEathOtUqbecZ2JVMi6qCCWRVoHt1U6sfIPKLFWMJX9QPlHhjR+5zKQdRocp86IUMCgaTRPG/LWLEGTdlxBe7WS8TkF8/8/4knhM1uHAlCf+1l2jG6mUPiYPUwDyzNbK864wtX8FBI/AHVyW8CJwBEU81f1bH0WMxN3Kaxpv99f6HEif5PhQwX7frx34bx1P9gEI6hWzlv1GOSiayTjuR71HCH/mR7eU25yTWOzivpDUaGreXiSkO0ppGZdwKhMYb7jyP7YCHrVsAngNyXtuObnc/IR5yRxmYiS2/CzgvsWk+iAHSLIWsiiZAU14Q7qCBNQ4xvsbkKsBN/ej8Af6WgDWWJKnE8yODKTxfc2xMZT/YNzUefjDZ4isM6yUpQU9eCVc9vxbM8T5q3gKx3hqXZN+DKaWsZ8c4pH3+nGe/GOuWyF6a+91z0JXfBKwNQZ/B+WHNZXXlo3PhB3PAsAEJo1AVs4/UrIhj80EEHRm0Jj1un6C2ghebr3Dfum39ku8TT4YkzhRs+oAnK2jDtSDjHdOWbzAh3S8U4bmqNITKVu52U6rOK/LHhSESliQPOl/sQrBzGTW0LFP0XHXv8zRZV6TIXICr6eQ1RFqZ1tu
+MIME-Version: 1.0
+Date: Wed, 19 Jun 2019 11:47:08 +0300
+X-Evolution-Source: 1468251588.7413.5@roman-pc.toradex.int
+Content-Transfer-Encoding: 8bit
+
+From: Igor Opaniuk <igor.opaniuk@toradex.com>
+
+1. This fixes linking issues when building with DM_VIDEO enabled mxsfb
+driver.
+2. Provide proper defines for both VIDEO=y and DM_VIDEO=y.
+
+Signed-off-by: Igor Opaniuk <igor.opaniuk@toradex.com>
+---
+ arch/arm/mach-imx/mx6/soc.c       | 2 +-
+ include/configs/colibri-imx6ull.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/mach-imx/mx6/soc.c b/arch/arm/mach-imx/mx6/soc.c
+index e80f1d484b..86a9eeba0c 100644
+--- a/arch/arm/mach-imx/mx6/soc.c
++++ b/arch/arm/mach-imx/mx6/soc.c
+@@ -549,7 +549,7 @@ const struct boot_mode soc_boot_modes[] = {
+ void reset_misc(void)
+ {
+ #ifndef CONFIG_SPL_BUILD
+-#ifdef CONFIG_VIDEO_MXS
++#if defined(CONFIG_VIDEO_MXS) && !defined(CONFIG_DM_VIDEO)
+ 	lcdif_power_down();
+ #endif
+ #endif
+diff --git a/include/configs/colibri-imx6ull.h b/include/configs/colibri-imx6ull.h
+index 21d9a3da01..1c6acf0081 100644
+--- a/include/configs/colibri-imx6ull.h
++++ b/include/configs/colibri-imx6ull.h
+@@ -170,7 +170,7 @@
+ #define CONFIG_SYS_DFU_DATA_BUF_SIZE	SZ_16M
+ #define DFU_DEFAULT_POLL_TIMEOUT	300
+ 
+-#ifdef CONFIG_VIDEO
++#if defined(CONFIG_VIDEO) || defined(CONFIG_DM_VIDEO)
+ #define CONFIG_VIDEO_MXS
+ #define MXS_LCDIF_BASE MX6UL_LCDIF1_BASE_ADDR
+ #define CONFIG_VIDEO_LOGO
+-- 
+2.17.1
+
+
+From igor.opaniuk@gmail.com Wed Jun 19 08:47:20 2019
+Received: from DBBPR05MB6476.eurprd05.prod.outlook.com
+ (2603:10a6:209:85::48) by AM6PR0502MB3688.eurprd05.prod.outlook.com with
+ HTTPS via AM6P193CA0143.EURP193.PROD.OUTLOOK.COM; Wed, 19 Jun 2019 08:47:20
+ +0000
+Received: from HE1PR05CA0355.eurprd05.prod.outlook.com (2603:10a6:7:94::14)
+ by DBBPR05MB6476.eurprd05.prod.outlook.com (2603:10a6:10:cc::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1987.11; Wed, 19 Jun
+ 2019 08:47:19 +0000
+Received: from DB5EUR01FT010.eop-EUR01.prod.protection.outlook.com
+ (2a01:111:f400:7e02::201) by HE1PR05CA0355.outlook.office365.com
+ (2603:10a6:7:94::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1965.12 via Frontend
+ Transport; Wed, 19 Jun 2019 08:47:19 +0000
+Authentication-Results: spf=softfail (sender IP is 91.209.104.157)
+ smtp.mailfrom=gmail.com; toradex.com; dkim=pass (signature was verified)
+ header.d=gmail.com;toradex.com; dmarc=pass action=none
+ header.from=gmail.com;compauth=pass reason=100
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ gmail.com discourages use of 91.209.104.157 as permitted sender)
+Received: from dispatch1-eu1.ppe-hosted.com (91.209.104.157) by
+ DB5EUR01FT010.mail.protection.outlook.com (10.152.4.136) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384)
+ id 15.20.2008.13 via Frontend Transport; Wed, 19 Jun 2019 08:47:18 +0000
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail-wm1-f66.google.com (mail-wm1-f66.google.com
+ [209.85.128.66]) (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256
+ (128/128 bits)) (No client certificate requested) by mx1-eu1.ppe-hosted.com
+ (PPE Hosted ESMTP Server) with ESMTPS id 27FC6C0073; Wed, 19 Jun 2019
+ 08:47:18 +0000 (UTC)
+Received: by mail-wm1-f66.google.com with SMTP id u8so859045wmm.1;
+        Wed, 19 Jun 2019 01:47:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com;
+ s=20161025; h=from:to:cc:subject:date:message-id:in-reply-to:references;
+ bh=uqH/UNB+2DaMIqMbPS6PZlpLCuVkzYTI9/SJUmkNeN0=;
+ b=WT2nLJRW+S/yL5/gEJbGjaUQ8e6HHxQRI+fQBQE5MJ+loPnFZ36f+5NDGMMvJ42tBZ
+ ta7YoHIkm6GOWruGrcjjbjl0VpU5CwPY3Cknwi3B9vqFOL3p2AtmuNgjjILtPg9iWIjG
+ vC6qBhA3bHXDkLWE7QPRJBGZLQ+sFIUPg7qhHdNJojh00tsEPMisYH5XJzcD45kFGhPh
+ pHMgBBZQ4KKJbMmSor829fGJSTsjYydAUpDmeDBfbjscoOndRDE0TPyHG/DwxHKrd7IH
+ 3Qwr+vNhJaWQ/nWbkS8oNLGobIVU5MluM98KATRkUiT9o/O3BEUzRYOyHf9iPd72CNVJ OTqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references; bh=uqH/UNB+2DaMIqMbPS6PZlpLCuVkzYTI9/SJUmkNeN0=;
+ b=QrNc8u7+7/l4ygifAev9fM/qIo1THojKFURSb8u4/Ygi+N3/MR5nUhwJEUIrk7ID4P
+ vx8sUXsX6Qaei0KfzpV6GICjHLJu7VtQuSlz5Qx3mrGpZ5rh42fzG8R9Mm2yZSOaBEwR
+ gycxvkcttnaY9I5HXx3C7aOK6RkbYt0VkQV2bu83K4qFkbYaBqMP6WZ3qKygJEm0246T
+ j4QRQIV5AhT9ZyzDiH0t6Oq2qpkqYok1QYolL/iTMJvFaEpKpq/tF7d+JUU2OZnmTc0/
+ +7eoTrWDnjpN+E+DJdGSGoGF1pF5EBxy5wxYO7Av7yOOTrScHELkr+meYlokNpLfohfx Q0Uw==
+X-Gm-Message-State:
+ APjAAAXwSZ55kwRo9HFfMPzC2VJF/sYlQVcyj2Iq6mQL554uioLgXODZ
+ CrnGJOAaseDe71/4qTLfTh0=
+X-Google-Smtp-Source:
+ APXvYqzLihrpU2TIrqqBrA4QWFq1CNwCVmCB/F62b6XbHpQLuiJGArUzeKvJq3INtqYjPJ5zRa8cSw==
+X-Received: by 2002:a1c:be12:: with SMTP id
+ o18mr7102244wmf.21.1560934037777; Wed, 19 Jun 2019 01:47:17 -0700 (PDT)
+Received: from localhost ([194.105.145.90]) by smtp.gmail.com with ESMTPSA
+ id h17sm11322444wrq.79.2019.06.19.01.47.17 (version=TLS1_2
+ cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256); Wed, 19 Jun 2019 01:47:17
+ -0700 (PDT)
+From: Igor Opaniuk <igor.opaniuk@gmail.com>
+To: u-boot@lists.denx.de
+Cc: agust@denx.de,
+	albert.u.boot@aribaud.net,
+	sbabic@denx.de,
+	festevam@gmail.com,
+	uboot-imx@nxp.com,
+	peng.fan@nxp.com,
+	jagan@amarulasolutions.com,
+	marcel.ziswiler@toradex.com,
+	stefan@agner.ch,
+	max.krummenacher@toradex.com
+Subject: [PATCH 5/6] ARM: dts: colibri-imx6ull: extend lcdif node
+Message-Id: <20190619084710.19074-6-igor.opaniuk@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190619084710.19074-1-igor.opaniuk@gmail.com>
+References: <20190619084710.19074-1-igor.opaniuk@gmail.com>
+X-MDID: 1560934038-HyXq0asLRXMd
+Return-Path: igor.opaniuk@gmail.com
+X-MS-Exchange-Organization-ExpirationStartTime: 19 Jun 2019 08:47:18.9545
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id:
+ 494b618e-fde9-4662-558b-08d6f492bcce
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: d9995866-0d9b-4251-8315-093f062abab4:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-Forefront-Antispam-Report:
+ CIP:91.209.104.157;IPV:NLI;CTRY:GB;EFV:NLI;SFV:NSPM;SFS:(2980300002)(189003)(199004)(476003)(7636002)(16586007)(336012)(1076003)(5660300002)(73972006)(34206002)(73392003)(86362001)(16003)(26005)(446003)(36756003)(82202003)(11346002)(6666004)(2616005)(55446002)(2160300002)(95326003)(60626007)(83322999)(50226002)(76482006)(426003)(2361001)(60616004)(8676002)(57986006)(76506005)(47776003)(59536001)(956004)(356004)(1096003)(76176011)(61266001)(2351001)(51416003)(7596002)(305945005)(486006)(126002)(246002)(4326008)(450100002)(44832011)(50466002)(48376002);DIR:INB;SFP:;SCL:1;SRVR:DBBPR05MB6476;H:dispatch1-eu1.ppe-hosted.com;FPR:;SPF:SoftFail;LANG:en;PTR:dispatch1-eu1.ppe-hosted.com;MX:1;A:1;
+Content-Type: text/plain
+X-MS-Exchange-Organization-AuthSource:
+ DB5EUR01FT010.eop-EUR01.prod.protection.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id:
+ 494b618e-fde9-4662-558b-08d6f492bcce
+X-Microsoft-Antispam:
+ BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(5600148)(711020)(4605104)(4709080)(8001031)(1402095)(71702078);SRVR:DBBPR05MB6476;
+X-MS-TrafficTypeDiagnostic: DBBPR05MB6476:
+X-MS-Oob-TLC-OOBClassifiers: OLM:248;
+X-MS-Exchange-Organization-SCL: 1
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2019 08:47:18.8724
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id:
+ 494b618e-fde9-4662-558b-08d6f492bcce
+X-MS-Exchange-CrossTenant-Id: d9995866-0d9b-4251-8315-093f062abab4
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR05MB6476
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:01.4435088
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.1987.013
+X-Microsoft-Antispam-Mailbox-Delivery:
+ ucf:0;jmr:0;ex:0;auth:0;dest:I;ENG:(20160514016)(750119)(520011016)(944506303)(944626516);
+X-Microsoft-Antispam-Message-Info:
+ XhHsVA6UsiOBgp/PfKol8pg9IPlDVsDf4n1UmRlGgBH9+AjJsPyxyk7DKs/wgB99SbX9phRk4BXebrSZrH6jc69NbBWbX1/xwoGHQ9Y1pWLSRLzqsjPIb0iM/wXklFlApOK8gIGCmZtcgfJrb0KjrH2s8jDDY2dMo4SS1oXXKMtQ2fG2ZgKOIBW+0wQPfcmYHz3xImUiGka9WJhmiXr+1Y5vI2Rj7FtJwKTAKkSsZdBerLL5M/T/kM6DxMGu3FvIbhcIJ4acj6nGyLdAYUG4Hkvhti4E7wVJjVsIBiPtqtZiFe+p5IBYs2Y6IzyqjDEXPrrRjaCQinFZGR41gLBOwXm8zHeVKT8NWmDjGpNu5FvuvqJkOt0t+eRV4NWcm10EpNQSsN3IcvnXhbcROOEN6er4ZE/HV8Bj3SYpzON6VjRZkPanHjCTjzkYDkXY7edq+FSmQmZ9+jYv4gqhyqq+b54AQrPK1m4QHDsGClbRZQJmfkoPgGjMPXocYdNssdOJ5FDsitDVjTatFjyU+ikPNbG4mUIKVg00hsDjbfDHBsbrYzCFcsXn+wcf8iN4bvhBSESEXU4qRHZ0N0DZaWN+u91CePKM4w5EDXb2K7p3OiA5CIo764sBHj2bs8q9KbGpZ/3pBJ0N4tbXBAxh29Mpl12aGD2vsrXfUiO8eILV4LH93XHhb++vkQ9bIcdIERyUTU+sDoVgNbl2mDpMnT+IWJScdzN7bLlSNRVaulGZJsIrVv+Dtzq3+2kBsJCzvIVpIawY/UfBKYXcXaO/ETrApfix8UpaIjVR0RQaKaj99nlm/nwARaN0sPuqWxkYjIdRaea3Cr6rtMm+PEd1VvNtyBuN9Aibwxrxvqdw1ayVHrbMRtZrxrJKETBeUsJm/YAaI9bjnr2RZkn/G8rGNiTYou/HMNzPQwkICrsYpmOxQNoEE4SB65bLg7uIT+cSjYVO
+MIME-Version: 1.0
+Date: Wed, 19 Jun 2019 11:47:09 +0300
+X-Evolution-Source: 1468251588.7413.5@roman-pc.toradex.int
+Content-Transfer-Encoding: 8bit
+
+From: Igor Opaniuk <igor.opaniuk@toradex.com>
+
+Provide proper display timings for lcdif node, used by mxsfb DM_VIDEO
+enabled framebuffer driver.
+
+Signed-off-by: Igor Opaniuk <igor.opaniuk@toradex.com>
+---
+ arch/arm/dts/imx6ull-colibri.dts | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
+
+diff --git a/arch/arm/dts/imx6ull-colibri.dts b/arch/arm/dts/imx6ull-colibri.dts
+index 6c847ab792..262205ac5e 100644
+--- a/arch/arm/dts/imx6ull-colibri.dts
++++ b/arch/arm/dts/imx6ull-colibri.dts
+@@ -12,8 +12,10 @@
+ 	compatible = "toradex,colibri-imx6ull", "fsl,imx6ull";
+ 
+ 	aliases {
++		u-boot,dm-pre-reloc;
+ 		mmc0 = &usdhc1;
+ 		usb0 = &usbotg1; /* required for ums */
++		display0 = &lcdif;
+ 	};
+ 
+ 	chosen {
+@@ -156,6 +158,36 @@
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_lcdif_dat
+ 		     &pinctrl_lcdif_ctrl>;
++	status = "okay";
++	display = <&display0>;
++	u-boot,dm-pre-reloc;
++
++	display0: display0 {
++		bits-per-pixel = <18>;
++		bus-width = <24>;
++		status = "okay";
++
++		display-timings {
++			native-mode = <&timing_vga>;
++			timing_vga: 640x480 {
++				u-boot,dm-pre-reloc;
++				clock-frequency = <25175000>;
++				hactive = <640>;
++				vactive = <480>;
++				hback-porch = <48>;
++				hfront-porch = <16>;
++				vback-porch = <33>;
++				vfront-porch = <10>;
++				hsync-len = <96>;
++				vsync-len = <2>;
++
++				de-active = <1>;
++				hsync-active = <0>;
++				vsync-active = <0>;
++				pixelclk-active = <0>;
++			};
++		};
++	};
+ };
+ 
+ /* PWM <A> */
+-- 
+2.17.1
+
+
+From igor.opaniuk@gmail.com Wed Jun 19 08:47:24 2019
+Received: from VI1PR0502MB3694.eurprd05.prod.outlook.com
+ (2603:10a6:209:3e::36) by AM6PR0502MB3688.eurprd05.prod.outlook.com with
+ HTTPS via AM6P193CA0023.EURP193.PROD.OUTLOOK.COM; Wed, 19 Jun 2019 08:47:24
+ +0000
+Received: from DB6PR05CA0021.eurprd05.prod.outlook.com (2603:10a6:6:14::34)
+ by VI1PR0502MB3694.eurprd05.prod.outlook.com (2603:10a6:803:10::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1987.11; Wed, 19 Jun
+ 2019 08:47:20 +0000
+Received: from DB5EUR01FT055.eop-EUR01.prod.protection.outlook.com
+ (2a01:111:f400:7e02::205) by DB6PR05CA0021.outlook.office365.com
+ (2603:10a6:6:14::34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1987.10 via Frontend
+ Transport; Wed, 19 Jun 2019 08:47:20 +0000
+Authentication-Results: spf=softfail (sender IP is 91.209.104.157)
+ smtp.mailfrom=gmail.com; toradex.com; dkim=pass (signature was verified)
+ header.d=gmail.com;toradex.com; dmarc=pass action=none
+ header.from=gmail.com;compauth=pass reason=100
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ gmail.com discourages use of 91.209.104.157 as permitted sender)
+Received: from dispatch1-eu1.ppe-hosted.com (91.209.104.157) by
+ DB5EUR01FT055.mail.protection.outlook.com (10.152.5.250) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384)
+ id 15.20.2008.13 via Frontend Transport; Wed, 19 Jun 2019 08:47:19 +0000
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com
+ [209.85.128.67]) (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256
+ (128/128 bits)) (No client certificate requested) by mx1-eu1.ppe-hosted.com
+ (PPE Hosted ESMTP Server) with ESMTPS id 5D93340058; Wed, 19 Jun 2019
+ 08:47:19 +0000 (UTC)
+Received: by mail-wm1-f67.google.com with SMTP id s3so822815wms.2;
+        Wed, 19 Jun 2019 01:47:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com;
+ s=20161025; h=from:to:cc:subject:date:message-id:in-reply-to:references;
+ bh=TMyvzeWpaZI/mnuVw1jNz3PBitym8lD7GgEwGlrIrl0=;
+ b=ViZ8ukqZdr82Q/hpcMJ5Dg+aFnOtqF0JJ/xQqOBuMd8LgDCPf3Lkmti2fe9mwt+Z1D
+ 78iJWdDsx7eiNakdvWy+NlF0Rp4VGtvy/PcpyczAJj13A6OjMQuw/OLiaSmZAjA9KibG
+ U/9X13Cs+seWuhC/5/uVOa82Nckq6RmR5mtl7NsBjjQ2q0fQSGQjxZFxYcOGrDzNDqnA
+ 6HUu9UptqT/GjWoBNu/+2VRHBFgUv/ObERndIGHhR3yVI7U76CtHx8H8/vhz7zQWJIuB
+ AuixdnlkXKSRcWpjqecPVp6L1HaOoU/u3sCSV1GGZ8nT+dGOsDWn3YKiLPHGjY7gFu0m gORQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references; bh=TMyvzeWpaZI/mnuVw1jNz3PBitym8lD7GgEwGlrIrl0=;
+ b=HY8i1yxHR2mIcT4x0ySbipxZ/LHHH0UYtB8KHwLfam300zj5K0d6/7Ig8WHJq3I5qe
+ F43AaUI34NzeMyMU8abSSIHjxmPmwyKqmM8DJlbDQF+SXsKjNWtrDPtoP9IpDZFYPkY8
+ eGzBjlEi/J6PZNenACby07bSZEQhlP+pyFX5pjws5QXIWq7OFfGQJ8m5fmcomr7r0lhl
+ nHCe9V/1sgoT88ZDo4cM09KShKAizwGzQyXDCjA9PSByrvbZpstIA1irI4BXGdsmNESn
+ w33dAdxRzK96KULkcMH/f8WCOu7+4+/Hy8uJHaLouxLCcM2PKBRlaKCQNsPVkycf7qBi 53Cw==
+X-Gm-Message-State:
+ APjAAAWtXDLf9pcq/5dxUosB11+z2hg8kBegr4aIoRy6i6wMbUOP0/Qi
+ BRW+OGcfb7gesDSYrZKc12M=
+X-Google-Smtp-Source:
+ APXvYqxyR7ijNOJB8nCiuPtIIH5MfXJyoWl+b+w/BqKYZMSE9QdQXX/GaPjrqeyzc2E/2NLGjYJp0g==
+X-Received: by 2002:a1c:ac81:: with SMTP id
+ v123mr7433236wme.145.1560934039015; Wed, 19 Jun 2019 01:47:19 -0700 (PDT)
+Received: from localhost ([194.105.145.90]) by smtp.gmail.com with ESMTPSA
+ id a84sm1193220wmf.29.2019.06.19.01.47.18 (version=TLS1_2
+ cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256); Wed, 19 Jun 2019 01:47:18
+ -0700 (PDT)
+From: Igor Opaniuk <igor.opaniuk@gmail.com>
+To: u-boot@lists.denx.de
+Cc: agust@denx.de,
+	albert.u.boot@aribaud.net,
+	sbabic@denx.de,
+	festevam@gmail.com,
+	uboot-imx@nxp.com,
+	peng.fan@nxp.com,
+	jagan@amarulasolutions.com,
+	marcel.ziswiler@toradex.com,
+	stefan@agner.ch,
+	max.krummenacher@toradex.com
+Subject: [PATCH 6/6] configs: colibri-imx6ull: switch to DM_VIDEO
+Message-Id: <20190619084710.19074-7-igor.opaniuk@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190619084710.19074-1-igor.opaniuk@gmail.com>
+References: <20190619084710.19074-1-igor.opaniuk@gmail.com>
+X-MDID: 1560934039-JBqO6EPdzzVc
+Return-Path: igor.opaniuk@gmail.com
+X-MS-Exchange-Organization-ExpirationStartTime: 19 Jun 2019 08:47:20.0778
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id:
+ 67a210b5-bbc2-4aac-bcf6-08d6f492bd79
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: d9995866-0d9b-4251-8315-093f062abab4:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-Forefront-Antispam-Report:
+ CIP:91.209.104.157;IPV:NLI;CTRY:GB;EFV:NLI;SFV:NSPM;SFS:(2980300002)(199004)(189003)(11346002)(16003)(336012)(83322999)(36756003)(356004)(6666004)(1076003)(14444005)(486006)(47776003)(61266001)(8676002)(60626007)(34206002)(50466002)(59536001)(95326003)(4744005)(4326008)(82202003)(2160300002)(450100002)(73972006)(246002)(2351001)(2361001)(76506005)(48376002)(476003)(7636002)(86362001)(7596002)(446003)(126002)(2616005)(76482006)(26005)(5660300002)(426003)(956004)(57986006)(16586007)(1096003)(55446002)(76176011)(51416003)(60616004)(50226002)(73392003)(44832011)(305945005);DIR:INB;SFP:;SCL:1;SRVR:VI1PR0502MB3694;H:dispatch1-eu1.ppe-hosted.com;FPR:;SPF:SoftFail;LANG:en;PTR:dispatch1-eu1.ppe-hosted.com;A:1;MX:1;
+Content-Type: text/plain
+X-MS-Exchange-Organization-AuthSource:
+ DB5EUR01FT055.eop-EUR01.prod.protection.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id:
+ 67a210b5-bbc2-4aac-bcf6-08d6f492bd79
+X-Microsoft-Antispam:
+ BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(5600148)(711020)(4605104)(4709080)(8001031)(1402095)(71702078);SRVR:VI1PR0502MB3694;
+X-MS-TrafficTypeDiagnostic: VI1PR0502MB3694:
+X-MS-Oob-TLC-OOBClassifiers: OLM:469;
+X-MS-Exchange-Organization-SCL: 1
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2019 08:47:19.9987
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id:
+ 67a210b5-bbc2-4aac-bcf6-08d6f492bd79
+X-MS-Exchange-CrossTenant-Id: d9995866-0d9b-4251-8315-093f062abab4
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0502MB3694
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:04.1660186
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.1987.013
+X-Microsoft-Antispam-Mailbox-Delivery:
+ ucf:0;jmr:0;ex:0;auth:0;dest:I;ENG:(20160514016)(750119)(520011016)(944506303)(944626516);
+X-Microsoft-Antispam-Message-Info:
+ nSzVwPz1QEG/mvEFc1fd1j6+EuKMZuKqJi6V7sfYBybJsDfGEanPHkfJ2slf7hv5xlooQhrR0m6iEUMelgBfa1xe3ohy8MxddxUwTLThTUAoqGwX+U0X2cZll+hisXzRDdCEEsitsRLdHNqCkn3PKQ0zIgYGkXfmNESjUb8yhr+RifxFWkZfIvlxr0xWctnnfnsO1GnZB05suSw+vuXQx6/cE74tG7/iinN18IdSgKtBPyvmRqFTAu8FhIewlsvI49JLh5W+zbCYqUsBw9ohvX/9W/ntTxbmwnzP0ybYPvZlWzZYdJwJcOTYQuLcqiQdfBmBkQEa00Y79Z3GWg/Dmvxb1fa+9VN2929JL9UTZXTivKwsjHjQttX62YLdSyJNXB+TuCrawXlgxXa3/m4tVyCoddWgbdH19nR0WBsY4MekRTrk14nMrUA13r45rfHyciLf9x2spqP+qnbD1E2uzcNIvQkB+JJI4HjbU2su2EWxemhLAcWUugUTxjSU6a/RwjRWuBErxDKu2TS11wBF001lxO3AuxJNztHM6MhYBAifDyT7N2YhnzlD/vJJMTlU1tgo4qewJ7LaK+Mz34j8xo3zjPCr7xQhDJ2eErHOSLKIx5IAy+aHFx9GSs4QNiqYuQAHaGYhuvTmh7EUwvck42/IUlSZDg4JcbP9wrczyGg4zqaPl33lU9anb4KhXeQVD0bAeAgb+crqhW9K/NTVsH7G0HzYBIShkVQ4jG5rvV12qbuojjk4OyW323bKH2R28S/YurzgtDP1WWzpR6/GDbOoTGIDDmGOnzSmDUFE4D8I9pu8tnQL7yf48ujzP/oG1nWbJgddvEWM0oyhDvqqpNCMgHKj5Go7qK9zQXBs95wsUdNTnuhTjvCeKa0Qek5KIe9jAfnplgeo/57jpUt2GoINUQShbP+zwqmIyG+4NPKGjVgf2mPQ0UQiR0X9hhMiD1+v31EMZLaJhL2Gnzeskg==
+MIME-Version: 1.0
+Date: Wed, 19 Jun 2019 11:47:10 +0300
+X-Evolution-Source: 1468251588.7413.5@roman-pc.toradex.int
+Content-Transfer-Encoding: 8bit
+
+From: Igor Opaniuk <igor.opaniuk@toradex.com>
+
+Use CONFIG_DM_VIDEO=y by default for Colibri iMX6ULL.
+
+Signed-off-by: Igor Opaniuk <igor.opaniuk@toradex.com>
+---
+ configs/colibri-imx6ull_defconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configs/colibri-imx6ull_defconfig b/configs/colibri-imx6ull_defconfig
+index 5c89439f7b..ac5c519346 100644
+--- a/configs/colibri-imx6ull_defconfig
++++ b/configs/colibri-imx6ull_defconfig
+@@ -80,6 +80,6 @@ CONFIG_USB_GADGET_VENDOR_NUM=0x1b67
+ CONFIG_USB_GADGET_PRODUCT_NUM=0x4000
+ CONFIG_CI_UDC=y
+ CONFIG_USB_GADGET_DOWNLOAD=y
+-CONFIG_VIDEO=y
++CONFIG_DM_VIDEO=y
+ CONFIG_OF_LIBFDT_OVERLAY=y
+ CONFIG_FDT_FIXUP_PARTITIONS=y
+-- 
+2.17.1
+
+
