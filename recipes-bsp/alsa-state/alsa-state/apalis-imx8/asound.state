@@ -46,8 +46,8 @@ state.apalisimx8qmsgt {
 	control.5 {
 		iface MIXER
 		name 'Headphone Playback Volume'
-		value.0 87
-		value.1 87
+		value.0 114
+		value.1 114
 		comment {
 			access 'read write'
 			type INTEGER
