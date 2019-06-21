@@ -1,3 +1,4 @@
-PV = "1.5.0+git${SRCPV}"
-SRCBRANCH = "imx_4.14.78_1.0.0_ga"
-SRCREV = "d6451cc1e162eff89b03dd63e86d55b9baa8885b"
+PLATFORM_mx8qxp  = "imx8qx"
+PV = "2.0+git${SRCPV}"
+SRCBRANCH = "imx_4.14.98_2.0.0_ga"
+SRCREV = "4b273d520d4b25d0aae2aa37138dd06386d96872"
