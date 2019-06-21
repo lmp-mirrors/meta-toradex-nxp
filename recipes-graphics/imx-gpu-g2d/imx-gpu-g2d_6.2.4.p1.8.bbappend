@@ -1,8 +1,10 @@
-PV = "6.2.4.p2.3"
-SRC_URI[arm.md5sum] = "826349f67198359fddfe3e456770eb68"
-SRC_URI[arm.sha256sum] = "35a5875d795190117b7fcdd43229d18576d530fddfd32f9d79e161fc7028d29d"
-LIC_FILES_CHKSUM = "file://COPYING;md5=6dfb32a488e5fd6bae52fbf6c7ebb086"
-
+PV = "6.2.4.p4.0"
+SRC_URI[aarch64.md5sum] = "ec8d8662ac31b96122a1af7736831482"
+SRC_URI[aarch64.sha256sum] = "362265b9c6c6ce05b1fafb412efe6617cf142669eb21302beec5e87ebbfe6a25"
+SRC_URI[arm.md5sum] = "bb1ef2e365b5d72e2a03c3b39d2016cc"
+SRC_URI[arm.sha256sum] = "27557094f4b5e7bef87c73131959503f3d0c3a6ea1c4f010d86c1668078f7f22"
+LIC_FILES_CHKSUM = "file://COPYING;md5=80c0478f4339af024519b3723023fe28"
+FSLBIN_NAME_arm = "${PN}-${PV}-arm"
 # implement that this is not for COMPATIBLE_MACHINE_imxdpu
 COMPATIBLE_MACHINE_2D          = "(^$)"
 COMPATIBLE_MACHINE_2D_imxgpu2d = "${MACHINE}"
