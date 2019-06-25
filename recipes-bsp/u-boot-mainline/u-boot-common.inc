@@ -45,6 +45,8 @@ SRC_URI += " \
     file://0006-configs-colibri-imx6ull-switch-to-DM_VIDEO.patch \
     \
     file://0001-apalis_imx6-increase-phy-autoneg-timeout.patch \
+    \
+    file://0001-apalis_imx6-fix-set_emmcargs-wrapper.patch \
 "
 
 S = "${WORKDIR}/git"

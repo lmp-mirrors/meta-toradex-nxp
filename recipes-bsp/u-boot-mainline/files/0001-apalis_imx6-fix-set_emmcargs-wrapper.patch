@@ -1,0 +1,31 @@
+From 117a380d31d697cb831a620f92800d215fa52ee3 Mon Sep 17 00:00:00 2001
+From: Igor Opaniuk <igor.opaniuk@toradex.com>
+Date: Tue, 25 Jun 2019 14:48:06 +0300
+Subject: [PATCH] apalis_imx6: fix set_emmcargs wrapper
+
+Fix set_emmcargs wrapper, which prepares proper bootargs for booting
+from eMMC.
+
+Signed-off-by: Igor Opaniuk <igor.opaniuk@toradex.com>
+---
+ include/configs/apalis_imx6.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/include/configs/apalis_imx6.h b/include/configs/apalis_imx6.h
+index 246d618442..df4296df2a 100644
+--- a/include/configs/apalis_imx6.h
++++ b/include/configs/apalis_imx6.h
+@@ -122,8 +122,8 @@
+ 	"imx6q-apalis-cam-eval.dtb fat 0 1"
+ 
+ #define EMMC_BOOTCMD \
+-	"set_emmcargs emmcargs ip=off root=PARTUUID=${uuid} ro,noatime " \
+-		"rootfstype=ext4 rootwait\0" \
++	"set_emmcargs=setenv emmcargs ip=off root=PARTUUID=${uuid} " \
++		"ro,noatime rootfstype=ext4 rootwait\0" \
+ 	"emmcboot=run setup; run emmcfinduuid; run set_emmcargs; " \
+ 		"setenv bootargs ${defargs} ${emmcargs} ${setupargs} " \
+ 		"${vidargs}; echo Booting from internal eMMC chip...; "	\
+-- 
+2.13.6
+
