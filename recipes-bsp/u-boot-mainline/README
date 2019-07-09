@@ -1,4 +1,0 @@
-Pulled from oe master @ ea527e5008c28c410806cd0a2e8513ff6dcac450
-
-Then change to U-Boot master and add our pending patches.
-http://git.denx.de/?p=u-boot.git;a=commit;h=b4ee6daad7a2604ca9466b2ba48de86cc27d381f

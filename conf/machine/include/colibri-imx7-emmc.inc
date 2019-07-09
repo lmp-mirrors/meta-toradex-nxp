@@ -8,5 +8,3 @@ TORADEX_FLASH_TYPE = "emmc"
 MACHINE_NAME = "Colibri-iMX7-eMMC"
 
 MACHINE_FIRMWARE_remove = "firmware-imx-epdc"
-
-PREFERRED_PROVIDER_virtual/bootloader = "u-boot"
