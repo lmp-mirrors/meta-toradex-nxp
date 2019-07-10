@@ -44,6 +44,9 @@ do_install_class-cross () {
 
 SYSROOT_DIRS_append_class-cross = " ${bindir_cross}"
 
+PROVIDES += "u-boot-fw-utils"
+RPROVIDES_${PN} += "u-boot-fw-utils"
+
 COMPATIBLE_MACHINE = "(mx8)"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 BBCLASSEXTEND = "cross"
