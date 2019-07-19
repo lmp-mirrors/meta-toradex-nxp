@@ -12,3 +12,5 @@ IMAGE_BOOT_FILES_append = " ${MACHINE_BOOT_FILES}"
 WKS_FILE_DEPENDS_append = " u-boot-distro-boot"
 
 MACHINE_FIRMWARE_remove = "firmware-imx-epdc"
+
+PREFERRED_PROVIDER_virtual/kernel_preempt-rt = "linux-toradex-rt"
