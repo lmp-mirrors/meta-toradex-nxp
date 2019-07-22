@@ -8,6 +8,10 @@ TORADEX_FLASH_TYPE = "rawnand"
 
 MACHINE_NAME = "Colibri-iMX7"
 
+EXTRA_IMAGEDEPENDS += "u-boot-distro-boot"
+IMAGE_BOOT_FILES += "${MACHINE_BOOT_FILES}"
+MACHINE_BOOT_FILES = "boot.scr"
+
 MACHINE_FIRMWARE_remove = "firmware-imx-epdc"
 
 UBOOT_MAKE_TARGET_colibri-imx7 = "u-boot.imx"

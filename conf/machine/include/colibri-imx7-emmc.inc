@@ -7,4 +7,8 @@ TORADEX_FLASH_TYPE = "emmc"
 
 MACHINE_NAME = "Colibri-iMX7-eMMC"
 
+EXTRA_IMAGEDEPENDS += "u-boot-distro-boot"
+IMAGE_BOOT_FILES += "${MACHINE_BOOT_FILES}"
+MACHINE_BOOT_FILES = "boot.scr"
+
 MACHINE_FIRMWARE_remove = "firmware-imx-epdc"
