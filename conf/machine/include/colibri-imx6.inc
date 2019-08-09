@@ -7,9 +7,9 @@ OFFSET_SPL_PAYLOAD = "138"
 
 MACHINE_NAME = "Colibri-iMX6"
 
-EXTRA_IMAGEDEPENDS += "u-boot-distro-boot"
-IMAGE_BOOT_FILES += "${MACHINE_BOOT_FILES}"
 MACHINE_BOOT_FILES = "boot.scr"
+IMAGE_BOOT_FILES_append = " ${MACHINE_BOOT_FILES}"
+WKS_FILE_DEPENDS_append = " u-boot-distro-boot"
 
 KERNEL_IMAGETYPE_${MACHINE} = "zImage"
 
