@@ -2,10 +2,9 @@ SUMMARY = "U-Boot bootloader with support for Toradex i.MX8 SoM"
 require recipes-bsp/u-boot/u-boot.inc
 require recipes-bsp/u-boot/u-boot-toradex-initial-env.inc
 require u-boot-toradex-common_${PV}.inc
-inherit pythonnative
 
 PROVIDES += "u-boot"
-DEPENDS_append = " python dtc-native"
+DEPENDS_append = " dtc-native"
 
 SRC_URI_append_apalis-imx8a0 = " file://0001-Revert-apalis-imx8-fused-modules-boot-from-emmc.patch"
 
