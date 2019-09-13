@@ -16,8 +16,6 @@ PREFERRED_PROVIDER_virtual/kernel_preempt-rt = "linux-toradex-rt"
 
 UBOOT_SUFFIX = "img"
 
-PREFERRED_PROVIDER_virtual/libg2d_mx6 ?= "imx-gpu-g2d"
-
 MACHINE_FIRMWARE_remove = "firmware-imx-epdc"
 
 # As per meta-freescale commit 927b31771dab ("xf86-video-imx-vivante: Remove fb
