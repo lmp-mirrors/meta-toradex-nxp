@@ -53,6 +53,10 @@ do_install_append_apalis-imx8() {
     install_unlock_emmc
 }
 
+do_install_append_apalis-imx8x() {
+    install_unlock_emmc
+}
+
 do_install_append_colibri-imx8x() {
     install_unlock_emmc
 }
