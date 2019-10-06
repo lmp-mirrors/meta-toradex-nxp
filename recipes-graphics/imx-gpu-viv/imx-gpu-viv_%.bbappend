@@ -2,7 +2,7 @@
 PV = "6.2.4.p4.0-aarch32"
 PV_aarch64 = "6.2.4.p4.0-aarch64"
 LIC_FILES_CHKSUM = "file://COPYING;md5=80c0478f4339af024519b3723023fe28"
-SRC_URI = "${FSL_MIRROR}/${PN}-${PV}.bin;fsl-eula=true"
+SRC_URI = "${FSL_MIRROR}/${BPN}-${PV}.bin;fsl-eula=true"
 MD5SUM_arm = "83c40f63358dd3bd9bbc1cd7521bf8fe"
 SHA256SUM_arm = "5abfc3b24c1f9d02970064898fb30da705b67bc7e967dbfbf0525c1cc60f2491"
 MD5SUM_aarch64 = "a937571f6ecf85bdff1dfb3b6c834ed0"
