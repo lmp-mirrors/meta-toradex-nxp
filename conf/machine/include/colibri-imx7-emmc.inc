@@ -7,10 +7,23 @@ TORADEX_FLASH_TYPE = "emmc"
 
 MACHINE_NAME = "Colibri-iMX7-eMMC"
 
-PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
+MACHINEOVERRIDES_append_upstream = ":use-mainline-bsp"
+
+MACHINE_BOOT_FILES = "boot.scr"
+IMAGE_BOOT_FILES_append = " ${MACHINE_BOOT_FILES}"
+WKS_FILE_DEPENDS_append = " u-boot-distro-boot"
 
 MACHINE_FIRMWARE_remove = "firmware-imx-epdc"
 
 PREFERRED_PROVIDER_virtual/kernel_preempt-rt = "linux-toradex-rt"
+PREFERRED_PROVIDER_virtual/kernel_upstream = "linux-toradex-mainline"
+PREFERRED_PROVIDER_virtual/kernel_upstream_preempt-rt = "linux-toradex-mainline-rt"
 
-KERNEL_DEVICETREE_use-mainline-bsp = "imx7d-colibri-emmc-eval-v3.dtb"
+KERNEL_DEVICETREE_use-mainline-bsp = " \
+    imx7d-colibri-emmc-aster.dtb imx7d-colibri-emmc-eval-v3.dtb \
+"
+KERNEL_DEVICETREE_use-mainline-bsp_preempt-rt = " \
+    imx7d-colibri-emmc-eval-v3.dtb \
+"
+
+PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"

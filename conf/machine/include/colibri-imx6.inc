@@ -7,11 +7,18 @@ OFFSET_SPL_PAYLOAD = "138"
 
 MACHINE_NAME = "Colibri-iMX6"
 
-PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
+MACHINEOVERRIDES_append_upstream = ":use-mainline-bsp"
+
+MACHINE_BOOT_FILES = "boot.scr"
+IMAGE_BOOT_FILES_append = " ${MACHINE_BOOT_FILES}"
+WKS_FILE_DEPENDS_append = " u-boot-distro-boot"
 
 KERNEL_IMAGETYPE_${MACHINE} = "zImage"
 PREFERRED_PROVIDER_virtual/kernel_preempt-rt = "linux-toradex-rt"
+PREFERRED_PROVIDER_virtual/kernel_upstream = "linux-toradex-mainline"
+PREFERRED_PROVIDER_virtual/kernel_upstream_preempt-rt = "linux-toradex-mainline-rt"
 
+PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
 UBOOT_SUFFIX = "img"
 
 MACHINE_FIRMWARE_remove = "firmware-imx-epdc"
