@@ -7,12 +7,16 @@ OFFSET_SPL_PAYLOAD = "138"
 
 MACHINE_NAME = "Apalis-iMX6"
 
+MACHINEOVERRIDES_append_upstream = ":use-mainline-bsp"
+
 MACHINE_BOOT_FILES = "boot.scr"
 IMAGE_BOOT_FILES_append = " ${MACHINE_BOOT_FILES}"
 WKS_FILE_DEPENDS_append = " u-boot-distro-boot"
 
 KERNEL_IMAGETYPE_${MACHINE} = "zImage"
 PREFERRED_PROVIDER_virtual/kernel_preempt-rt = "linux-toradex-rt"
+PREFERRED_PROVIDER_virtual/kernel_upstream = "linux-toradex-mainline"
+PREFERRED_PROVIDER_virtual/kernel_upstream_preempt-rt = "linux-toradex-mainline-rt"
 
 UBOOT_SUFFIX = "img"
 
