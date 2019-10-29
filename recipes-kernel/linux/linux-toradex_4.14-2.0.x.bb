@@ -14,7 +14,7 @@ KERNEL_MODULE_AUTOLOAD += "${@bb.utils.contains('COMBINED_FEATURES', 'usbgadget'
 LOCALVERSION = "-${TDX_VER_ITEM}"
 PV_append = "+git${SRCPV}"
 
-SRCREV = "397564ae5691bd47180acbc12729777ee688041b"
+SRCREV = "fff496c2a1bd08bb4987232c9f3f4b6704bd3146"
 SRCBRANCH = "toradex_4.14-2.0.x-imx"
 SRCREV_use-head-next = "${AUTOREV}"
 SRCBRANCH_use-head-next = "toradex_4.14-2.0.x-imx-next"
