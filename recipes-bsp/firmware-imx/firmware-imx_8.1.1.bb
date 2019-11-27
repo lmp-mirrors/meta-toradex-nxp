@@ -34,6 +34,9 @@ do_install() {
     done
     cd -
 
+    #the sdma firmware is expected in ${D}${base_libdir}/firmware/imx/sdma
+    mv ${D}${base_libdir}/firmware/sdma ${D}${base_libdir}/firmware/imx/sdma
+
     #1BW_BCM43340
     install -d ${D}${base_libdir}/firmware/bcm/1BW_BCM43340
     cp -rfv git/brcm/1BW_BCM43340/*.bin ${D}${base_libdir}/firmware/bcm/1BW_BCM43340
@@ -85,7 +88,7 @@ python populate_packages_prepend() {
                       extra_depends='',
                       prepend=True)
 
-    sdmadir = bb.data.expand('${base_libdir}/firmware/sdma', d)
+    sdmadir = bb.data.expand('${base_libdir}/firmware/imx/sdma', d)
     do_split_packages(d, sdmadir, '^sdma-([^-]*).*\.bin',
                       output_pattern='firmware-imx-sdma-%s',
                       description='Freescale IMX Firmware %s',
