@@ -11,7 +11,9 @@ SRC_URI = " \
 # Load USB functions configurable through configfs (CONFIG_USB_CONFIGFS)
 KERNEL_MODULE_AUTOLOAD += "${@bb.utils.contains('COMBINED_FEATURES', 'usbgadget', ' libcomposite', '',d)}"
 
-LOCALVERSION = "-${TDX_VER_ITEM}"
+inherit toradex-kernel-localversion
+# Make sure to override LOCALVERSION in linux-imx.inc
+LOCALVERSION = "-${TDX_VERSION}"
 PV_append = "+git${SRCPV}"
 
 SRCREV = "397564ae5691bd47180acbc12729777ee688041b"
@@ -21,6 +23,3 @@ SRCBRANCH_use-head-next = "toradex_4.14-2.0.x-imx-next"
 
 DEPENDS += "lzop-native bc-native"
 COMPATIBLE_MACHINE = "(mx6|mx7|mx8)"
-
-# defaults
-TDX_VER_ITEM ??= "0"
