@@ -8,6 +8,8 @@ SUMMARY = "Real-Time Linux kernel for Toradex Freescale i.MX based modules"
 MIRRORS += "${KERNELORG_MIRROR}/linux/kernel/projects/rt/4.14/older/ ${KERNELORG_MIRROR}/linux/kernel/projects/rt/4.14/"
 SRC_URI += " \
     ${KERNELORG_MIRROR}/linux/kernel/projects/rt/4.14/older/patch-4.14.126-rt62.patch.xz;name=rt-patch \
+    file://0001-imx_sc_thermal-prevent-BUG-with-rt-patch.patch \
+    file://0002-ddr-perf-prevent-BUG-with-rt-patch.patch \
 "
 
 SRC_URI[rt-patch.md5sum] = "47f2bb663112711d7270902e7e42cd16"
