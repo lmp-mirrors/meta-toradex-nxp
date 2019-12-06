@@ -16,4 +16,6 @@ MACHINE_FIRMWARE_remove = "firmware-imx-epdc"
 
 PREFERRED_PROVIDER_virtual/kernel_preempt-rt = "linux-toradex-rt"
 
+KERNEL_DEVICETREE_use-mainline-bsp = "imx7d-colibri-eval-v3.dtb imx7s-colibri-eval-v3.dtb"
+
 UBOOT_MAKE_TARGET_colibri-imx7 = "u-boot.imx"
