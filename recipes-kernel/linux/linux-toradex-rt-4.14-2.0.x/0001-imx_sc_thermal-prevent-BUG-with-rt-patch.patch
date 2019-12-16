@@ -7,7 +7,7 @@ With the RT patch applied the kernel prints a BUG backtrace during boot:
 
 | BUG: using smp_processor_id() in preemptible [00000000] code: swapper/0/1
 
-Prevent this by avoiding the smp_processor_id call and just check the both
+Prevent this by avoiding the smp_processor_id call and just check both
 CPU clusters which may be there in a i.MX8 series SoC.
 
 Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
