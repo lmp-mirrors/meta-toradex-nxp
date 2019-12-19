@@ -7,10 +7,12 @@ SUMMARY = "Real-Time Linux kernel for Toradex Freescale i.MX based modules"
 # both possible storage locations.
 MIRRORS += "${KERNELORG_MIRROR}/linux/kernel/projects/rt/4.14/older/ ${KERNELORG_MIRROR}/linux/kernel/projects/rt/4.14/"
 SRC_URI += " \
-    ${KERNELORG_MIRROR}/linux/kernel/projects/rt/4.14/older/patch-4.14.126-rt62.patch.xz;name=rt-patch \
+    file://0001-sources-prepare-for-rt-patch.patch \
+    ${KERNELORG_MIRROR}/linux/kernel/projects/rt/4.14/older/patch-4.14.155-rt70.patch.xz;name=rt-patch \
+    file://0003-Revert-sources-prepare-for-rt-patch.patch \
     file://0001-imx_sc_thermal-prevent-BUG-with-rt-patch.patch \
     file://0002-ddr-perf-prevent-BUG-with-rt-patch.patch \
 "
 
-SRC_URI[rt-patch.md5sum] = "47f2bb663112711d7270902e7e42cd16"
-SRC_URI[rt-patch.sha256sum] = "496d2e788eb878c828dedda35e1def95c3e922ed4f010593fb8f0fcc523834ff"
+SRC_URI[rt-patch.md5sum] = "39e7b169bd4d8dc9eb6690575c6582ed"
+SRC_URI[rt-patch.sha256sum] = "5220a902427063cd428208d8df7181d36677a6f7cf7908bb66cc2031c6257686"
