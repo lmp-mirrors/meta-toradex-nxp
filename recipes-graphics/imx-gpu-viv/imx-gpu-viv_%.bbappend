@@ -1,12 +1,12 @@
-#update to 6.2.4.p4.0
-PV = "6.2.4.p4.0-aarch32"
-PV_aarch64 = "6.2.4.p4.0-aarch64"
-LIC_FILES_CHKSUM = "file://COPYING;md5=80c0478f4339af024519b3723023fe28"
+#update to 6.2.4.p4.8
+PV = "6.2.4.p4.8-aarch32"
+PV_aarch64 = "6.2.4.p4.8-aarch64"
+LIC_FILES_CHKSUM = "file://COPYING;md5=fd4b227530cd88a82af6a5982cfb724d"
 SRC_URI = "${FSL_MIRROR}/${BPN}-${PV}.bin;fsl-eula=true"
-MD5SUM_arm = "83c40f63358dd3bd9bbc1cd7521bf8fe"
-SHA256SUM_arm = "5abfc3b24c1f9d02970064898fb30da705b67bc7e967dbfbf0525c1cc60f2491"
-MD5SUM_aarch64 = "a937571f6ecf85bdff1dfb3b6c834ed0"
-SHA256SUM_aarch64 = "1eb4ebe2fa11d8fb7beb8fc7046bb57093fd416d0a401608d78cd48b65624fcd"
+MD5SUM_arm = "0e18ffca4b9c648fb41586fa53647541"
+SHA256SUM_arm = "2804c3d7b8fdd0db6659735cc55b33e7fe749b823ccd9a5ee37b1ccf764ae928"
+MD5SUM_aarch64 = "6937d91f3133a63b6e5bb33951c8c2e8"
+SHA256SUM_aarch64 = "72c5338003322a4ebf4d28e38f48b3014fcd116bd54d1b42924aa3be32888bd0"
 SRC_URI[md5sum] = "${MD5SUM}"
 SRC_URI[sha256sum] = "${SHA256SUM}"
 
