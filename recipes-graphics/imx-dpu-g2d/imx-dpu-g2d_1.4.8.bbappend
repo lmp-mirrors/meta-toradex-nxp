@@ -1,5 +1,5 @@
-# update to 1.7.0
-PV = "1.7.0"
-LIC_FILES_CHKSUM = "file://COPYING;md5=80c0478f4339af024519b3723023fe28"
-SRC_URI[md5sum] = "a47ae6db002b47031e44d8402c40604e"
-SRC_URI[sha256sum] = "5a2785ba1f4e4ea6f61ab98f8408600adca9decd66511e6665023325184bf7e9"
+# update to 1.7.6
+PV = "1.7.6"
+LIC_FILES_CHKSUM = "file://COPYING;md5=fd4b227530cd88a82af6a5982cfb724d"
+SRC_URI[md5sum] = "a2672d00100bbcfc943ce865f0f7e2c9"
+SRC_URI[sha256sum] = "100ec0b5cc3c14c46018c90cca5ab233c29efe0b2fe90edc752e3fd9e03f8342"
