@@ -1,5 +1,5 @@
 PV = "4.14.98"
-SRCBRANCH = "imx_4.14.98_2.0.0_ga"
+SRCBRANCH = "toradex_4.14-2.3.x-imx"
 LOCALVERSION = "-${SRCBRANCH}"
-SRC_URI = "git://source.codeaurora.org/external/imx/linux-imx.git;protocol=https;branch=${SRCBRANCH}"
-SRCREV = "dfc78102d29f81d9316b281a3b8af3dff95174c8"
+SRC_URI = "git://git.toradex.com/linux-toradex.git;protocol=git;branch=${SRCBRANCH}"
+SRCREV = "b52b0a47036fc716ad95ec6385e2cb3bd4a11411"
