@@ -16,10 +16,9 @@ inherit toradex-kernel-localversion
 LOCALVERSION = "-${TDX_VERSION}"
 PV_append = "+git${SRCPV}"
 
-SRCREV = "fff496c2a1bd08bb4987232c9f3f4b6704bd3146"
-SRCBRANCH = "toradex_4.14-2.0.x-imx"
+SRCREV = "12620a9e8a0ca2d9950e3863a350061ba581fe63"
+SRCBRANCH = "toradex_4.14-2.3.x-imx"
 SRCREV_use-head-next = "${AUTOREV}"
-SRCBRANCH_use-head-next = "toradex_4.14-2.0.x-imx-next"
 
 DEPENDS += "lzop-native bc-native"
 COMPATIBLE_MACHINE = "(mx6|mx7|mx8)"
