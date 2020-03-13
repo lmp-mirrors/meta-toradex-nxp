@@ -1,4 +1,5 @@
 PV = "1.14.0"
+LIC_FILES_CHKSUM = "file://COPYING;md5=6c12031a11b81db21cdfe0be88cac4b3"
 SRC_URI = " \
     ${FSL_MIRROR}/${PN}-${PV}.bin;fsl-eula=true \
 "
