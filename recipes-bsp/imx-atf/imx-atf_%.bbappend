@@ -3,6 +3,10 @@
 #SRCREV = "d6451cc1e162eff89b03dd63e86d55b9baa8885b"
 #PLATFORM_mx8qxp  = "imx8qxp"
 
+FILESEXTRAPATHS_prepend := "${THISDIR}/${BPN}:"
+
+SRC_URI_append = " file://0001-imx8m-imx_rdc.c-fix-a-uninitialized-variable.patch"
+
 PV = "2.0+git${SRCPV}"
 SRCBRANCH = "imx_4.14.98_2.3.0"
 SRCREV = "bb209a0b4ccca2aa4a3a887f9606dc4a3d294adf"
