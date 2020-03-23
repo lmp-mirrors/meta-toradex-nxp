@@ -19,11 +19,12 @@ PREFERRED_PROVIDER_virtual/kernel_preempt-rt = "linux-toradex-rt"
 PREFERRED_PROVIDER_virtual/kernel_upstream = "linux-toradex-mainline"
 PREFERRED_PROVIDER_virtual/kernel_upstream_preempt-rt = "linux-toradex-mainline-rt"
 
-KERNEL_DEVICETREE_use-mainline-bsp = " \
-    imx7d-colibri-emmc-aster.dtb imx7d-colibri-emmc-eval-v3.dtb \
+KERNEL_DEVICETREE_append_use-nxp-bsp = " \
+    imx7d-colibri-emmc-iris.dtb \
+    imx7d-colibri-emmc-iris-v2.dtb \
 "
-KERNEL_DEVICETREE_use-mainline-bsp_preempt-rt = " \
-    imx7d-colibri-emmc-eval-v3.dtb \
+KERNEL_DEVICETREE_append_use-mainline-bsp = " \
+    imx7d-colibri-emmc-aster.dtb \
 "
 
 PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
