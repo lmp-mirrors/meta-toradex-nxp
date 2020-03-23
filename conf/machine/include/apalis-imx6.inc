@@ -12,6 +12,12 @@ IMAGE_BOOT_FILES_append = " ${MACHINE_BOOT_FILES}"
 WKS_FILE_DEPENDS_append = " u-boot-distro-boot"
 
 KERNEL_IMAGETYPE_${MACHINE} = "zImage"
+KERNEL_DEVICETREE += "imx6q-apalis-ixora-v1.2.dtb"
+KERNEL_DEVICETREE_use-mainline-bsp += " \
+    imx6q-apalis-eval.dtb \
+    imx6q-apalis-ixora-v1.1.dtb \
+"
+
 PREFERRED_PROVIDER_virtual/kernel_preempt-rt = "linux-toradex-rt"
 
 UBOOT_SUFFIX = "img"
