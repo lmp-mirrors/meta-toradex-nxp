@@ -14,6 +14,14 @@ WKS_FILE_DEPENDS_append = " u-boot-distro-boot"
 
 MACHINE_FIRMWARE_remove = "firmware-imx-epdc"
 
+KERNEL_DEVICETREE += " \
+    imx7d-colibri-iris.dtb imx7s-colibri-iris.dtb \
+    imx7d-colibri-iris-v2.dtb imx7s-colibri-iris-v2.dtb \
+"
+KERNEL_DEVICETREE_use-mainline-bsp += " \
+    imx7d-colibri-eval-v3.dtb imx7s-colibri-eval-v3.dtb \
+    imx7d-colibri-aster.dtb imx7s-colibri-aster.dtb \
+"
 PREFERRED_PROVIDER_virtual/kernel_preempt-rt = "linux-toradex-rt"
 
 UBOOT_MAKE_TARGET_colibri-imx7 = "u-boot.imx"
