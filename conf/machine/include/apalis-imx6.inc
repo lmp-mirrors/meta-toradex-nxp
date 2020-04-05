@@ -7,9 +7,7 @@ OFFSET_SPL_PAYLOAD = "138"
 
 MACHINE_NAME = "Apalis-iMX6"
 
-MACHINE_BOOT_FILES = "boot.scr"
-IMAGE_BOOT_FILES_append = " ${MACHINE_BOOT_FILES}"
-WKS_FILE_DEPENDS_append = " u-boot-distro-boot"
+PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
 
 KERNEL_IMAGETYPE_${MACHINE} = "zImage"
 PREFERRED_PROVIDER_virtual/kernel_preempt-rt = "linux-toradex-rt"

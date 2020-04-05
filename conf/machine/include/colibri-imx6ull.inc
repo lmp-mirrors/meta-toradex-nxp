@@ -9,9 +9,7 @@ TORADEX_FLASH_TYPE = "rawnand"
 
 MACHINE_NAME = "Colibri-iMX6ULL"
 
-MACHINE_BOOT_FILES = "boot.scr"
-IMAGE_BOOT_FILES_append = " ${MACHINE_BOOT_FILES}"
-WKS_FILE_DEPENDS_append = " u-boot-distro-boot"
+PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
 
 UBOOT_ENTRYPOINT_colibri-imx6ull = "0x81000000"
 
