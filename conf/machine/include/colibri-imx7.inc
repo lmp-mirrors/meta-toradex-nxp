@@ -24,17 +24,12 @@ KERNEL_DEVICETREE_use-mainline-bsp += " \
     imx7d-colibri-eval-v3.dtb imx7s-colibri-eval-v3.dtb \
     imx7d-colibri-aster.dtb imx7s-colibri-aster.dtb \
 "
-PREFERRED_PROVIDER_virtual/kernel_preempt-rt = "linux-toradex-rt"
-PREFERRED_PROVIDER_virtual/kernel_upstream = "linux-toradex-mainline"
-PREFERRED_PROVIDER_virtual/kernel_upstream_preempt-rt = "linux-toradex-mainline-rt"
-
-KERNEL_DEVICETREE_use-mainline-bsp = " \
-    imx7d-colibri-aster.dtb imx7d-colibri-eval-v3.dtb \
-    imx7s-colibri-aster.dtb imx7s-colibri-eval-v3.dtb \
-"
 KERNEL_DEVICETREE_use-mainline-bsp_preempt-rt = " \
     imx7d-colibri-emmc-eval-v3.dtb \
     imx7s-colibri-eval-v3.dtb \
 "
+PREFERRED_PROVIDER_virtual/kernel_preempt-rt = "linux-toradex-rt"
+PREFERRED_PROVIDER_virtual/kernel_upstream = "linux-toradex-mainline"
+PREFERRED_PROVIDER_virtual/kernel_upstream_preempt-rt = "linux-toradex-mainline-rt"
 
 UBOOT_MAKE_TARGET_colibri-imx7 = "u-boot.imx"
