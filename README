@@ -2,17 +2,11 @@ OpenEmbedded/Yocto BSP Layer for Toradex Modules Based on NXP SoCs
 ==================================================================
 
 This layer provides support for ARM based Toradex computer on modules (COM)
-featuring NXP i.MX6, i.MX7, and Vybrid SoCs for use with OpenEmbedded
+featuring NXP i.MX6, i.MX7, and i.MX8 SoCs for use with OpenEmbedded
 and/or Yocto.
 For more information on available Toradex COMs please visit:
 
 https://www.toradex.com/computer-on-modules
-
-Note that the master branch of the layers is where the development is
-happening. Do expect build breakage and do not expect us to give a solution.
-If you need a more stable base use one of the release branches.
-toradex-bsp-platform may have a master manifest tagged to specific layer
-versions which likely is more stable than using HEAD.
 
 Dependencies
 ============
@@ -20,24 +14,24 @@ Dependencies
 This layer depends on:
 
   URI: git://git.openembedded.org/bitbake
-  branch: master
+  branch: 1.44
   revision: HEAD
 
   URI: git://git.openembedded.org/openembedded-core
   layer: meta
-  branch: master
+  branch: zeus
   revision: HEAD
 
-    URI: git://git.yoctoproject.org/meta-freescale
-  branch: master
+  URI: git://git.yoctoproject.org/meta-freescale
+  branch: zeus
   revision: HEAD
 
   URI: https://github.com/Freescale/meta-freescale-3rdparty.git
-  branch: master
+  branch: zeus
   revision: HEAD
 
   URI: git://git.toradex.com/meta-toradex-bsp-common
-  branch: master
+  branch: zeus
   revision: HEAD
 
 Patches
@@ -54,26 +48,10 @@ To send patches, use
     git send-email --to yocto-patches@toradex.com <generated patch>
 
 
-I. Building the meta-toradex-nxp BSP Layer
-==========================================
+Building
+========
 
-For information on how to use the modules with Linux and instructions on how
-to build the angstrom based demo images please visit:
-http://developer.toradex.com/software/linux
-http://developer.toradex.com/knowledge-base/board-support-package/openembedded-(core)
-
-For support, visit the Toradex Developer Community:
-https://www.toradex.com/community
-
-Images built with this layer can be found here:
-http://developer.toradex.com/files/toradex-dev/uploads/media/Colibri/Linux/Images/
-
-II. Deploying Built Images
-==========================
-
-http://developer.toradex.com/knowledge-base/flashing-linux-on-imx6-modules
-http://developer.toradex.com/knowledge-base/flashing-embedded-linux-to-imx7-modules
-http://developer.toradex.com/knowledge-base/flashing-linux-on-vybrid-modules
+See the README in meta-toradex-demos.
 
 License
 =======
@@ -82,4 +60,4 @@ All metadata is MIT licensed unless otherwise stated. Source code and
 binaries included in tree for individual recipes is under the LICENSE
 stated in each recipe (.bb file) unless otherwise stated.
 
-This README document is Copyright (C) 2016-2019 Toradex AG.
+This README document is Copyright (C) 2016-2020 Toradex AG.
