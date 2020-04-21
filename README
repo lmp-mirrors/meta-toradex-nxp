@@ -28,7 +28,7 @@ This layer depends on:
   branch: master
   revision: HEAD
 
-    URI: git://git.yoctoproject.org/meta-freescale
+  URI: git://git.yoctoproject.org/meta-freescale
   branch: master
   revision: HEAD
 
@@ -54,26 +54,10 @@ To send patches, use
     git send-email --to yocto-patches@toradex.com <generated patch>
 
 
-I. Building the meta-toradex-nxp BSP Layer
-==========================================
+Building
+========
 
-For information on how to use the modules with Linux and instructions on how
-to build the angstrom based demo images please visit:
-http://developer.toradex.com/software/linux
-http://developer.toradex.com/knowledge-base/board-support-package/openembedded-(core)
-
-For support, visit the Toradex Developer Community:
-https://www.toradex.com/community
-
-Images built with this layer can be found here:
-http://developer.toradex.com/files/toradex-dev/uploads/media/Colibri/Linux/Images/
-
-II. Deploying Built Images
-==========================
-
-http://developer.toradex.com/knowledge-base/flashing-linux-on-imx6-modules
-http://developer.toradex.com/knowledge-base/flashing-embedded-linux-to-imx7-modules
-http://developer.toradex.com/knowledge-base/flashing-linux-on-vybrid-modules
+See the README in meta-toradex-demos.
 
 License
 =======
@@ -82,4 +66,4 @@ All metadata is MIT licensed unless otherwise stated. Source code and
 binaries included in tree for individual recipes is under the LICENSE
 stated in each recipe (.bb file) unless otherwise stated.
 
-This README document is Copyright (C) 2016-2019 Toradex AG.
+This README document is Copyright (C) 2016-2020 Toradex AG.
