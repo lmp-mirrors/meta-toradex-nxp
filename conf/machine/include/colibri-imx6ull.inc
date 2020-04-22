@@ -17,8 +17,7 @@ UBOOT_ENTRYPOINT_colibri-imx6ull = "0x81000000"
 
 MACHINEOVERRIDES_append_upstream = ":use-mainline-bsp"
 
-MACHINE_BOOT_FILES = "boot.scr"
-IMAGE_BOOT_FILES_append = " ${MACHINE_BOOT_FILES}"
+IMAGE_BOOT_FILES_append = " boot.scr-${MACHINE};boot.scr"
 WKS_FILE_DEPENDS_append = " u-boot-distro-boot"
 
 UBOOT_ENTRYPOINT_colibri-imx6ull = "0x81000000"
@@ -29,6 +28,7 @@ KERNEL_DEVICETREE_append_use_nxp_bsp = " \
     imx6ull-colibri-iris.dtb imx6ull-colibri-wifi-iris.dtb \
     imx6ull-colibri-iris-v2.dtb imx6ull-colibri-wifi-iris-v2.dtb \
 "
+PREFERRED_PROVIDER_virtual/kernel = "linux-toradex"
 PREFERRED_PROVIDER_virtual/kernel_preempt-rt = "linux-toradex-rt"
 PREFERRED_PROVIDER_virtual/kernel_use-mainline-bsp = "linux-toradex-mainline"
 PREFERRED_PROVIDER_virtual/kernel_use-mainline-bsp_preempt-rt = "linux-toradex-mainline"
