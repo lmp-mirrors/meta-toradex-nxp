@@ -7,19 +7,16 @@ OFFSET_SPL_PAYLOAD = "138"
 
 MACHINE_NAME = "Apalis-iMX6"
 
-MACHINEOVERRIDES_append_upstream = ":use-mainline-bsp"
-
-MACHINE_BOOT_FILES = "boot.scr"
-IMAGE_BOOT_FILES_append = " ${MACHINE_BOOT_FILES}"
+IMAGE_BOOT_FILES_append = " boot.scr-${MACHINE};boot.scr"
 WKS_FILE_DEPENDS_append = " u-boot-distro-boot"
 
-KERNEL_IMAGETYPE_${MACHINE} = "zImage"
 KERNEL_DEVICETREE += "imx6q-apalis-ixora-v1.2.dtb"
 KERNEL_DEVICETREE_use-mainline-bsp += " \
     imx6q-apalis-eval.dtb \
     imx6q-apalis-ixora-v1.1.dtb \
 "
 
+PREFERRED_PROVIDER_virtual/kernel = "linux-toradex"
 PREFERRED_PROVIDER_virtual/kernel_preempt-rt = "linux-toradex-rt"
 PREFERRED_PROVIDER_virtual/kernel_use-mainline-bsp = "linux-toradex-mainline"
 PREFERRED_PROVIDER_virtual/kernel_use-mainline-bsp_preempt-rt = "linux-toradex-mainline"
