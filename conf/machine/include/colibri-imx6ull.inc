@@ -28,5 +28,5 @@ KERNEL_DEVICETREE += " \
 "
 KERNEL_DEVICETREE_use-mainline-bsp = "imx6ull-colibri-eval-v3.dtb imx6ull-colibri-wifi-eval-v3.dtb"
 PREFERRED_PROVIDER_virtual/kernel_preempt-rt = "linux-toradex-rt"
-PREFERRED_PROVIDER_virtual/kernel_upstream = "linux-toradex-mainline"
-PREFERRED_PROVIDER_virtual/kernel_upstream_preempt-rt = "linux-toradex-mainline-rt"
+PREFERRED_PROVIDER_virtual/kernel_use-mainline-bsp = "linux-toradex-mainline"
+PREFERRED_PROVIDER_virtual/kernel_use-mainline-bsp_preempt-rt = "linux-toradex-mainline-rt"

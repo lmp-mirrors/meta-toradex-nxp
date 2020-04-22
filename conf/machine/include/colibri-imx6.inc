@@ -16,8 +16,8 @@ WKS_FILE_DEPENDS_append = " u-boot-distro-boot"
 KERNEL_IMAGETYPE_${MACHINE} = "zImage"
 KERNEL_DEVICETREE += "imx6dl-colibri-iris.dtb imx6dl-colibri-iris-v2.dtb"
 PREFERRED_PROVIDER_virtual/kernel_preempt-rt = "linux-toradex-rt"
-PREFERRED_PROVIDER_virtual/kernel_upstream = "linux-toradex-mainline"
-PREFERRED_PROVIDER_virtual/kernel_upstream_preempt-rt = "linux-toradex-mainline-rt"
+PREFERRED_PROVIDER_virtual/kernel_use-mainline-bsp = "linux-toradex-mainline"
+PREFERRED_PROVIDER_virtual/kernel_use-mainline-bsp_preempt-rt = "linux-toradex-mainline-rt"
 
 UBOOT_SUFFIX = "img"
 
