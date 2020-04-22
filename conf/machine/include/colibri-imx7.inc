@@ -10,8 +10,7 @@ MACHINE_NAME = "Colibri-iMX7"
 
 MACHINEOVERRIDES_append_upstream = ":use-mainline-bsp"
 
-MACHINE_BOOT_FILES = "boot.scr"
-IMAGE_BOOT_FILES_append = " ${MACHINE_BOOT_FILES}"
+IMAGE_BOOT_FILES_append = " boot.scr-${MACHINE};boot.scr"
 WKS_FILE_DEPENDS_append = " u-boot-distro-boot"
 
 MACHINE_FIRMWARE_remove = "firmware-imx-epdc"
@@ -24,11 +23,11 @@ KERNEL_DEVICETREE_append_use-mainline-bsp = " \
     imx7d-colibri-aster.dtb \
     imx7s-colibri-aster.dtb \
 "
+PREFERRED_PROVIDER_virtual/kernel = "linux-toradex"
 PREFERRED_PROVIDER_virtual/kernel_preempt-rt = "linux-toradex-rt"
 PREFERRED_PROVIDER_virtual/kernel_use-mainline-bsp = "linux-toradex-mainline"
 PREFERRED_PROVIDER_virtual/kernel_use-mainline-bsp_preempt-rt = "linux-toradex-mainline"
 PREFERRED_PROVIDER_virtual/dtb_use-mainline-bsp = "device-tree-overlays-mainline"
-
 
 PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
 UBOOT_MAKE_TARGET_colibri-imx7 = "u-boot.imx"
