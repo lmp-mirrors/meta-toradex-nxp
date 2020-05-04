@@ -17,7 +17,7 @@ MACHINE_FIRMWARE_remove = "firmware-imx-epdc"
 
 PREFERRED_PROVIDER_virtual/kernel_preempt-rt = "linux-toradex-rt"
 PREFERRED_PROVIDER_virtual/kernel_use-mainline-bsp = "linux-toradex-mainline"
-PREFERRED_PROVIDER_virtual/kernel_use-mainline-bsp_preempt-rt = "linux-toradex-mainline-rt"
+PREFERRED_PROVIDER_virtual/kernel_use-mainline-bsp_preempt-rt = "linux-toradex-mainline"
 
 KERNEL_DEVICETREE_append_use-nxp-bsp = " \
     imx7d-colibri-emmc-iris.dtb \
