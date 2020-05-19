@@ -18,5 +18,5 @@ SRCBRANCH = "toradex_4.9-2.3.x-imx"
 SRCREV_use-head-next = "${AUTOREV}"
 SRCBRANCH_use-head-next = "toradex_4.9-2.3.x-imx-next"
 
-DEPENDS += "lzop-native bc-native"
+DEPENDS += "lzop-native bc-native openssl-native"
 COMPATIBLE_MACHINE = "(mx6|mx7)"
