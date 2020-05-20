@@ -5,12 +5,12 @@ SUMMARY = "Linux kernel with real-time patch for Toradex Colibri VFxx Computer o
 
 SRC_URI = " \
     git://git.toradex.com/linux-toradex.git;protocol=git;branch=${SRCBRANCH} \
-    https://www.kernel.org/pub/linux/kernel/projects/rt/4.4/older/patch-4.4.164-rt176.patch.xz;name=rt-patch \
+    https://www.kernel.org/pub/linux/kernel/projects/rt/4.4/older/patch-4.4.220-rt197.patch.xz;name=rt-patch \
     file://defconfig \
 "
 
-SRC_URI[rt-patch.md5sum] = "39d25cb2f119c9b4053ce1e40f2d00a8"
-SRC_URI[rt-patch.sha256sum] = "ecaaf3e329b4b4bf2b57c84344e3ae2ae8f0209ec40093ae6589decb48089b15"
+SRC_URI[rt-patch.md5sum] = "5f370aaf4f8e6e1345def1ec74b1eee0"
+SRC_URI[rt-patch.sha256sum] = "3bb20e617b68b822d7e659b551e9c24ad01ac91d47dbb5b974235d67893f0daf"
 
 KERNEL_MODULE_AUTOLOAD += "${@bb.utils.contains('COMBINED_FEATURES', 'usbgadget', ' libcomposite', '',d)}"
 
