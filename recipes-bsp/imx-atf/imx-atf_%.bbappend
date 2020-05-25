@@ -5,7 +5,10 @@
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${BPN}:"
 
-SRC_URI_append = " file://0001-imx8m-imx_rdc.c-fix-a-uninitialized-variable.patch"
+SRC_URI_append = " \
+    file://0001-imx8m-imx_rdc.c-fix-a-uninitialized-variable.patch \
+    file://0001-Revert-Add-NXP-s-SoCs-partition-reboot-support.patch \
+"
 
 PV = "2.0+git${SRCPV}"
 SRCBRANCH = "imx_4.14.98_2.3.0"
