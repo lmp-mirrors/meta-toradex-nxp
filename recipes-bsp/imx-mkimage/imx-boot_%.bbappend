@@ -1,6 +1,3 @@
-ATF_MACHINE_NAME_mx8qxp = "bl31-imx8qx.bin"
-ATF_MACHINE_NAME_mx8mn = "bl31-imx8mn.bin"
-
 SECO_CHIP ?= "qmb0"
 SECO_CHIP_mx8qxp = "qxb0"
 SECO_CHIP_imx8qxpc0mek = "qxc0"
@@ -9,8 +6,6 @@ SECO_CHIP_mx8qxpc0 = "qxc0"
 
 SECO_FIRMWARE = "mx8${SECO_CHIP}-ahab-container.img"
 
-SOC_TARGET_mx8mn  = "iMX8MN"
-
 SRCBRANCH = "imx_4.14.98_2.3.0"
 SRCREV = "d7f9440dd5c050cc22cb362d53d4048e689a0c01"
 
@@ -18,10 +13,6 @@ REV_CHIP ?= "B0"
 REV_CHIP_imx8qxpc0mek = "C0"
 REV_CHIP_imx8qxpc0lpddr4arm2 = "C0"
 REV_CHIP_mx8qxpc0 = "C0"
-
-IMX_EXTRA_FIRMWARE      = "firmware-imx-8 imx-sc-firmware imx-seco"
-IMX_EXTRA_FIRMWARE_mx8m = "firmware-imx-8m"
-IMX_EXTRA_FIRMWARE_mx8x = "firmware-imx-8x imx-sc-firmware imx-seco"
 
 compile_mx8m() {
     bbnote 8MQ/8MM boot binary build
