@@ -12,6 +12,10 @@ SRC_URI = " \
 KERNEL_MODULE_AUTOLOAD += "${@bb.utils.contains('COMBINED_FEATURES', 'usbgadget', ' libcomposite', '',d)}"
 
 inherit toradex-kernel-localversion
+LINUX_VERSION = "4.14.170"
+# skip, as with use-head-next LINUX_VERSION might be set wrongly
+KERNEL_VERSION_SANITY_SKIP_use-head-next = "1"
+
 # Make sure to override LOCALVERSION in linux-imx.inc
 LOCALVERSION = "-${TDX_VERSION}"
 PV_append = "+git${SRCPV}"
