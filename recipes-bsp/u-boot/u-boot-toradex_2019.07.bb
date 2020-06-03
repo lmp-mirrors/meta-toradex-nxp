@@ -2,6 +2,8 @@ require u-boot-toradex-common.inc
 require recipes-bsp/u-boot/u-boot.inc
 require recipes-bsp/u-boot/u-boot-toradex-initial-env.inc
 
+PROVIDES += "u-boot"
+
 DEPENDS += "bc-native dtc-native"
 
 # U-Boot is flashed 1k into a NAND block, create a binary which prepends
