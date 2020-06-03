@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://Licenses/README;md5=30503fd321432fc713238f582193b78e"
 PE = "1"
 
 PV = "2019.07+git${SRCPV}"
-LOCALVERSION = "-${TDX_VERSION}"
+
 inherit toradex-u-boot-localversion
 
 # We use the revision in order to avoid having to fetch it from the

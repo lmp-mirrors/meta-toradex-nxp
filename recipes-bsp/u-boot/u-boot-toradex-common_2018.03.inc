@@ -13,9 +13,7 @@ SRCBRANCH = "toradex_imx_v2018.03_4.14.98_2.3.0_bringup"
 
 S = "${WORKDIR}/git"
 
-inherit fsl-u-boot-localversion
-
-LOCALVERSION ?= "-${SRCBRANCH}"
+inherit toradex-u-boot-localversion
 
 COMPATIBLE_MACHINE = "(mx8)"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
