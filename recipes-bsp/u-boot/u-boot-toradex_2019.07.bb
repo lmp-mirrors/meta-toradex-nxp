@@ -6,6 +6,8 @@ PROVIDES += "u-boot"
 
 DEPENDS += "bc-native dtc-native"
 
+BOOT_TOOLS = "imx-boot-tools"
+
 # U-Boot is flashed 1k into a NAND block, create a binary which prepends
 # U-boot with 1k of zeros to ease flashing
 
