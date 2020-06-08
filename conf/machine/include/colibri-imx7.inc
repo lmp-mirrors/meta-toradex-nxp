@@ -27,5 +27,6 @@ KERNEL_DEVICETREE_use-mainline-bsp += " \
 PREFERRED_PROVIDER_virtual/kernel_preempt-rt = "linux-toradex-rt"
 PREFERRED_PROVIDER_virtual/kernel_use-mainline-bsp = "linux-toradex-mainline"
 PREFERRED_PROVIDER_virtual/kernel_use-mainline-bsp_preempt-rt = "linux-toradex-mainline"
+PREFERRED_PROVIDER_virtual/dtb_use-mainline-bsp = "device-tree-overlays-mainline"
 
 UBOOT_MAKE_TARGET_colibri-imx7 = "u-boot.imx"

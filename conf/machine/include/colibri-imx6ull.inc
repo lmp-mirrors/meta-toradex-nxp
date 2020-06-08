@@ -30,3 +30,4 @@ KERNEL_DEVICETREE_use-mainline-bsp = "imx6ull-colibri-eval-v3.dtb imx6ull-colibr
 PREFERRED_PROVIDER_virtual/kernel_preempt-rt = "linux-toradex-rt"
 PREFERRED_PROVIDER_virtual/kernel_use-mainline-bsp = "linux-toradex-mainline"
 PREFERRED_PROVIDER_virtual/kernel_use-mainline-bsp_preempt-rt = "linux-toradex-mainline"
+PREFERRED_PROVIDER_virtual/dtb_use-mainline-bsp = "device-tree-overlays-mainline"
