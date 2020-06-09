@@ -79,21 +79,7 @@ def find_cfgs(d):
     return sources_list
 
 do_configure () {
-    if [ -n "${UBOOT_CONFIG}" ]; then
-        unset i j
-        for config in ${UBOOT_MACHINE}; do
-            i=$(expr $i + 1);
-            for type in ${UBOOT_CONFIG}; do
-                j=$(expr $j + 1);
-                if [ $j -eq $i ]; then
-                    KCONFIG_CONFIG=${S}/configs/${config%_*}_defconfig merge_config.sh -m ${S}/configs/${config%_*}_defconfig ${@" ".join(find_cfgs(d))}
-                    oe_runmake -C ${S} O=${B}/${config} ${config}
-                fi
-            done
-            unset  j
-        done
-        unset  i
-    else
+    if [ -z "${UBOOT_CONFIG}" ]; then
         if [ -n "${UBOOT_MACHINE}" ]; then
             oe_runmake -C ${S} O=${B} ${UBOOT_MACHINE}
         else
@@ -128,6 +114,7 @@ do_compile () {
                 j=$(expr $j + 1);
                 if [ $j -eq $i ]
                 then
+                    oe_runmake -C ${S} O=${B}/${config} ${config}
                     oe_runmake -C ${S} O=${B}/${config} ${UBOOT_MAKE_TARGET}
                     for binary in ${UBOOT_BINARIES}; do
                         k=$(expr $k + 1);
