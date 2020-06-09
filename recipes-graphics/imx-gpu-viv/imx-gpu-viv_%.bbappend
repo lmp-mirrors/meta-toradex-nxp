@@ -12,3 +12,18 @@ SRC_URI[sha256sum] = "${SHA256SUM}"
 # prevent pulling *-dev by packaging needed *.so in regular packages, not
 # in imx-gpu-viv-dev.
 INSANE_SKIP_libclc-imx += "dev-so"
+
+do_install_prepend() {
+    if [ "${USE_WL}" = "yes" ]; then
+        backend=wl
+    elif [ "${USE_X11}" = "yes" ]; then
+        backend=x11
+    fi
+
+    # in the 6.2.4.p4.8 this file wasn't backend specific
+    [ ! -e ${S}/gpu-core/usr/lib/libGL-${backend}.so ] &&
+        cp ${S}/gpu-core/usr/lib/libGL.so ${S}/gpu-core/usr/lib/libGL-${backend}.so
+}
+
+# in the 6.2.4.p4.8 gbm_viv.so is installed, so it must also be packaged
+FILES_libgbm-imx_mx8 = "${libdir}/libgbm*${SOLIBS} ${libdir}/gbm_viv${SOLIBS}"
