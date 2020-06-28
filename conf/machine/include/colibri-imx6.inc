@@ -21,7 +21,3 @@ PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
 UBOOT_SUFFIX = "img"
 
 MACHINE_FIRMWARE_remove = "firmware-imx-epdc"
-
-# As per meta-freescale commit 927b31771dab ("xf86-video-imx-vivante: Remove fb
-# from name") this package got renamed. Use new one!
-XSERVER_DRIVER_colibri-imx6 = "xf86-video-imx-vivante"
