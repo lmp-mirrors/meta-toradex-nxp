@@ -3,7 +3,7 @@ SCFW_TDX_SRC ?= "git://github.com/toradex/i.MX-System-Controller-Firmware.git"
 
 SRC_URI += "${SCFW_TDX_SRC};branch=master;protocol=https;fsl-eula=true"
 
-SRCREV = "ca3cbc72878653bff22098a1e2c7bb6bf7f4c2b8"
+SRCREV = "acfaf180e5bfae166782e2ee91f6dffc84af3225"
 
 do_patch[prefuncs] += "do_cp_scfw"
 do_cp_scfw () {
