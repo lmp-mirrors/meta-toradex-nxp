@@ -36,7 +36,3 @@ SRCREV_use-head-next = "${AUTOREV}"
 
 DEPENDS += "lzop-native bc-native"
 COMPATIBLE_MACHINE = "(mx6|mx7|mx8)"
-
-do_kernel_metadata_append () {
-	touch ${S}/.kernel-meta/config.queue
-}
