@@ -1,13 +1,11 @@
 SECO_CHIP ?= "qmb0"
 SECO_CHIP_mx8qxp = "qxb0"
-SECO_CHIP_imx8qxpc0mek = "qxc0"
-SECO_CHIP_imx8qxpc0lpddr4arm2 = "qxc0"
 SECO_CHIP_mx8qxpc0 = "qxc0"
 
 SECO_FIRMWARE = "mx8${SECO_CHIP}-ahab-container.img"
 
-SRCBRANCH = "imx_4.14.98_2.3.0"
-SRCREV = "d7f9440dd5c050cc22cb362d53d4048e689a0c01"
+SRCBRANCH = "imx_5.4.24_2.1.0"
+SRCREV = "6745ccdcf15384891639b7ced3aa6ce938682365"
 
 REV_CHIP ?= "B0"
 REV_CHIP_imx8qxpc0mek = "C0"
