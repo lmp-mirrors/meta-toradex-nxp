@@ -1,27 +1,28 @@
-# Copyright 2019 NXP
+# Copyright 2019-2020 NXP
 
 SUMMARY = "NXP i.MX SECO firmware"
 DESCRIPTION = "NXP IMX SECO firmware"
 SECTION = "base"
 LICENSE = "Proprietary"
-LIC_FILES_CHKSUM = "file://COPYING;md5=fd4b227530cd88a82af6a5982cfb724d"
+LIC_FILES_CHKSUM = "file://COPYING;md5=228c72f2a91452b8a03c4cab30f30ef9"
 
 inherit fsl-eula-unpack deploy
 
 SRC_URI = "${FSL_MIRROR}/${BPN}-${PV}.bin;fsl-eula=true "
 
-SRC_URI[md5sum] = "b0e0e358f02b7030b57f9eca6a22cf3d"
-SRC_URI[sha256sum] = "e18ce97a7ae0878c708393c6e65aaad86508d642ef4fd1b3ad9930287cc96294"
+SRC_URI[md5sum] = "22a47e14e3f2e713b4b1b2b7ff768b11"
+SRC_URI[sha256sum] = "52ba07633e0f8707d8c26724b5cd03ef96444c8de1e0e134acac50acacf3e7dd"
 
 do_compile[noexec] = "1"
 
 do_install[noexec] = "1"
 
-SECO_CHIP ?= "qmb0"
+SECO_CHIP ?= "UNSUPPORTED"
+SECO_CHIP_mx8qm ?= "qmb0"
 SECO_CHIP_mx8qxp = "qxb0"
-SECO_CHIP_imx8qxpc0mek = "qxc0"
-SECO_CHIP_imx8qxpc0lpddr4arm2 = "qxc0"
 SECO_CHIP_mx8qxpc0 = "qxc0"
+SECO_FIRMWARE_NAME_mx8phantomdxl = "qxb0"
+SECO_FIRMWARE_NAME_mx8dxl        = "dxla0"
 
 SECO_FIRMWARE_NAME = "mx8${SECO_CHIP}-ahab-container.img"
 
@@ -32,4 +33,5 @@ do_deploy () {
 }
 
 
-COMPATIBLE_MACHINE = "(mx8qm|mx8qxp)"
+COMPATIBLE_MACHINE = "(mx8)"
+COMPATIBLE_MACHINE_mx8m = "(^$)"
