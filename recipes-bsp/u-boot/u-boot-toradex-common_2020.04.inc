@@ -1,5 +1,6 @@
 HOMEPAGE = "http://www.denx.de/wiki/U-Boot/WebHome"
 SECTION = "bootloaders"
+DEPENDS += "flex-native bison-native"
 
 LICENSE = "GPLv2+"
 LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
@@ -9,9 +10,9 @@ SRC_URI = " \
     file://fw_env.config \
 "
 
-SRCREV = "548a7dcc242452d447634beef792447515c324f8"
+SRCREV = "111b5f6dd839f4f164ad327e08792bff8a733ab3"
 SRCREV_use-head-next = "${AUTOREV}"
-SRCBRANCH = "toradex_imx_v2018.03_4.14.98_2.3.0_bringup"
+SRCBRANCH = "toradex_imx_v2020.04_5.4.24_2.1.0"
 
 S = "${WORKDIR}/git"
 
