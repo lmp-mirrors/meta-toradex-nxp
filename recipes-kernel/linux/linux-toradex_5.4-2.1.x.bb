@@ -3,6 +3,8 @@ require recipes-kernel/linux/linux-imx.inc
 
 SUMMARY = "Linux kernel for Toradex Freescale i.MX based modules"
 
+LIC_FILES_CHKSUM = "file://COPYING;md5=bbea815ee2795b2f4230826c0c6b8814"
+
 SRC_URI = " \
     git://git.toradex.com/linux-toradex.git;protocol=git;branch=${SRCBRANCH} \
     file://defconfig \
@@ -22,7 +24,7 @@ SRC_URI_append_apalis-imx8x-v11a = " \
 KERNEL_MODULE_AUTOLOAD += "${@bb.utils.contains('COMBINED_FEATURES', 'usbgadget', ' libcomposite', '',d)}"
 
 inherit toradex-kernel-localversion
-LINUX_VERSION = "4.14.170"
+LINUX_VERSION = "5.4.47"
 # skip, as with use-head-next LINUX_VERSION might be set wrongly
 KERNEL_VERSION_SANITY_SKIP_use-head-next = "1"
 
@@ -30,8 +32,8 @@ KERNEL_VERSION_SANITY_SKIP_use-head-next = "1"
 LOCALVERSION = "-${TDX_VERSION}"
 PV_append = "+git${SRCPV}"
 
-SRCREV = "62ad468b31075ae8e77414ce506acd30b380b5d5"
-SRCBRANCH = "toradex_4.14-2.3.x-imx"
+SRCREV = "b11463f367028ef3b572ffe101204f1885944013"
+SRCBRANCH = "toradex_5.4-2.1.x-imx"
 SRCREV_use-head-next = "${AUTOREV}"
 
 DEPENDS += "lzop-native bc-native"

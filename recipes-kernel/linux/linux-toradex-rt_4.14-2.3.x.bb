@@ -1,4 +1,4 @@
-require recipes-kernel/linux/linux-toradex_4.14-2.3.x.bb
+require recipes-kernel/linux/linux-toradex_5.4-2.1.x.bb
 FILESEXTRAPATHS_prepend := "${THISDIR}/linux-toradex-rt-4.14-2.3.x:"
 
 SUMMARY = "Real-Time Linux kernel for Toradex Freescale i.MX based modules"
