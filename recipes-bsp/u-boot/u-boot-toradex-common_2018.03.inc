@@ -4,8 +4,10 @@ SECTION = "bootloaders"
 LICENSE = "GPLv2+"
 LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
-UBOOT_SRC ?= "git://git.toradex.com/u-boot-toradex.git;protocol=https"
-SRC_URI = "${UBOOT_SRC};branch=${SRCBRANCH}"
+SRC_URI = " \
+    git://git.toradex.com/u-boot-toradex.git;protocol=https;branch=${SRCBRANCH} \
+    file://fw_env.config \
+"
 
 SRCREV = "548a7dcc242452d447634beef792447515c324f8"
 SRCREV_use-head-next = "${AUTOREV}"
@@ -14,6 +16,8 @@ SRCBRANCH = "toradex_imx_v2018.03_4.14.98_2.3.0_bringup"
 S = "${WORKDIR}/git"
 
 inherit toradex-u-boot-localversion
+
+UBOOT_INITIAL_ENV = "u-boot-initial-env"
 
 COMPATIBLE_MACHINE = "(mx8)"
 PACKAGE_ARCH = "${MACHINE_ARCH}"

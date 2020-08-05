@@ -1,6 +1,7 @@
 require u-boot-toradex-common.inc
 require recipes-bsp/u-boot/u-boot.inc
-require recipes-bsp/u-boot/u-boot-toradex-initial-env.inc
+
+B = "${WORKDIR}/build"
 
 PROVIDES += "u-boot"
 

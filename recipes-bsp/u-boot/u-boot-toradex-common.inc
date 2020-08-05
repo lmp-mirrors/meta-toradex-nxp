@@ -17,9 +17,14 @@ SRCBRANCH = "toradex_2019.07"
 SRCREV_use-head-next = "${AUTOREV}"
 SRCBRANCH_use-head-next = "toradex_2019.07-next"
 
-SRC_URI = "git://git.toradex.com/u-boot-toradex.git;protocol=https;branch=${SRCBRANCH}"
+SRC_URI = " \
+    git://git.toradex.com/u-boot-toradex.git;protocol=https;branch=${SRCBRANCH} \
+    file://fw_env.config \
+"
 
 S = "${WORKDIR}/git"
+
+UBOOT_INITIAL_ENV = "u-boot-initial-env"
 
 do_deploy_append_mx8m() {
     # Deploy the mkimage, u-boot-nodtb.bin and fsl-imx8m*-XX.dtb for mkimage to generate boot binary
