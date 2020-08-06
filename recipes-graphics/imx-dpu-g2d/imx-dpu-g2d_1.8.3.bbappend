@@ -1,4 +1,5 @@
-# downgrade to 1.7.6
-PV = "1.7.6"
-SRC_URI[md5sum] = "a2672d00100bbcfc943ce865f0f7e2c9"
-SRC_URI[sha256sum] = "100ec0b5cc3c14c46018c90cca5ab233c29efe0b2fe90edc752e3fd9e03f8342"
+PV = "1.8.7"
+LIC_FILES_CHKSUM = "file://COPYING;md5=228c72f2a91452b8a03c4cab30f30ef9"
+SRC_URI[md5sum] = "2b8fea58c87a724c1d5c023ee8bd551b"
+SRC_URI[sha256sum] = "7533e34f447e8b076fa6461ac83806efdd677310094741eef2a67858034730fe"
+RDEPENDS_${PN} += "libopencl-imx"
