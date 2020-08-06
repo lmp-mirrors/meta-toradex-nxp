@@ -1,11 +1,11 @@
-#update to 6.2.4.p4.8
-PV = "6.2.4.p4.8-aarch32"
-PV_aarch64 = "6.2.4.p4.8-aarch64"
-LIC_FILES_CHKSUM = "file://COPYING;md5=fd4b227530cd88a82af6a5982cfb724d"
-MD5SUM_arm = "0e18ffca4b9c648fb41586fa53647541"
-SHA256SUM_arm = "2804c3d7b8fdd0db6659735cc55b33e7fe749b823ccd9a5ee37b1ccf764ae928"
-MD5SUM_aarch64 = "6937d91f3133a63b6e5bb33951c8c2e8"
-SHA256SUM_aarch64 = "72c5338003322a4ebf4d28e38f48b3014fcd116bd54d1b42924aa3be32888bd0"
+#update to 6.4.0.p2.4
+PV = "6.4.0.p2.4-aarch32"
+PV_aarch64 = "6.4.0.p2.4-aarch64"
+LIC_FILES_CHKSUM = "file://COPYING;md5=228c72f2a91452b8a03c4cab30f30ef9"
+MD5SUM_arm = "cd5e9ba9247aa0da5d97b0f030e2ede1"
+SHA256SUM_arm = "9cc4c6594083f5970bc394a698a0a8ed0c7f2a1a753dfbf25cb0be5ab8bdcbd5"
+MD5SUM_aarch64 = "633029434f0ccc0e8a6b01d92cae95b2"
+SHA256SUM_aarch64 = "a295f41a6346c507fc8a677c26ecf9b2f416735e32e6d0734516ef5363027720"
 SRC_URI[md5sum] = "${MD5SUM}"
 SRC_URI[sha256sum] = "${SHA256SUM}"
 
@@ -20,10 +20,31 @@ do_install_prepend() {
         backend=x11
     fi
 
-    # in the 6.2.4.p4.8 this file wasn't backend specific
-    [ ! -e ${S}/gpu-core/usr/lib/libGL-${backend}.so ] &&
-        cp ${S}/gpu-core/usr/lib/libGL.so ${S}/gpu-core/usr/lib/libGL-${backend}.so
+    if [ "${IS_MX8}" = "1" ]; then
+	# delete the unversioned .so files and symlinks
+	rm ${S}/gpu-core/usr/lib/libvulkan*.so ${S}/gpu-core/usr/lib/libvulkan*.so.1
+
+	# delete all unneeded .so files
+	WANTED=$(ls ${S}/gpu-core/usr/lib/libvulkan-${backend}.so.*)
+	mv ${WANTED} wanted
+	rm ${S}/gpu-core/usr/lib/libvulkan-*.so.*
+	mv wanted ${WANTED}
+
+	# create the .so symlinks
+	ln -fs $(basename ${WANTED}) ${S}/gpu-core/usr/lib/libvulkan-${backend}.so
+	ln -fs $(basename ${WANTED}) ${S}/gpu-core/usr/lib/libvulkan_VSI.so.1
+    fi
 }
 
-# in the 6.2.4.p4.8 gbm_viv.so is installed, so it must also be packaged
-FILES_libgbm-imx_mx8 = "${libdir}/libgbm*${SOLIBS} ${libdir}/gbm_viv${SOLIBS}"
+FILES_libopencl-imx_append = " ${libdir}/libOpenCL${REALSOLIBS}"
+INSANE_SKIP_libopencl-imx += "dev-so"
+
+FILES_libopenvx-imx_append = " \
+    ${libdir}/libOpenVX*${REALSOLIBS} \
+    ${libdir}/libOvx*${REALSOLIBS} \
+    ${libdir}/libovx*${REALSOLIBS} \
+"
+INSANE_SKIP_libopenvx-imx += "dev-so"
+
+FILES_libvulkan-imx_append = " ${libdir}/libvulkan*${REALSOLIBS}"
+INSANE_SKIP_libvulkan-imx += "dev-so"
