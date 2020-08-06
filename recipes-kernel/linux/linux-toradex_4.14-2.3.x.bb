@@ -26,7 +26,7 @@ inherit toradex-kernel-localversion
 LOCALVERSION = "-${TDX_VERSION}"
 PV_append = "+git${SRCPV}"
 
-SRCREV = "60f8ee9af1da4c7e26bbc8467719a334749e71ce"
+SRCREV = "62ad468b31075ae8e77414ce506acd30b380b5d5"
 SRCBRANCH = "toradex_4.14-2.3.x-imx"
 SRCREV_use-head-next = "${AUTOREV}"
 
