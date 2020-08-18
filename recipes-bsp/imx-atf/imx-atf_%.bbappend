@@ -16,6 +16,10 @@ SRCREV = "bb209a0b4ccca2aa4a3a887f9606dc4a3d294adf"
 PLATFORM_mx8qxp  = "imx8qx"
 PLATFORM_mx8mn  = "imx8mn"
 
+EXTRA_OEMAKE_mx8mm += " \
+    IMX_BOOT_UART_BASE=0x30860000 \
+"
+
 # imx-atf 1.5 uses bl31-imx8qxp.bin, 2.0 will use bl31-imx8qx.bin for a
 # platform specific filename. Provide both for now, so that the user of
 # the file need not care.
