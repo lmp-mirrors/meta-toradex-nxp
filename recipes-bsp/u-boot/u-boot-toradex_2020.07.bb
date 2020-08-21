@@ -9,6 +9,7 @@ DEPENDS += "bc-native dtc-native"
 
 BOOT_TOOLS = "imx-boot-tools"
 
+PADDING_DIR = "${B}"
 
 nand_padding () {
     # pad the end of U-Boot with 0x00 up to the the end of the CSF area
@@ -17,11 +18,11 @@ nand_padding () {
     #objcopy -I binary -O binary --pad-to $PAD_END u-boot.imx u-boot.imx.zero-padded
     # assume that the above never need more than 10k of padding and skip the
     # shell magic to get a correct size.
-    dd bs=10k count=1 if=/dev/zero | cat u-boot.imx - > u-boot.imx.zero-padded
+    dd bs=10k count=1 if=/dev/zero | cat ${PADDING_DIR}/u-boot.imx - > ${PADDING_DIR}/u-boot.imx.zero-padded
 
     # U-Boot is flashed 1k into a NAND block, create a binary which prepends
     # U-boot with 1k of zeros to ease flashing
-    dd bs=1024 count=1 if=/dev/zero | cat - u-boot.imx.zero-padded > u-boot-nand.imx
+    dd bs=1024 count=1 if=/dev/zero | cat - ${PADDING_DIR}/u-boot.imx.zero-padded > ${PADDING_DIR}/u-boot-nand.imx
 }
 
 do_compile_append_colibri-imx6ull () {
