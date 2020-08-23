@@ -1,6 +1,13 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}-${PV}:"
 require recipes-kernel/linux/linux-imx.inc
 
+python () {
+    # Explicitly set KERNEL_FEATURES to empty, since we dont support KMETA yet.
+    kernel_features = d.getVar('KERNEL_FEATURES')
+    if kernel_features:
+        d.setVar('KERNEL_FEATURES', '')
+}
+
 SUMMARY = "Linux kernel for Toradex Freescale i.MX based modules"
 SUMMARY_append_preempt-rt = "Real-Time Linux kernel for Toradex Freescale i.MX based modules"
 
