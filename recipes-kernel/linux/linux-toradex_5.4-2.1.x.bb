@@ -18,16 +18,6 @@ SRC_URI = " \
     file://defconfig \
 "
 
-SRC_URI_append_colibri-imx8x-v10b = " \
-   file://0001-Revert-ARM64-dts-apalis-imx8x-remove-no-1-8-v-from-s.patch \
-   file://0002-Revert-ARM64-dts-colibri-imx8x-remove-no-1-8-v-from-.patch \
-"
-
-SRC_URI_append_apalis-imx8x-v11a = " \
-   file://0001-Revert-ARM64-dts-apalis-imx8x-remove-no-1-8-v-from-s.patch \
-   file://0002-Revert-ARM64-dts-colibri-imx8x-remove-no-1-8-v-from-.patch \
-"
-
 # Load USB functions configurable through configfs (CONFIG_USB_CONFIGFS)
 KERNEL_MODULE_AUTOLOAD += "${@bb.utils.contains('COMBINED_FEATURES', 'usbgadget', ' libcomposite', '',d)}"
 
