@@ -30,7 +30,7 @@ KERNEL_VERSION_SANITY_SKIP_use-head-next = "1"
 LOCALVERSION = "-${TDX_VERSION}"
 PV_append = "+git${SRCPV}"
 
-SRCREV = "2521581b9b6abe538528b8b9b4feea9a537df17b"
+SRCREV = "1a7b39ea0f8d23e3c26b020f890246a71a87129a"
 SRCBRANCH = "toradex_5.4-2.1.x-imx"
 SRCREV_use-head-next = "${AUTOREV}"
 
