@@ -7,6 +7,12 @@ PROVIDES += "u-boot"
 
 DEPENDS += "bc-native dtc-native"
 
+# While NXP i.MX 7 downstream requires the Linux kernel to boot in secure
+# mode mainline/upstream requires non-secure mode instead, as it properly
+# uses PSCI to control further cores.
+SRC_URI_append_use-mainline-bsp_colibri-imx7 = " file://0001-colibri_imx7-boot-linux-kernel-in-non-secure-mode.patch"
+SRC_URI_append_use-mainline-bsp_colibri-imx7-emmc = " file://0001-colibri_imx7-boot-linux-kernel-in-non-secure-mode.patch"
+
 BOOT_TOOLS = "imx-boot-tools"
 
 PADDING_DIR = "${B}"
