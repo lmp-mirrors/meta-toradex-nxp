@@ -21,7 +21,7 @@ KERNEL_VERSION_SANITY_SKIP_use-head-next = "1"
 # Make sure to override LOCALVERSION in linux-imx.inc
 LOCALVERSION = "-${TDX_VERSION}"
 
-SRCREV = "d376697f9559c3992512eec2cbf414b65fd9fe8b"
+SRCREV = "43672b04da88582315ad1e0106e4aed349676f0d"
 SRCBRANCH = "toradex_5.4-2.1.x-imx"
 SRCREV_use-head-next = "${AUTOREV}"
 
