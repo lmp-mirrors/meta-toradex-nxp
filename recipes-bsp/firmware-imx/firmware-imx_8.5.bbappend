@@ -6,10 +6,10 @@ SRC_URI[sha256sum] = "5ca1f8b6e6b191594d17ac7b51c38cdbc2ff808d15568ab4b0bbeb5dc6
 PACKAGES =+ "${PN}-xcvr ${PN}-xuvi"
 
 do_install_append () {
-    mv ${D}${base_libdir}/firmware/xcvr/ ${D}${base_libdir}/firmware/imx/xcvr/
+    mv ${D}${nonarch_base_libdir}/firmware/xcvr/ ${D}${nonarch_base_libdir}/firmware/imx/xcvr/
 
-    mv ${D}${base_libdir}/firmware/xuvi/ ${D}${base_libdir}/firmware/imx/xuvi/
+    mv ${D}${nonarch_base_libdir}/firmware/xuvi/ ${D}${nonarch_base_libdir}/firmware/imx/xuvi/
 }
 
-FILES_${PN}-xcvr = "${base_libdir}/firmware/imx/xcvr/"
-FILES_${PN}-xuvi = "${base_libdir}/firmware/imx/xuvi/"
+FILES_${PN}-xcvr = "${nonarch_base_libdir}/firmware/imx/xcvr/"
+FILES_${PN}-xuvi = "${nonarch_base_libdir}/firmware/imx/xuvi/"
