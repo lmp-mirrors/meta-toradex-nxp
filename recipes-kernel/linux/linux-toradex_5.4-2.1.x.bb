@@ -15,7 +15,6 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=bbea815ee2795b2f4230826c0c6b8814"
 
 SRC_URI = " \
     git://git.toradex.com/linux-toradex.git;protocol=git;branch=${SRCBRANCH} \
-    file://defconfig \
 "
 
 # Load USB functions configurable through configfs (CONFIG_USB_CONFIGFS)
@@ -36,6 +35,12 @@ SRCREV_use-head-next = "${AUTOREV}"
 
 DEPENDS += "lzop-native bc-native"
 COMPATIBLE_MACHINE = "(mx6|mx7|mx8)"
+
+KBUILD_DEFCONFIG_apalis-imx6 ?= "apalis_imx6_defconfig"
+KBUILD_DEFCONFIG_colibri-imx6 ?= "colibri_imx6_defconfig"
+KBUILD_DEFCONFIG_colibri-imx6ull ?= "colibri-imx6ull_defconfig"
+KBUILD_DEFCONFIG_mx7 ?= "colibri_imx7_defconfig"
+KBUILD_DEFCONFIG_mx8 ?= "defconfig"
 
 ###############################################################################
 # Apply the RT patch and change the configuration to use PREMPT_RT when the
