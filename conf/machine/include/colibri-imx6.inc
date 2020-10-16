@@ -10,7 +10,11 @@ MACHINE_NAME = "Colibri-iMX6"
 IMAGE_BOOT_FILES_append = " boot.scr-${MACHINE};boot.scr"
 WKS_FILE_DEPENDS_append = " u-boot-distro-boot"
 
-KERNEL_DEVICETREE += "imx6dl-colibri-iris.dtb imx6dl-colibri-iris-v2.dtb"
+KERNEL_DEVICETREE += " \
+    imx6dl-colibri-iris.dtb \
+    imx6dl-colibri-iris-v2.dtb \
+"
+
 PREFERRED_PROVIDER_virtual/kernel = "linux-toradex"
 PREFERRED_PROVIDER_virtual/kernel_preempt-rt = "linux-toradex"
 PREFERRED_PROVIDER_virtual/kernel_use-mainline-bsp = "linux-toradex-mainline"
