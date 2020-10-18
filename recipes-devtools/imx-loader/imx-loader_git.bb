@@ -20,7 +20,7 @@ SRC_URI += " \
     file://vybrid_usb_rom.conf \
 "
 
-S = "${WORKDIR}/git/"
+S = "${WORKDIR}/git"
 
 EXTRA_OEMAKE_class-native = "CC='${CC}' CXX='${CXX}'"
 
