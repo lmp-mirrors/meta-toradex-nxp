@@ -2,7 +2,7 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}-${PV}:"
 require recipes-kernel/linux/linux-imx.inc
 
 SUMMARY = "Linux kernel for Toradex Freescale i.MX based modules"
-SUMMARY_append_preempt-rt = "Real-Time Linux kernel for Toradex Freescale i.MX based modules"
+SUMMARY_preempt-rt = "Real-Time Linux kernel for Toradex Freescale i.MX based modules"
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=bbea815ee2795b2f4230826c0c6b8814"
 
