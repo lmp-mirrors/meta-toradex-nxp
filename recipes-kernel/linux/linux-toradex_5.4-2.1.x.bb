@@ -46,6 +46,7 @@ MIRRORS_append_preempt-rt = "${KERNELORG_MIRROR}/linux/kernel/projects/rt/5.4/ol
 SRC_URI_append_preempt-rt = " \
     ${KERNELORG_MIRROR}/linux/kernel/projects/rt/5.4/older/patch-5.4.77-rt43.patch.xz;name=rt-patch \
     file://preempt-rt.scc \
+    file://preempt-rt-less-latency.scc \
 "
 # This patches do currently not apply but are likely needed or we get
 # runtime bugs.
