@@ -14,12 +14,12 @@ Signed-off-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/include/configs/colibri_imx7.h b/include/configs/colibri_imx7.h
-index b520da00ed..9d79af14a2 100644
+index 1b50dac83c..be33f1bdf9 100644
 --- a/include/configs/colibri_imx7.h
 +++ b/include/configs/colibri_imx7.h
-@@ -149,7 +149,7 @@
- 	MODULE_EXTRA_ENV_SETTINGS \
+@@ -140,7 +140,7 @@
  	UBOOT_UPDATE \
+ 	"boot_script_dhcp=boot.scr\0" \
  	"boot_file=zImage\0" \
 -	"bootm_boot_mode=sec\0" \
 +	"bootm_boot_mode=nonsec\0" \
@@ -27,5 +27,5 @@ index b520da00ed..9d79af14a2 100644
  	"console=ttymxc0\0" \
  	"defargs=\0" \
 -- 
-2.25.4
+2.29.0
 
