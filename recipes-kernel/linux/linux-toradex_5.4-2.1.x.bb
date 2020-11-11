@@ -21,9 +21,9 @@ KERNEL_VERSION_SANITY_SKIP_use-head-next = "1"
 # Make sure to override LOCALVERSION in linux-imx.inc
 LOCALVERSION = "-${TDX_VERSION}"
 
-SRCREV = "43672b04da88582315ad1e0106e4aed349676f0d"
 SRCBRANCH = "toradex_5.4-2.1.x-imx"
-SRCREV_use-head-next = "${AUTOREV}"
+SRCREV_machine = "3f945d0d10f0ce2d6d84d336abf52470794770d6"
+SRCREV_machine_use-head-next = "${AUTOREV}"
 
 DEPENDS += "lzop-native bc-native"
 COMPATIBLE_MACHINE = "(mx6|mx7|mx8)"
