@@ -26,3 +26,6 @@ PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
 UBOOT_SUFFIX = "img"
 
 MACHINE_FIRMWARE_remove = "firmware-imx-epdc"
+
+TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = "apalis-imx6_lcd_overlay.dtbo"
+TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT_use-mainline-bsp = "apalis-imx6_parallel-rgb_overlay.dtbo display-edt7_overlay.dtbo"
