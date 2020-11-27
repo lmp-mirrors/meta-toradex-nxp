@@ -27,5 +27,5 @@ UBOOT_SUFFIX = "img"
 
 MACHINE_FIRMWARE_remove = "firmware-imx-epdc"
 
-TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = "apalis-imx6_lcd_overlay.dtbo"
-TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT_use-mainline-bsp = "apalis-imx6_parallel-rgb_overlay.dtbo display-edt7_overlay.dtbo"
+TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = "apalis-imx6_hdmi_overlay.dtbo"
+TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT_use-mainline-bsp = "apalis-imx6_parallel-rgb_overlay.dtbo display-edt7_overlay.dtbo apalis-imx6_stmpe-ts_overlay.dtbo apalis-imx6_hdmi_overlay.dtbo"
