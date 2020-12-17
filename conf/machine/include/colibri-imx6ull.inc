@@ -7,7 +7,6 @@ TORADEX_PRODUCT_IDS[0044] = "imx6ull-colibri-eval-v3.dtb"
 TORADEX_PRODUCT_IDS[0045] = "imx6ull-colibri-wifi-eval-v3.dtb"
 TORADEX_FLASH_TYPE = "rawnand"
 
-IMAGE_FSTYPES += "wic.gz"
 WIC_CREATE_EXTRA_ARGS_append = " --no-fstab-update"
 
 MACHINE_NAME = "Colibri-iMX6ULL"
