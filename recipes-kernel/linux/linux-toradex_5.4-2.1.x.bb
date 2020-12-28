@@ -23,7 +23,7 @@ LOCALVERSION = "-${TDX_VERSION}"
 
 SRCREV = "43672b04da88582315ad1e0106e4aed349676f0d"
 SRCBRANCH = "toradex_5.4-2.1.x-imx"
-SRCREV_machine = "8fc7bd5da76ff2384027ec1682c5c827590bc40e"
+SRCREV_machine = "393f77ff380a7880cdf35b96143b0a7c947bc7d1"
 SRCREV_machine_use-head-next = "${AUTOREV}"
 
 DEPENDS += "lzop-native bc-native"
