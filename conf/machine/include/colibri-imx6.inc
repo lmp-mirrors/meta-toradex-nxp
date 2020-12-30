@@ -7,6 +7,9 @@ OFFSET_SPL_PAYLOAD = "138"
 
 MACHINE_NAME = "Colibri-iMX6"
 
+TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = "colibri-imx6_lcd_overlay.dtbo colibri-imx6_stmpe-ts_overlay.dtbo"
+TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT_use-mainline-bsp = "colibri-imx6_parallel-rgb_overlay.dtbo colibri-imx6_stmpe-ts_overlay.dtbo display-edt7_overlay.dtbo"
+
 IMAGE_BOOT_FILES_append = " boot.scr-${MACHINE};boot.scr"
 WKS_FILE_DEPENDS_append = " u-boot-distro-boot"
 
