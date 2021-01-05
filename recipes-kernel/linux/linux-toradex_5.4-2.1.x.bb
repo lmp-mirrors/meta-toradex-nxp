@@ -7,7 +7,7 @@ SUMMARY_append_preempt-rt = "Real-Time Linux kernel for Toradex Freescale i.MX b
 LIC_FILES_CHKSUM = "file://COPYING;md5=bbea815ee2795b2f4230826c0c6b8814"
 
 SRC_URI = " \
-    git://git.toradex.com/linux-toradex.git;protocol=git;branch=${SRCBRANCH};name=machine \
+    git://git.toradex.com/linux-toradex.git;protocol=https;branch=${SRCBRANCH};name=machine \
 "
 
 # Load USB functions configurable through configfs (CONFIG_USB_CONFIGFS)
