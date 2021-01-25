@@ -10,7 +10,7 @@ FSL_EULA_FILE_MD5SUMS_append = " \
     ${FSL_EULA_FILE_MD5SUM_LA_OPT_NXP_SOFTWARE_LICENSE_V17} \
 "
 
-inherit fsl-eula-unpack deploy
+inherit fsl-eula-unpack use-imx-security-controller-firmware deploy
 
 SRC_URI = "${FSL_MIRROR}/${BP}.bin;fsl-eula=true"
 
@@ -21,21 +21,10 @@ do_compile[noexec] = "1"
 
 do_install[noexec] = "1"
 
-SECO_CHIP ?= "UNSUPPORTED"
-SECO_CHIP_mx8qm ?= "qmb0"
-SECO_CHIP_mx8qxp = "qxb0"
-SECO_CHIP_mx8qxpc0 = "qxc0"
-SECO_FIRMWARE_NAME_mx8phantomdxl = "qxb0"
-SECO_FIRMWARE_NAME_mx8dxl        = "dxla0"
-
-SECO_FIRMWARE_NAME = "mx8${SECO_CHIP}-ahab-container.img"
-
 addtask deploy after do_install
 do_deploy () {
     # Deploy i.MX8 SECO firmware files
     install -m 0644 ${S}/firmware/seco/${SECO_FIRMWARE_NAME} ${DEPLOYDIR}
 }
 
-
-COMPATIBLE_MACHINE = "(mx8)"
-COMPATIBLE_MACHINE_mx8m = "(^$)"
+COMPATIBLE_MACHINE = "(mx8qm|mx8qxp|mx8phantomdxl|mx8dxl)"
