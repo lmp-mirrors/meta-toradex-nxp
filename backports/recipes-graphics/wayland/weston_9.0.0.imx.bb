@@ -154,6 +154,8 @@ SRC_URI = "git://source.codeaurora.org/external/imx/weston-imx.git;protocol=http
            file://weston.desktop \
            file://xwayland.weston-start \
            file://0001-weston-launch-Provide-a-default-version-that-doesn-t.patch \
+           file://0001-libweston-backend-fbdev-fbdev.c-don-t-destroy-output.patch \
+           file://0002-libweston-pixman-renderer.c-zero-freed-pointer.patch \
 "
 SRCREV = "a1823f20a1d6e24d2f56e98c5576eda34a94f567"
 S = "${WORKDIR}/git"
