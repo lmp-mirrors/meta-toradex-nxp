@@ -4,3 +4,9 @@
 PACKAGECONFIG_remove = "wayland x11"
 
 PACKAGECONFIG[xwayland] = "-Dxwayland=true,-Dxwayland=false,libxcursor"
+
+FILESEXTRAPATHS_prepend := "${THISDIR}/weston/:"
+SRC_URI_append = " \
+    file://0001-libweston-backend-fbdev-fbdev.c-don-t-destroy-output.patch \
+    file://0002-libweston-pixman-renderer.c-zero-freed-pointer.patch \
+"
