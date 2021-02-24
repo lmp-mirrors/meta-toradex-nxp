@@ -16,9 +16,6 @@ UBOOT_ENTRYPOINT_colibri-imx6ull = "0x81000000"
 
 MACHINEOVERRIDES_append_upstream = ":use-mainline-bsp"
 
-IMAGE_BOOT_FILES_append = " boot.scr-${MACHINE};boot.scr"
-WKS_FILE_DEPENDS_append = " u-boot-distro-boot"
-
 UBOOT_ENTRYPOINT_colibri-imx6ull = "0x81000000"
 UBOOT_MAKE_TARGET_colibri-imx6ull = "u-boot.imx"
 

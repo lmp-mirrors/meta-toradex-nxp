@@ -9,9 +9,6 @@ MACHINE_NAME = "Colibri-iMX7-eMMC"
 
 MACHINEOVERRIDES_append_upstream = ":use-mainline-bsp"
 
-IMAGE_BOOT_FILES_append = " boot.scr-${MACHINE};boot.scr"
-WKS_FILE_DEPENDS_append = " u-boot-distro-boot"
-
 MACHINE_FIRMWARE_remove = "firmware-imx-epdc"
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-toradex"
