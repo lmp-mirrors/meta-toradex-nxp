@@ -30,4 +30,8 @@ PREFERRED_PROVIDER_virtual/kernel_use-mainline-bsp_preempt-rt = "linux-toradex-m
 PREFERRED_PROVIDER_virtual/dtb_use-mainline-bsp = "device-tree-overlays-mainline"
 
 PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
+
 UBOOT_MAKE_TARGET_colibri-imx7 = "u-boot.imx"
+UBOOT_ENTRYPOINT_colibri-imx7 = "0x81000000"
+UBOOT_DTB_LOADADDRESS_colibri-imx7 = "0x82000000"
+UBOOT_DTBO_LOADADDRESS_colibri-imx7 = "0x82010000"

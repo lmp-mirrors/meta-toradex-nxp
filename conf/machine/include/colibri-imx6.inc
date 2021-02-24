@@ -25,3 +25,7 @@ PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
 UBOOT_SUFFIX = "img"
 
 MACHINE_FIRMWARE_remove = "firmware-imx-epdc"
+
+UBOOT_ENTRYPOINT_colibri-imx6 = "0x11000000"
+UBOOT_DTB_LOADADDRESS_colibri-imx6 = "0x12100000"
+UBOOT_DTBO_LOADADDRESS_colibri-imx6 = "0x12110000"
