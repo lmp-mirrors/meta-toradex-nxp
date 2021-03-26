@@ -15,6 +15,7 @@ SRC_URI = "${GST1.0-PLUGINS-BASE_SRC};branch=${SRCBRANCH} \
            file://0009-glimagesink-Downrank-to-marginal.patch \
            file://0001-gst-libs-gst-gl-wayland-fix-meson-build.patch \
            file://0001-meson-viv-fb-code-must-link-against-libg2d.patch \
+           file://0001-glupload-don-t-reject-non-RGBA-output-format-in-_dir.patch \
            "
 
 S = "${WORKDIR}/git"
