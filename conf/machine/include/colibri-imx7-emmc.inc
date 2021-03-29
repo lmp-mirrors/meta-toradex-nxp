@@ -28,7 +28,7 @@ KERNEL_DEVICETREE_append_use-mainline-bsp = " \
 PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
 
 TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = "colibri-imx7_lcd-vga_overlay.dtbo colibri-imx7_ad7879_overlay.dtbo"
-TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT_use-mainline-bsp = "colibri-imx7_parallel-rgb_overlay.dtbo colibri-imx7_ad7879_overlay.dtbo display-lt161010_overlay.dtbo"
+TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT_use-mainline-bsp = "colibri-imx7_parallel-rgb_overlay.dtbo colibri-imx7_ad7879_overlay.dtbo display-vga_overlay.dtbo"
 
 UBOOT_DTB_LOADADDRESS_colibri-imx7-emmc = "0x82000000"
 UBOOT_DTBO_LOADADDRESS_colibri-imx7-emmc = "0x82010000"
