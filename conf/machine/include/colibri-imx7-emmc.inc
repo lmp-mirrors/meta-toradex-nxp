@@ -31,7 +31,7 @@ TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = "colibri-imx7_lcd-vga_overlay.dtbo colibr
 TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT_use-mainline-bsp = "colibri-imx7_parallel-rgb_overlay.dtbo colibri-imx7_ad7879_overlay.dtbo display-vga_overlay.dtbo"
 
 UBOOT_DTB_LOADADDRESS_colibri-imx7-emmc = "0x82000000"
-UBOOT_DTBO_LOADADDRESS_colibri-imx7-emmc = "0x82010000"
+UBOOT_DTBO_LOADADDRESS_colibri-imx7-emmc = "0x87000000"
 UBOOT_ENTRYPOINT_colibri-imx7-emmc = "0x81000000"
 UBOOT_MAKE_TARGET = "u-boot.imx"
 UBOOT_SUFFIX_${MACHINE} = "imx"
