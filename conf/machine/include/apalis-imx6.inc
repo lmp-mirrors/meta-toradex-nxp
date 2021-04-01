@@ -22,6 +22,10 @@ PREFERRED_PROVIDER_virtual/dtb_use-mainline-bsp = "device-tree-overlays-mainline
 PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
 UBOOT_SUFFIX = "img"
 
+UBOOT_ENTRYPOINT_apalis-imx6 = "0x11000000"
+UBOOT_DTB_LOADADDRESS_apalis-imx6 = "0x12100000"
+UBOOT_DTBO_LOADADDRESS_apalis-imx6 = "0x17000000"
+
 MACHINE_FIRMWARE_remove = "firmware-imx-epdc"
 
 TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = "apalis-imx6_hdmi_overlay.dtbo"
