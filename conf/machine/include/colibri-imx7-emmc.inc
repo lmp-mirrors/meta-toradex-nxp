@@ -32,4 +32,4 @@ TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT_use-mainline-bsp = "colibri-imx7_parallel-r
 
 UBOOT_ENTRYPOINT_colibri-imx7-emmc = "0x81000000"
 UBOOT_DTB_LOADADDRESS_colibri-imx7-emmc = "0x82000000"
-UBOOT_DTBO_LOADADDRESS_colibri-imx7-emmc = "0x82010000"
+UBOOT_DTBO_LOADADDRESS_colibri-imx7-emmc = "0x87000000"
