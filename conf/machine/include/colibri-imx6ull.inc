@@ -16,8 +16,10 @@ UBOOT_ENTRYPOINT_colibri-imx6ull = "0x81000000"
 
 MACHINEOVERRIDES_append_upstream = ":use-mainline-bsp"
 
-UBOOT_ENTRYPOINT_colibri-imx6ull = "0x81000000"
 UBOOT_MAKE_TARGET_colibri-imx6ull = "u-boot.imx"
+UBOOT_ENTRYPOINT_colibri-imx6ull = "0x81000000"
+UBOOT_DTB_LOADADDRESS_colibri-imx6ull = "0x82100000"
+UBOOT_DTBO_LOADADDRESS_colibri-imx6ull = "0x87000000"
 
 KERNEL_DEVICETREE_append_use_nxp_bsp = " \
     imx6ull-colibri-aster.dtb \
