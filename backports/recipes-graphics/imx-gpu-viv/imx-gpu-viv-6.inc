@@ -6,7 +6,7 @@
 DESCRIPTION = "GPU driver and apps for i.MX"
 SECTION = "libs"
 LICENSE = "Proprietary"
-LIC_FILES_CHKSUM = "file://COPYING;md5=cf3f9b8d09bc3926b1004ea71f7a248a"
+LIC_FILES_CHKSUM = "file://COPYING;md5=a632fefd1c359980434f9389833cab3a"
 
 DEPENDS += " \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'wayland', \
@@ -275,7 +275,7 @@ do_install () {
 ALLOW_EMPTY_${PN} = "1"
 
 FILES_libclc-imx = "${libdir}/libCLC${SOLIBS}"
-FILES_libclc-imx-dev = "${includedir}/CL ${libdir}/libCLC${SOLIBSDEV}"
+FILES_libclc-imx-dev = "${libdir}/libCLC${SOLIBSDEV}"
 
 # libEGL.so is used by some demo apps from Freescale
 INSANE_SKIP_libegl-imx += "dev-so"
@@ -284,9 +284,9 @@ FILES_libegl-imx-dev = "${includedir}/EGL ${includedir}/KHR ${libdir}/pkgconfig/
 
 FILES_libgal-imx = "${libdir}/libGAL${SOLIBS} ${libdir}/libGAL_egl${SOLIBS}"
 FILES_libgal-imx-dev = "${libdir}/libGAL${SOLIBSDEV} ${includedir}/HAL"
-RDEPENDS_libgal-imx += "kernel-module-imx-gpu-viv"
 RDEPENDS_libgal-imx += "${@bb.utils.contains('PACKAGECONFIG', 'valgrind', 'valgrind', '', d)}"
 RPROVIDES_libgal-imx += "libgal-imx"
+RRECOMMENDS_libgal-imx += "kernel-module-imx-gpu-viv"
 INSANE_SKIP_libgal-imx += "build-deps"
 
 FILES_libvsc-imx = "${libdir}/libVSC${SOLIBS}"
@@ -331,7 +331,7 @@ FILES_libgles3-imx-dev = "${includedir}/GLES3"
 RDEPENDS_libgles2-imx-dev += "libgles3-imx-dev"
 
 FILES_libglslc-imx = "${libdir}/libGLSLC${SOLIBS}"
-FILES_libglslc-imx-dev = "${includedir}/CL ${libdir}/libGLSLC${SOLIBSDEV}"
+FILES_libglslc-imx-dev = "${libdir}/libGLSLC${SOLIBSDEV}"
 
 FILES_libopencl-imx = "${libdir}/libOpenCL${REALSOLIBS} \
                        ${libdir}/libVivanteOpenCL${SOLIBS} \
