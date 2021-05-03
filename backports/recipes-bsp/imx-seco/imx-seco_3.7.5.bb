@@ -5,17 +5,13 @@ DESCRIPTION = "NXP IMX SECO firmware"
 SECTION = "base"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://COPYING;md5=cf3f9b8d09bc3926b1004ea71f7a248a"
-FSL_EULA_FILE_MD5SUM_LA_OPT_NXP_SOFTWARE_LICENSE_V17 = "cf3f9b8d09bc3926b1004ea71f7a248a"
-FSL_EULA_FILE_MD5SUMS_append = " \
-    ${FSL_EULA_FILE_MD5SUM_LA_OPT_NXP_SOFTWARE_LICENSE_V17} \
-"
 
 inherit fsl-eula-unpack use-imx-security-controller-firmware deploy
 
 SRC_URI = "${FSL_MIRROR}/${BP}.bin;fsl-eula=true"
 
-SRC_URI[md5sum] = "f0e20216f27f2f44ac809634c5291be5"
-SRC_URI[sha256sum] = "2ed8177e48c8e33f742b3a642805be56a5ef56df78b1b29e10518552154da2bc"
+SRC_URI[md5sum] = "d4faca131abfc51a1dd0278d7d201159"
+SRC_URI[sha256sum] = "08cf25a4be6841ca7264a50b29c311b386eae1c02fced8a3b55fd04213acb4bc"
 
 do_compile[noexec] = "1"
 
