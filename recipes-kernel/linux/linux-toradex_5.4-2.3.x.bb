@@ -14,7 +14,7 @@ SRC_URI = " \
 KERNEL_MODULE_AUTOLOAD += "${@bb.utils.contains('COMBINED_FEATURES', 'usbgadget', ' libcomposite', '',d)}"
 
 inherit toradex-kernel-localversion
-LINUX_VERSION = "5.4.91"
+LINUX_VERSION = "5.4.115"
 # skip, as with use-head-next LINUX_VERSION might be set wrongly
 KERNEL_VERSION_SANITY_SKIP_use-head-next = "1"
 
@@ -22,7 +22,7 @@ KERNEL_VERSION_SANITY_SKIP_use-head-next = "1"
 LOCALVERSION = "-${TDX_VERSION}"
 
 SRCBRANCH = "toradex_5.4-2.3.x-imx"
-SRCREV_machine = "82e97870feb6303ecc71371abc76a606e724b065"
+SRCREV_machine = "a08f3c7add53eaaa4ab453ac3f06c24ec8927579"
 SRCREV_machine_use-head-next = "${AUTOREV}"
 
 DEPENDS += "lzop-native bc-native"
@@ -43,7 +43,7 @@ KBUILD_DEFCONFIG_mx8 ?= "toradex_defconfig"
 # both possible storage locations.
 MIRRORS_append_preempt-rt = "${KERNELORG_MIRROR}/linux/kernel/projects/rt/5.4/older/ ${KERNELORG_MIRROR}/linux/kernel/projects/rt/5.4/"
 SRC_URI_append_preempt-rt = " \
-    ${KERNELORG_MIRROR}/linux/kernel/projects/rt/5.4/older/patch-5.4.91-rt50.patch.xz;name=rt-patch \
+    ${KERNELORG_MIRROR}/linux/kernel/projects/rt/5.4/older/patch-5.4.115-rt57.patch.xz;name=rt-patch \
     file://preempt-rt.scc \
     file://preempt-rt-less-latency.scc \
 "
@@ -53,4 +53,4 @@ SRC_URI_append_preempt-rt = " \
 #    file://0002-ddr-perf-prevent-BUG-with-rt-patch.patch \
 #
 
-SRC_URI[rt-patch.sha256sum] = "3152fac82ee4357f89035736de707545b36b1816536d17cc76bd830b488a2923"
+SRC_URI[rt-patch.sha256sum] = "133c73625664f72702e85fc037e9a4169e16c9b45444af1c9416157c44ec07f6"
