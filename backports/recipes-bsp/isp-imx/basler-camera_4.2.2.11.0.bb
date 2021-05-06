@@ -21,7 +21,8 @@ do_install() {
 
 SYSTEMD_AUTO_ENABLE = "enable"
 
-FILES_${PN} = "${libdir} /opt"
-INSANE_SKIP_${PN} = "file-rdeps already-stripped"
+FILES_${PN} = "${libdir} ${libdir}/.so /opt"
+FILES_${PN}-dev = ""
+INSANE_SKIP_${PN} = "file-rdeps already-stripped dev-so"
 
 COMPATIBLE_MACHINE = "(imx|use-nxp-bsp)"
