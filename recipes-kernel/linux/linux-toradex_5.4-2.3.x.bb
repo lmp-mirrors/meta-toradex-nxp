@@ -34,6 +34,8 @@ KBUILD_DEFCONFIG_colibri-imx6ull ?= "colibri-imx6ull_defconfig"
 KBUILD_DEFCONFIG_mx7 ?= "colibri_imx7_defconfig"
 KBUILD_DEFCONFIG_mx8 ?= "toradex_defconfig"
 
+export DTC_FLAGS = "-@"
+
 ###############################################################################
 # Apply the RT patch and change the configuration to use PREMPT_RT when the
 # preempt-rt override is set.
