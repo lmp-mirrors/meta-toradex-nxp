@@ -10,6 +10,7 @@ MACHINE_NAME = "Colibri-iMX7-eMMC"
 MACHINEOVERRIDES_append_upstream = ":use-mainline-bsp"
 
 MACHINE_FIRMWARE_remove = "firmware-imx-epdc"
+MACHINE_FIRMWARE_remove_use-mainline-bsp = "firmware-imx-vpu-imx6q firmware-imx-vpu-imx6d"
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-toradex"
 PREFERRED_PROVIDER_virtual/kernel_preempt-rt = "linux-toradex"
