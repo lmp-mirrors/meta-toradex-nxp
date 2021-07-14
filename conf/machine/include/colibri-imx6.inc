@@ -25,7 +25,6 @@ PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
 UBOOT_SUFFIX = "img"
 
 MACHINE_FIRMWARE_remove = "firmware-imx-epdc"
-MACHINE_FIRMWARE_remove_use-mainline-bsp = "firmware-imx-vpu-imx6q firmware-imx-vpu-imx6d"
 
 UBOOT_ENTRYPOINT_colibri-imx6 = "0x11000000"
 UBOOT_DTB_LOADADDRESS_colibri-imx6 = "0x12100000"
