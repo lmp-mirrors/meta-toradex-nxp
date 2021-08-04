@@ -8,6 +8,7 @@ DEFINE = "NO_MACHINE"
 DEFINE_apalis-imx6 = "MX6"
 DEFINE_colibri-imx6 = "MX6"
 DEFINE_colibri-imx6ull = "MX6ULL"
+DEFINE_colibri-imx6ull-emmc = "MX6ULL"
 
 do_compile() {
     ${CC} -o bmode_usb bmode_usb.c ${CFLAGS} ${LDFLAGS} -D ${DEFINE}

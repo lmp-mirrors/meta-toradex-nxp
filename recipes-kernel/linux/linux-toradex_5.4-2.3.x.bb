@@ -31,6 +31,7 @@ COMPATIBLE_MACHINE = "(mx6|mx7|mx8)"
 KBUILD_DEFCONFIG_apalis-imx6 ?= "apalis_imx6_defconfig"
 KBUILD_DEFCONFIG_colibri-imx6 ?= "colibri_imx6_defconfig"
 KBUILD_DEFCONFIG_colibri-imx6ull ?= "colibri-imx6ull_defconfig"
+KBUILD_DEFCONFIG_colibri-imx6ull-emmc ?= "colibri-imx6ull_defconfig"
 KBUILD_DEFCONFIG_mx7 ?= "colibri_imx7_defconfig"
 KBUILD_DEFCONFIG_mx8 ?= "toradex_defconfig"
 
