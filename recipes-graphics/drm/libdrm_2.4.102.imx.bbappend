@@ -1,1 +1,1 @@
-RDEPENDS_${PN}_append_imxgpu = " ${PN}-etnaviv ${PN}-vivante"
+RDEPENDS:${PN}:append:imxgpu = " ${PN}-etnaviv ${PN}-vivante"

@@ -10,8 +10,8 @@ DEPENDS += "bc-native dtc-native"
 # While NXP i.MX 7 downstream requires the Linux kernel to boot in secure
 # mode mainline/upstream requires non-secure mode instead, as it properly
 # uses PSCI to control further cores.
-SRC_URI_append_use-mainline-bsp_colibri-imx7 = " file://0001-colibri_imx7-boot-linux-kernel-in-non-secure-mode.patch"
-SRC_URI_append_use-mainline-bsp_colibri-imx7-emmc = " file://0001-colibri_imx7-boot-linux-kernel-in-non-secure-mode.patch"
+SRC_URI:append:use-mainline-bsp:colibri-imx7 = " file://0001-colibri:imx7-boot-linux-kernel-in-non-secure-mode.patch"
+SRC_URI:append:use-mainline-bsp:colibri-imx7-emmc = " file://0001-colibri:imx7-boot-linux-kernel-in-non-secure-mode.patch"
 
 BOOT_TOOLS = "imx-boot-tools"
 
@@ -31,14 +31,14 @@ nand_padding () {
     dd bs=1024 count=1 if=/dev/zero | cat - ${PADDING_DIR}/u-boot.imx.zero-padded > ${PADDING_DIR}/u-boot-nand.imx
 }
 
-do_compile_append_colibri-imx6ull () {
+do_compile:append:colibri-imx6ull () {
     nand_padding
 }
 
-do_compile_append_colibri-imx7 () {
+do_compile:append:colibri-imx7 () {
     nand_padding
 }
 
-do_compile_append_colibri-vf () {
+do_compile:append:colibri-vf () {
     nand_padding
 }

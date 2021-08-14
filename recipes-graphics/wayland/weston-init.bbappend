@@ -1,4 +1,4 @@
-INI_UNCOMMENT_ASSIGNMENTS_append_mx8 = " \
+INI_UNCOMMENT_ASSIGNMENTS:append:mx8 = " \
     use-g2d=1 \
 "
 

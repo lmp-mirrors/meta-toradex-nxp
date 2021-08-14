@@ -12,7 +12,7 @@ SRC_URI = " \
 
 SRCREV = "f499632b31f88dbd313fe9f742e2019c56032558"
 SRCREV_use-head-next = "${AUTOREV}"
-SRCBRANCH = "toradex_imx_v2020.04_5.4.70_2.3.0"
+SRCBRANCH = "toradex:imx_v2020.04_5.4.70_2.3.0"
 
 S = "${WORKDIR}/git"
 
@@ -23,7 +23,7 @@ UBOOT_INITIAL_ENV = "u-boot-initial-env"
 COMPATIBLE_MACHINE = "(mx8)"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-do_deploy_append_mx8m() {
+do_deploy:append:mx8m() {
     # Deploy the u-boot-nodtb.bin and fsl-imx8m*-XX.dtb for mkimage to generate boot binary
     if [ -n "${UBOOT_CONFIG}" ]
     then

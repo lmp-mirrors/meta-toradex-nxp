@@ -22,7 +22,7 @@ SRC_URI += " \
 
 S = "${WORKDIR}/git"
 
-EXTRA_OEMAKE_class-native = "CC='${CC}' CXX='${CXX}'"
+EXTRA_OEMAKE:class-native = "CC='${CC}' CXX='${CXX}'"
 
 do_install () {
     oe_runmake DESTDIR=${D} install

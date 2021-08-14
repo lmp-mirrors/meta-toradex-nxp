@@ -1,8 +1,8 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}-${PV}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}-${PV}:"
 require recipes-kernel/linux/linux-imx.inc
 
 SUMMARY = "Linux kernel for Toradex Freescale i.MX based modules"
-SUMMARY_preempt-rt = "Real-Time Linux kernel for Toradex Freescale i.MX based modules"
+SUMMARY:preempt-rt = "Real-Time Linux kernel for Toradex Freescale i.MX based modules"
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=bbea815ee2795b2f4230826c0c6b8814"
 
@@ -28,12 +28,12 @@ SRCREV_machine_use-head-next = "${AUTOREV}"
 DEPENDS += "lzop-native bc-native"
 COMPATIBLE_MACHINE = "(mx6|mx7|mx8)"
 
-KBUILD_DEFCONFIG_apalis-imx6 ?= "apalis_imx6_defconfig"
-KBUILD_DEFCONFIG_colibri-imx6 ?= "colibri_imx6_defconfig"
-KBUILD_DEFCONFIG_colibri-imx6ull ?= "colibri-imx6ull_defconfig"
-KBUILD_DEFCONFIG_colibri-imx6ull-emmc ?= "colibri-imx6ull_defconfig"
-KBUILD_DEFCONFIG_mx7 ?= "colibri_imx7_defconfig"
-KBUILD_DEFCONFIG_mx8 ?= "toradex_defconfig"
+KBUILD_DEFCONFIG:apalis-imx6 ?= "apalis:imx6_defconfig"
+KBUILD_DEFCONFIG:colibri-imx6 ?= "colibri:imx6_defconfig"
+KBUILD_DEFCONFIG:colibri-imx6ull ?= "colibri-imx6ull_defconfig"
+KBUILD_DEFCONFIG:colibri-imx6ull-emmc ?= "colibri-imx6ull_defconfig"
+KBUILD_DEFCONFIG:mx7 ?= "colibri:imx7_defconfig"
+KBUILD_DEFCONFIG:mx8 ?= "toradex_defconfig"
 
 export DTC_FLAGS = "-@"
 
@@ -44,8 +44,8 @@ export DTC_FLAGS = "-@"
 
 # patches get moved into the 'older' directory when superseeded, so provide
 # both possible storage locations.
-MIRRORS_append_preempt-rt = "${KERNELORG_MIRROR}/linux/kernel/projects/rt/5.4/older/ ${KERNELORG_MIRROR}/linux/kernel/projects/rt/5.4/"
-SRC_URI_append_preempt-rt = " \
+MIRRORS:append:preempt-rt = "${KERNELORG_MIRROR}/linux/kernel/projects/rt/5.4/older/ ${KERNELORG_MIRROR}/linux/kernel/projects/rt/5.4/"
+SRC_URI:append:preempt-rt = " \
     ${KERNELORG_MIRROR}/linux/kernel/projects/rt/5.4/older/patch-5.4.129-rt61.patch.xz;name=rt-patch \
     file://preempt-rt.scc \
     file://preempt-rt-less-latency.scc \
