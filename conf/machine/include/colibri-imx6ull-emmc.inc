@@ -20,8 +20,7 @@ UBOOT_DTB_LOADADDRESS:colibri-imx6ull-emmc = "0x82100000"
 UBOOT_DTBO_LOADADDRESS:colibri-imx6ull-emmc = "0x87000000"
 
 TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = "colibri-imx6ull_parallel-rgb_vga_overlay.dtbo colibri-imx6ull_ad7879_overlay.dtbo"
-# This config will be enabled when respective overlays will be added to the upstream.
-# TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT:use-mainline-bsp = "colibri-imx6ull_parallel-rgb_vga_overlay.dtbo colibri-imx6ull_ad7879_overlay.dtbo display-vga_overlay.dtbo"
+TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT:use-mainline-bsp = "colibri-imx6ull_parallel-rgb_overlay.dtbo colibri-imx6ull_ad7879_overlay.dtbo display-vga_overlay.dtbo"
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-toradex"
 PREFERRED_PROVIDER_virtual/kernel_preempt-rt = "linux-toradex"
