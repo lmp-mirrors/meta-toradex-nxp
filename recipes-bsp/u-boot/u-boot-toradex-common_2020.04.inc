@@ -11,7 +11,7 @@ SRC_URI = " \
 "
 
 SRCREV = "f499632b31f88dbd313fe9f742e2019c56032558"
-SRCREV_use-head-next = "${AUTOREV}"
+SRCREV:use-head-next = "${AUTOREV}"
 SRCBRANCH = "toradex_imx_v2020.04_5.4.70_2.3.0"
 
 S = "${WORKDIR}/git"

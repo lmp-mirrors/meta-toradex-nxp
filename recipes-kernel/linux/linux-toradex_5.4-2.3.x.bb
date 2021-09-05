@@ -16,14 +16,14 @@ KERNEL_MODULE_AUTOLOAD += "${@bb.utils.contains('COMBINED_FEATURES', 'usbgadget'
 inherit toradex-kernel-localversion
 LINUX_VERSION = "5.4.129"
 # skip, as with use-head-next LINUX_VERSION might be set wrongly
-KERNEL_VERSION_SANITY_SKIP_use-head-next = "1"
+KERNEL_VERSION_SANITY_SKIP:use-head-next = "1"
 
 # Make sure to override LOCALVERSION in linux-imx.inc
 LOCALVERSION = "-${TDX_VERSION}"
 
 SRCBRANCH = "toradex_5.4-2.3.x-imx"
 SRCREV_machine = "9443377ef940e51025f3d5df5a9232a6f994e5ff"
-SRCREV_machine_use-head-next = "${AUTOREV}"
+SRCREV_machine:use-head-next = "${AUTOREV}"
 
 DEPENDS += "lzop-native bc-native"
 COMPATIBLE_MACHINE = "(mx6|mx7|mx8)"

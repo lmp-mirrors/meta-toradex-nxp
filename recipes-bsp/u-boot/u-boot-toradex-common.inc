@@ -14,7 +14,7 @@ inherit toradex-u-boot-localversion
 # repo during parse
 SRCREV = "0401650db5dfaf5fe67cb2ed8e9285bb198f3245"
 SRCBRANCH = "toradex_2020.07"
-SRCREV_use-head-next = "${AUTOREV}"
+SRCREV:use-head-next = "${AUTOREV}"
 
 SRC_URI = " \
     git://git.toradex.com/u-boot-toradex.git;protocol=https;branch=${SRCBRANCH} \
