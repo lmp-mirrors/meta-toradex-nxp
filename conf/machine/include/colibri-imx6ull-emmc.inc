@@ -11,7 +11,7 @@ MACHINE_NAME = "Colibri-iMX6ULL-eMMC"
 
 PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
 
-# MACHINEOVERRIDES:append:upstream = ":use-mainline-bsp"
+MACHINEOVERRIDES:append:upstream = ":use-mainline-bsp"
 
 UBOOT_MAKE_TARGET:colibri-imx6ull-emmc = "u-boot.imx"
 UBOOT_SUFFIX:${MACHINE} = "imx"
