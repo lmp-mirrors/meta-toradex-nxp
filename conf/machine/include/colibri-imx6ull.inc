@@ -32,7 +32,7 @@ KERNEL_DEVICETREE:append:use_nxp_bsp = " \
 "
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-toradex"
-PREFERRED_PROVIDER_virtual/kernel_preempt-rt = "linux-toradex"
-PREFERRED_PROVIDER_virtual/kernel_use-mainline-bsp = "linux-toradex-mainline"
-PREFERRED_PROVIDER_virtual/kernel_use-mainline-bsp:preempt-rt = "linux-toradex-mainline"
-PREFERRED_PROVIDER_virtual/dtb_use-mainline-bsp = "device-tree-overlays-mainline"
+PREFERRED_PROVIDER_virtual/kernel:preempt-rt = "linux-toradex"
+PREFERRED_PROVIDER_virtual/kernel:use-mainline-bsp = "linux-toradex-mainline"
+PREFERRED_PROVIDER_virtual/kernel:use-mainline-bsp:preempt-rt = "linux-toradex-mainline"
+PREFERRED_PROVIDER_virtual/dtb:use-mainline-bsp = "device-tree-overlays-mainline"

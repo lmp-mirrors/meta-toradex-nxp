@@ -23,7 +23,7 @@ TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = "colibri-imx6ull_parallel-rgb_vga_overlay
 TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT:use-mainline-bsp = "colibri-imx6ull_parallel-rgb_overlay.dtbo colibri-imx6ull_ad7879_overlay.dtbo display-vga_overlay.dtbo"
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-toradex"
-PREFERRED_PROVIDER_virtual/kernel_preempt-rt = "linux-toradex"
-PREFERRED_PROVIDER_virtual/kernel_use-mainline-bsp = "linux-toradex-mainline"
-PREFERRED_PROVIDER_virtual/kernel_use-mainline-bsp_preempt-rt = "linux-toradex-mainline"
-PREFERRED_PROVIDER_virtual/dtb_use-mainline-bsp = "device-tree-overlays-mainline"
+PREFERRED_PROVIDER_virtual/kernel:preempt-rt = "linux-toradex"
+PREFERRED_PROVIDER_virtual/kernel:use-mainline-bsp = "linux-toradex-mainline"
+PREFERRED_PROVIDER_virtual/kernel:use-mainline-bsp:preempt-rt = "linux-toradex-mainline"
+PREFERRED_PROVIDER_virtual/dtb:use-mainline-bsp = "device-tree-overlays-mainline"

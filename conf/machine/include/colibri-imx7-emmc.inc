@@ -13,10 +13,10 @@ MACHINE_FIRMWARE:remove = "firmware-imx-epdc"
 MACHINE_FIRMWARE:remove:use-mainline-bsp = "firmware-imx-vpu-imx6q firmware-imx-vpu-imx6d"
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-toradex"
-PREFERRED_PROVIDER_virtual/kernel_preempt-rt = "linux-toradex"
-PREFERRED_PROVIDER_virtual/kernel_use-mainline-bsp = "linux-toradex-mainline"
-PREFERRED_PROVIDER_virtual/kernel_use-mainline-bsp:preempt-rt = "linux-toradex-mainline"
-PREFERRED_PROVIDER_virtual/dtb_use-mainline-bsp = "device-tree-overlays-mainline"
+PREFERRED_PROVIDER_virtual/kernel:preempt-rt = "linux-toradex"
+PREFERRED_PROVIDER_virtual/kernel:use-mainline-bsp = "linux-toradex-mainline"
+PREFERRED_PROVIDER_virtual/kernel:use-mainline-bsp:preempt-rt = "linux-toradex-mainline"
+PREFERRED_PROVIDER_virtual/dtb:use-mainline-bsp = "device-tree-overlays-mainline"
 
 KERNEL_DEVICETREE:append:use-nxp-bsp = " \
     imx7d-colibri-emmc-iris.dtb \
