@@ -21,6 +21,7 @@ PREFERRED_PROVIDER_virtual/kernel:use-mainline-bsp = "linux-toradex-mainline"
 PREFERRED_PROVIDER_virtual/kernel:use-mainline-bsp:preempt-rt = "linux-toradex-mainline"
 PREFERRED_PROVIDER_virtual/dtb:use-mainline-bsp = "device-tree-overlays-mainline"
 
+IMX_DEFAULT_BOOTLOADER:colibri-imx6 = "u-boot"
 PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
 UBOOT_SUFFIX = "img"
 

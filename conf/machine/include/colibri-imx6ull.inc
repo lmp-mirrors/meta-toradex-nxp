@@ -11,12 +11,11 @@ WIC_CREATE_EXTRA_ARGS:append = " --no-fstab-update"
 
 MACHINE_NAME = "Colibri-iMX6ULL"
 
-PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
-UBOOT_ENTRYPOINT:colibri-imx6ull = "0x81000000"
-
 MACHINEOVERRIDES:append:upstream = ":use-mainline-bsp"
 MACHINE_FIRMWARE:remove:use-mainline-bsp = "firmware-imx-vpu-imx6q firmware-imx-vpu-imx6d"
 
+IMX_DEFAULT_BOOTLOADER:colibri-imx6ull = "u-boot"
+PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
 UBOOT_MAKE_TARGET:colibri-imx6ull = "u-boot.imx"
 UBOOT_ENTRYPOINT:colibri-imx6ull = "0x81000000"
 UBOOT_DTB_LOADADDRESS:colibri-imx6ull = "0x82100000"

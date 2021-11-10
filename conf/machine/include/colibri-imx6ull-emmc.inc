@@ -9,12 +9,12 @@ WIC_CREATE_EXTRA_ARGS:append = " --no-fstab-update"
 
 MACHINE_NAME = "Colibri-iMX6ULL-eMMC"
 
-PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
-
 MACHINEOVERRIDES:append:upstream = ":use-mainline-bsp"
 
+IMX_DEFAULT_BOOTLOADER:colibri-imx6ull-emmc = "u-boot"
+PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
 UBOOT_MAKE_TARGET:colibri-imx6ull-emmc = "u-boot.imx"
-UBOOT_SUFFIX:${MACHINE} = "imx"
+UBOOT_SUFFIX:colibri-imx6ull-emmc = "imx"
 UBOOT_ENTRYPOINT:colibri-imx6ull-emmc = "0x81000000"
 UBOOT_DTB_LOADADDRESS:colibri-imx6ull-emmc = "0x82100000"
 UBOOT_DTBO_LOADADDRESS:colibri-imx6ull-emmc = "0x87000000"

@@ -26,6 +26,7 @@ KERNEL_DEVICETREE:append:use-mainline-bsp = " \
     imx7d-colibri-emmc-aster.dtb \
 "
 
+IMX_DEFAULT_BOOTLOADER:colibri-imx7-emmc = "u-boot"
 PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
 
 TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = "colibri-imx7_lcd-vga_overlay.dtbo colibri-imx7_ad7879_overlay.dtbo"
