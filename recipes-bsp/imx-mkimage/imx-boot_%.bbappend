@@ -5,5 +5,5 @@ compile_mx8m:prepend() {
 }
 compile_mx8m:append() {
     rm -rf ${BOOT_STAGING}/mkimage_uboot
-    lnr ${STAGING_DIR_NATIVE}/${bindir}/mkimage ${BOOT_STAGING}/mkimage_uboot
+    ln -frs ${STAGING_DIR_NATIVE}/${bindir}/mkimage ${BOOT_STAGING}/mkimage_uboot
 }
