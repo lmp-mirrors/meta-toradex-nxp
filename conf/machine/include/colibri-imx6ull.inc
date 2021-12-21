@@ -21,7 +21,7 @@ UBOOT_ENTRYPOINT:colibri-imx6ull = "0x81000000"
 UBOOT_DTB_LOADADDRESS:colibri-imx6ull = "0x82100000"
 UBOOT_DTBO_LOADADDRESS:colibri-imx6ull = "0x87000000"
 
-KERNEL_DEVICETREE:append:use_nxp_bsp = " \
+KERNEL_DEVICETREE:append:use-nxp-bsp = " \
     imx6ull-colibri-aster.dtb \
     imx6ull-colibri-iris.dtb \
     imx6ull-colibri-iris-v2.dtb \
