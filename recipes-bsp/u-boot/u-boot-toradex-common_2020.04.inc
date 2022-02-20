@@ -20,10 +20,10 @@ inherit toradex-u-boot-localversion
 
 UBOOT_INITIAL_ENV = "u-boot-initial-env"
 
-COMPATIBLE_MACHINE = "(mx8)"
+COMPATIBLE_MACHINE = "(mx8-generic-bsp)"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-do_deploy:append:mx8m() {
+do_deploy:append:mx8m-generic-bsp() {
     # Deploy the u-boot-nodtb.bin and fsl-imx8m*-XX.dtb for mkimage to generate boot binary
     if [ -n "${UBOOT_CONFIG}" ]
     then

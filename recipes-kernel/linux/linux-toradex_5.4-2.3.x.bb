@@ -26,14 +26,14 @@ SRCREV_machine = "e395d949e46b9b80358668b42b07b85738e5758d"
 SRCREV_machine:use-head-next = "${AUTOREV}"
 
 DEPENDS += "lzop-native bc-native"
-COMPATIBLE_MACHINE = "(mx6|mx7|mx8)"
+COMPATIBLE_MACHINE = "(mx6-nxp-bsp|mx7-nxp-bsp|mx8-nxp-bsp)"
 
 KBUILD_DEFCONFIG:apalis-imx6 ?= "apalis_imx6_defconfig"
 KBUILD_DEFCONFIG:colibri-imx6 ?= "colibri_imx6_defconfig"
 KBUILD_DEFCONFIG:colibri-imx6ull ?= "colibri-imx6ull_defconfig"
 KBUILD_DEFCONFIG:colibri-imx6ull-emmc ?= "colibri-imx6ull_defconfig"
-KBUILD_DEFCONFIG:mx7 ?= "colibri_imx7_defconfig"
-KBUILD_DEFCONFIG:mx8 ?= "toradex_defconfig"
+KBUILD_DEFCONFIG:mx7-nxp-bsp ?= "colibri_imx7_defconfig"
+KBUILD_DEFCONFIG:mx8-nxp-bsp ?= "toradex_defconfig"
 
 export DTC_FLAGS = "-@"
 

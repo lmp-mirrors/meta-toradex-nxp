@@ -1,4 +1,4 @@
-INI_UNCOMMENT_ASSIGNMENTS:append:mx8 = " \
+INI_UNCOMMENT_ASSIGNMENTS:append:mx8-nxp-bsp = " \
     use-g2d=1 \
 "
 
