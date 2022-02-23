@@ -51,7 +51,7 @@ do_install_append_upstream_colibri-imx7-emmc() {
 # openembedded-core commit 4efdcc1090 ("weston: Use systemd notify,")
 # forces systemd-notify which in our setup does not work. Uncomment the
 # relevant lines for now.
-do_install_append() {
+do_install_append_tdx() {
     sed -i 's/\(Type=notify\)/# \1/' ${D}${systemd_system_unitdir}/weston@.service
     sed -i 's/\(NotifyAccess=all\)/# \1/' ${D}${systemd_system_unitdir}/weston@.service
 }
