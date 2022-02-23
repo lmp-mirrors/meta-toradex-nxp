@@ -1,1 +1,1 @@
-RRECOMMENDS:${PN}:append:imxgpu = " ${PN}-vivante"
+RRECOMMENDS:${PN}:append:imxgpu:tdx = " ${PN}-vivante"

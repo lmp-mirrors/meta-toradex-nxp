@@ -1,10 +1,10 @@
-PV = "2.2+git${SRCPV}"
-SRCBRANCH = "toradex_imx_5.4.70_2.3.0"
-SRCREV = "835a8f67b2ca7aa3f2d05d6e6a1a51f7e1147266"
-SRCREV:use-head-next = "${AUTOREV}"
-SRC_URI = "git://git.toradex.com/imx-atf.git;protocol=https;branch=${SRCBRANCH}"
+PV:tdx = "2.2+git${SRCPV}"
+SRCBRANCH:tdx = "toradex_imx_5.4.70_2.3.0"
+SRCREV:tdx = "835a8f67b2ca7aa3f2d05d6e6a1a51f7e1147266"
+SRCREV:use-head-next:tdx = "${AUTOREV}"
+SRC_URI:tdx = "git://git.toradex.com/imx-atf.git;protocol=https;branch=${SRCBRANCH}"
 
-EXTRA_OEMAKE:append = " \
+EXTRA_OEMAKE:append:tdx = " \
     BUILD_STRING="${SRCBRANCH}-g${@'${SRCPV}'.replace('AUTOINC+', '')}" \
 "
 EXTRA_OEMAKE:append:verdin-imx8mm = " \
