@@ -1,7 +1,7 @@
 SUMMARY = "USB/UART loader for i.MX51/53/6x/7 and Vybrid"
 SECTION = "base"
 HOMEPAGE = "https://github.com/boundarydevices/imx_usb_loader"
-LICENSE = "LGPLv2+"
+LICENSE = "LGPL-2.0-or-later"
 LIC_FILES_CHKSUM = "file://COPYING;md5=4fbd65380cdd255951079008b364516c"
 
 DEPENDS = "libusb"

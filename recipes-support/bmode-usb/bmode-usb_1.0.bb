@@ -1,5 +1,5 @@
 SUMMARY = "Sets i.MX boot mode on next reboot to recovery, aka serial download"
-LICENSE = "GPLv2+"
+LICENSE = "GPL-2.0-or-later"
 LIC_FILES_CHKSUM = "file://bmode_usb.c;endline=5;md5=4c9010cb42fb7648a460c35e6b5c685c"
 
 SRC_URI = "file://bmode_usb.c"
