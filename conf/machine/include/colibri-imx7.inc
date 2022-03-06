@@ -13,7 +13,7 @@ MACHINEOVERRIDES:append:upstream = ":use-mainline-bsp"
 MACHINE_FIRMWARE:remove = "firmware-imx-epdc"
 MACHINE_FIRMWARE:remove:use-mainline-bsp = "firmware-imx-vpu-imx6q firmware-imx-vpu-imx6d"
 
-KERNEL_DEVICETREE:append:use-nxp-bsp += " \
+KERNEL_DEVICETREE:append:use-nxp-bsp = " \
     imx7d-colibri-iris.dtb \
     imx7d-colibri-iris-v2.dtb \
     imx7s-colibri-iris.dtb \
