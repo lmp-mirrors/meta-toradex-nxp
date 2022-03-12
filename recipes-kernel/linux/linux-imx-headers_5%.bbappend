@@ -4,3 +4,5 @@ LOCALVERSION = "-2.3.2"
 SRC_URI = "git://git.toradex.com/linux-toradex.git;protocol=https;branch=${SRCBRANCH}"
 # Keep that one stable, i.e. use the exact git hash from the NXP BSP.
 SRCREV = "dea2fede7e024ee7029b13e8d82a00ec14427777"
+PV = "5.4"
+IMX_UAPI_HEADERS:remove = "imx_vpu.h"
