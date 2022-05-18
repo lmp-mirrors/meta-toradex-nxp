@@ -6,3 +6,12 @@ SRC_URI:tdx = "git://git.toradex.com/linux-toradex.git;protocol=https;branch=${S
 SRCREV:tdx = "dea2fede7e024ee7029b13e8d82a00ec14427777"
 PV:tdx = "5.4"
 IMX_UAPI_HEADERS:remove:tdx = "imx_vpu.h"
+
+do_install:append:tdx() {
+    # FIXME: The ion.h is still on staging so "promote" it for now
+    # and install it by hand
+    cp ${S}/drivers/staging/android/uapi/ion.h ${S}${includedir}/linux
+    install -D -m 0644 ${S}/drivers/staging/android/uapi/ion.h \
+                       ${D}${includedir}/imx/linux/ion.h
+
+}
