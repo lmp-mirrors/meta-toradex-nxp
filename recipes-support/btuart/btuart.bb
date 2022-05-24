@@ -34,12 +34,4 @@ pkg_postinst_ontarget_${PN}_verdin-imx8mp () {
         /bin/systemctl stop btuart.service
         exit 0
     fi
-
-    # V1.1A and later require sdiouart Wi-Fi/BT firmware
-    mv -f ${nonarch_base_libdir}/firmware/mrvl/sdsd8997_combo_v4.bin ${nonarch_base_libdir}/firmware/mrvl/sdsd8997_combo_v4.bin.orig
-    ln -s ${nonarch_base_libdir}/firmware/nxp/sdiouart8997_combo_v4.bin ${nonarch_base_libdir}/firmware/mrvl/sdsd8997_combo_v4.bin
-    # power-cycle Wi-Fi/BT module
-    echo -n "30b40000.mmc" > /sys/bus/platform/drivers/sdhci-esdhc-imx/unbind
-    sleep 1
-    echo -n "30b40000.mmc" > /sys/bus/platform/drivers/sdhci-esdhc-imx/bind
 }
