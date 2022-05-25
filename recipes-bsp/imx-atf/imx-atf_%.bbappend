@@ -1,6 +1,6 @@
 PV:tdx = "2.2+git${SRCPV}"
 SRCBRANCH:tdx = "toradex_imx_5.4.70_2.3.0"
-SRCREV:tdx = "835a8f67b2ca7aa3f2d05d6e6a1a51f7e1147266"
+SRCREV:tdx = "2fa8c6349e9a1d965757d44f05a6c72687850b77"
 SRCREV:use-head-next:tdx = "${AUTOREV}"
 SRC_URI:tdx = "git://git.toradex.com/imx-atf.git;protocol=https;branch=${SRCBRANCH}"
 
