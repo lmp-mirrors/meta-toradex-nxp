@@ -25,5 +25,5 @@ PACKAGES =+ " ${PN}-nxp89xx"
 
 FILES_${PN}-nxp89xx = " \
        ${nonarch_base_libdir}/firmware/nxp/*  \
-       ${nonarch_base_libdir}/firmware/mrvl/* \
+       ${nonarch_base_libdir}/firmware/mrvl/sdiouart8997_combo_v4.bin \
 "
