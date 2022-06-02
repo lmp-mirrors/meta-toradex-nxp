@@ -7,8 +7,6 @@ TORADEX_FLASH_TYPE = "emmc"
 
 MACHINE_NAME = "Colibri-iMX7-eMMC"
 
-MACHINEOVERRIDES:append:upstream = ":use-mainline-bsp"
-
 MACHINE_FIRMWARE:remove = "firmware-imx-epdc"
 MACHINE_FIRMWARE:remove:use-mainline-bsp = "firmware-imx-vpu-imx6q firmware-imx-vpu-imx6d"
 
