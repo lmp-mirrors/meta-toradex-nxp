@@ -11,8 +11,6 @@ MACHINE_NAME = "Colibri-iMX6ULL-eMMC"
 
 PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
 
-# MACHINEOVERRIDES_append_upstream = ":use-mainline-bsp"
-
 UBOOT_MAKE_TARGET_colibri-imx6ull-emmc = "u-boot.imx"
 UBOOT_ENTRYPOINT_colibri-imx6ull-emmc = "0x81000000"
 UBOOT_DTB_LOADADDRESS_colibri-imx6ull-emmc = "0x82100000"

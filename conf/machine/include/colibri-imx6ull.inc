@@ -14,7 +14,6 @@ MACHINE_NAME = "Colibri-iMX6ULL"
 PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
 UBOOT_ENTRYPOINT_colibri-imx6ull = "0x81000000"
 
-MACHINEOVERRIDES_append_upstream = ":use-mainline-bsp"
 MACHINE_FIRMWARE_remove_use-mainline-bsp = "firmware-imx-vpu-imx6q firmware-imx-vpu-imx6d"
 
 UBOOT_MAKE_TARGET_colibri-imx6ull = "u-boot.imx"
