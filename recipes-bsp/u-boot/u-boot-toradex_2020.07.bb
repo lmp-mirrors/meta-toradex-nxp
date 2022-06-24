@@ -31,6 +31,14 @@ nand_padding () {
     dd bs=1024 count=1 if=/dev/zero | cat - ${PADDING_DIR}/u-boot.imx.zero-padded > ${PADDING_DIR}/u-boot-nand.imx
 }
 
+deploy_uboot_with_spl () {
+    for config in ${UBOOT_MACHINE}; do
+        if [ -f "${B}/${config}/u-boot-with-spl.imx" ]; then
+            install -D -m 644 ${B}/${config}/u-boot-with-spl.imx ${DEPLOYDIR}/u-boot-with-spl.imx
+        fi
+    done
+}
+
 do_compile_append_colibri-imx6ull () {
     nand_padding
 }
@@ -41,4 +49,12 @@ do_compile_append_colibri-imx7 () {
 
 do_compile_append_colibri-vf () {
     nand_padding
+}
+
+do_deploy_append_colibri-imx6 () {
+    deploy_uboot_with_spl
+}
+
+do_deploy_append_apalis-imx6 () {
+    deploy_uboot_with_spl 
 }
