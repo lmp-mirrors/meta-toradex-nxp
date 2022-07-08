@@ -10,9 +10,9 @@ SRC_URI = " \
     file://fw_env.config \
 "
 
-SRCREV = "91a1b19e7384c0eca4ed96a0cae16d2f7d95fbb7"
+SRCREV = "1c881f4da83cc05bee50f352fa183263d7e2622b"
 SRCREV:use-head-next = "${AUTOREV}"
-SRCBRANCH = "toradex_imx_v2020.04_5.4.70_2.3.0"
+SRCBRANCH = "toradex_imx_lf_v2022.04"
 
 S = "${WORKDIR}/git"
 
