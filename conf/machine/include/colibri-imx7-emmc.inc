@@ -20,9 +20,6 @@ KERNEL_DEVICETREE:append:use-nxp-bsp = " \
     imx7d-colibri-emmc-iris.dtb \
     imx7d-colibri-emmc-iris-v2.dtb \
 "
-KERNEL_DEVICETREE:append:use-mainline-bsp = " \
-    imx7d-colibri-emmc-aster.dtb \
-"
 
 IMX_DEFAULT_BOOTLOADER:colibri-imx7-emmc = "u-boot"
 PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
