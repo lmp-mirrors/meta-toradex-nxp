@@ -16,10 +16,7 @@ SRCREV = "1cbeecee44a868f4ace933a992e730efb6d9d654"
 SRCBRANCH = "toradex_2020.07"
 SRCREV:use-head-next = "${AUTOREV}"
 
-SRC_URI = " \
-    git://git.toradex.com/u-boot-toradex.git;protocol=https;branch=${SRCBRANCH} \
-    file://fw_env.config \
-"
+SRC_URI = "git://git.toradex.com/u-boot-toradex.git;protocol=https;branch=${SRCBRANCH}"
 
 S = "${WORKDIR}/git"
 

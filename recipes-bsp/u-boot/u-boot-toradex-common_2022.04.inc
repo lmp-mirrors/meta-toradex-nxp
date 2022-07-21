@@ -5,10 +5,7 @@ DEPENDS += "flex-native bison-native"
 LICENSE = "GPL-2.0-or-later"
 LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
-SRC_URI = " \
-    git://git.toradex.com/u-boot-toradex.git;protocol=https;branch=${SRCBRANCH} \
-    file://fw_env.config \
-"
+SRC_URI = "git://git.toradex.com/u-boot-toradex.git;protocol=https;branch=${SRCBRANCH}"
 
 SRCREV = "1c881f4da83cc05bee50f352fa183263d7e2622b"
 SRCREV:use-head-next = "${AUTOREV}"
