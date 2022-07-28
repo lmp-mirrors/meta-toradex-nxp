@@ -6,6 +6,6 @@ SUMMARY = "U-Boot bootloader with support for Toradex i.MX 8 series SoMs"
 B = "${WORKDIR}/build"
 
 PROVIDES += "u-boot"
-DEPENDS:append = " dtc-native"
+DEPENDS += "bc-native dtc-native python3-setuptools-native"
 
 BOOT_TOOLS = "imx-boot-tools"
