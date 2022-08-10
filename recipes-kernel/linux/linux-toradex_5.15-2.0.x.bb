@@ -43,7 +43,7 @@ MIRRORS:append:preempt-rt = "${KERNELORG_MIRROR}/linux/kernel/projects/rt/5.15/o
 SRC_URI:append:preempt-rt = " \
     file://0001-Revert-Revert-ARM-9113-1-uaccess-remove-set_fs-imple.patch \
     ${KERNELORG_MIRROR}/linux/kernel/projects/rt/5.15/older/patch-5.15.40-rt43.patch.xz;name=rt-patch \
-    file:://0003-Revert-Revert-Revert-ARM-9113-1-uaccess-remove-set_f.patch \
+    file://0003-Revert-Revert-Revert-ARM-9113-1-uaccess-remove-set_f.patch \
     file://preempt-rt.scc \
     file://preempt-rt-less-latency.scc \
 "
