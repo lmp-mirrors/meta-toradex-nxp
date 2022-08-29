@@ -9,7 +9,7 @@ WIC_CREATE_EXTRA_ARGS:append = " --no-fstab-update"
 
 MACHINE_NAME = "Colibri-iMX6ULL-eMMC"
 
-IMX_DEFAULT_BOOTLOADER:colibri-imx6ull-emmc = "u-boot"
+IMX_DEFAULT_BOOTLOADER:colibri-imx6ull-emmc = "u-boot-toradex"
 PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
 UBOOT_MAKE_TARGET:colibri-imx6ull-emmc = "u-boot.imx"
 UBOOT_SUFFIX:colibri-imx6ull-emmc = "imx"
