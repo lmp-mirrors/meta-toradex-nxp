@@ -25,7 +25,7 @@ IMX_DEFAULT_BOOTLOADER:colibri-imx7-emmc = "u-boot-toradex"
 PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
 
 TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = "colibri-imx7_lcd-vga_overlay.dtbo colibri-imx7_ad7879_overlay.dtbo"
-TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT:use-mainline-bsp = "colibri-imx7_parallel-rgb_overlay.dtbo colibri-imx7_ad7879_overlay.dtbo display-vga_overlay.dtbo"
+TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT:use-mainline-bsp = "colibri-imx7_parallel-rgb_overlay.dtbo colibri-imx7_ad7879_overlay.dtbo display-vga_overlay.dtbo colibri-imx7_spidev_overlay.dtbo"
 
 UBOOT_BINARY:colibri-imx7-emmc = "u-boot.imx"
 UBOOT_DTB_LOADADDRESS:colibri-imx7-emmc = "0x82000000"
