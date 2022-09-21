@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a
 
 SRC_URI = "git://git.toradex.com/u-boot-toradex.git;protocol=https;branch=${SRCBRANCH}"
 
-SRCREV = "74abe35dfc1376ca09ba7e468048993856e2a05b"
+SRCREV = "00f84bd784c4dc88947f440e4c7bf6117539c6f0"
 SRCREV:use-head-next = "${AUTOREV}"
 SRCBRANCH = "toradex_imx_lf_v2022.04"
 
