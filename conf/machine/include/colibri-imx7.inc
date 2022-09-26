@@ -8,9 +8,6 @@ TORADEX_FLASH_TYPE = "rawnand"
 
 MACHINE_NAME = "Colibri-iMX7"
 
-MACHINE_FIRMWARE:remove = "firmware-imx-epdc"
-MACHINE_FIRMWARE:remove:use-mainline-bsp = "firmware-imx-vpu-imx6q firmware-imx-vpu-imx6d"
-
 KERNEL_DEVICETREE:append:use-nxp-bsp = " \
     imx7d-colibri-iris.dtb \
     imx7d-colibri-iris-v2.dtb \
@@ -31,7 +28,10 @@ PREFERRED_PROVIDER_virtual/dtb:use-mainline-bsp = "device-tree-overlays-mainline
 IMX_DEFAULT_BOOTLOADER:colibri-imx7 = "u-boot-toradex"
 PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
 
-UBOOT_MAKE_TARGET:colibri-imx7 = "u-boot.imx"
-UBOOT_ENTRYPOINT:colibri-imx7 = "0x81000000"
+MACHINE_FIRMWARE:remove = "firmware-imx-epdc"
+MACHINE_FIRMWARE:remove:use-mainline-bsp = "firmware-imx-vpu-imx6q firmware-imx-vpu-imx6d"
+
 UBOOT_DTB_LOADADDRESS:colibri-imx7 = "0x82000000"
 UBOOT_DTBO_LOADADDRESS:colibri-imx7 = "0x87000000"
+UBOOT_ENTRYPOINT:colibri-imx7 = "0x81000000"
+UBOOT_MAKE_TARGET:colibri-imx7 = "u-boot.imx"

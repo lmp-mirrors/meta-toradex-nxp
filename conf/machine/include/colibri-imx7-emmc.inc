@@ -7,8 +7,13 @@ TORADEX_FLASH_TYPE = "emmc"
 
 MACHINE_NAME = "Colibri-iMX7-eMMC"
 
-MACHINE_FIRMWARE:remove = "firmware-imx-epdc"
-MACHINE_FIRMWARE:remove:use-mainline-bsp = "firmware-imx-vpu-imx6q firmware-imx-vpu-imx6d"
+TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = "colibri-imx7_lcd-vga_overlay.dtbo colibri-imx7_ad7879_overlay.dtbo"
+TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT:use-mainline-bsp = "colibri-imx7_parallel-rgb_overlay.dtbo colibri-imx7_ad7879_overlay.dtbo display-vga_overlay.dtbo colibri-imx7_spidev_overlay.dtbo"
+
+KERNEL_DEVICETREE:append:use-nxp-bsp = " \
+    imx7d-colibri-emmc-iris.dtb \
+    imx7d-colibri-emmc-iris-v2.dtb \
+"
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-toradex"
 PREFERRED_PROVIDER_virtual/kernel:preempt-rt = "linux-toradex"
@@ -16,16 +21,11 @@ PREFERRED_PROVIDER_virtual/kernel:use-mainline-bsp = "linux-toradex-mainline"
 PREFERRED_PROVIDER_virtual/kernel:use-mainline-bsp:preempt-rt = "linux-toradex-mainline"
 PREFERRED_PROVIDER_virtual/dtb:use-mainline-bsp = "device-tree-overlays-mainline"
 
-KERNEL_DEVICETREE:append:use-nxp-bsp = " \
-    imx7d-colibri-emmc-iris.dtb \
-    imx7d-colibri-emmc-iris-v2.dtb \
-"
-
 IMX_DEFAULT_BOOTLOADER:colibri-imx7-emmc = "u-boot-toradex"
 PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
 
-TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = "colibri-imx7_lcd-vga_overlay.dtbo colibri-imx7_ad7879_overlay.dtbo"
-TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT:use-mainline-bsp = "colibri-imx7_parallel-rgb_overlay.dtbo colibri-imx7_ad7879_overlay.dtbo display-vga_overlay.dtbo colibri-imx7_spidev_overlay.dtbo"
+MACHINE_FIRMWARE:remove = "firmware-imx-epdc"
+MACHINE_FIRMWARE:remove:use-mainline-bsp = "firmware-imx-vpu-imx6q firmware-imx-vpu-imx6d"
 
 UBOOT_BINARY:colibri-imx7-emmc = "u-boot.imx"
 UBOOT_DTB_LOADADDRESS:colibri-imx7-emmc = "0x82000000"
