@@ -21,8 +21,9 @@ PREFERRED_PROVIDER_virtual/dtb:use-mainline-bsp = "device-tree-overlays-mainline
 IMX_DEFAULT_BOOTLOADER:colibri-imx6ull-emmc = "u-boot-toradex"
 PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
 
-UBOOT_DTB_LOADADDRESS:colibri-imx6ull-emmc = "0x82100000"
-UBOOT_DTBO_LOADADDRESS:colibri-imx6ull-emmc = "0x87000000"
-UBOOT_ENTRYPOINT:colibri-imx6ull-emmc = "0x81000000"
+UBOOT_DTB_LOADADDRESS:colibri-imx6ull-emmc = "0x88200000"
+UBOOT_DTBO_LOADADDRESS:colibri-imx6ull-emmc = "0x88300000"
+UBOOT_ENTRYPOINT:colibri-imx6ull-emmc = "0x84200000"
 UBOOT_MAKE_TARGET:colibri-imx6ull-emmc = "u-boot.imx"
+UBOOT_RD_LOADADDRESS:colibri-imx6ull-emmc = "0x88400000"
 UBOOT_SUFFIX:colibri-imx6ull-emmc = "imx"
