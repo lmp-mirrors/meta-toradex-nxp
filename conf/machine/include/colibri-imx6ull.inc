@@ -31,7 +31,8 @@ PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
 
 MACHINE_FIRMWARE:remove:use-mainline-bsp = "firmware-imx-vpu-imx6q firmware-imx-vpu-imx6d"
 
-UBOOT_DTB_LOADADDRESS:colibri-imx6ull = "0x82100000"
-UBOOT_DTBO_LOADADDRESS:colibri-imx6ull = "0x87000000"
-UBOOT_ENTRYPOINT:colibri-imx6ull = "0x81000000"
+UBOOT_DTB_LOADADDRESS:colibri-imx6ull = "0x88200000"
+UBOOT_DTBO_LOADADDRESS:colibri-imx6ull = "0x88300000"
+UBOOT_ENTRYPOINT:colibri-imx6ull = "0x84200000"
 UBOOT_MAKE_TARGET:colibri-imx6ull = "u-boot.imx"
+UBOOT_RD_LOADADDRESS:colibri-imx6ull = "0x88400000"
