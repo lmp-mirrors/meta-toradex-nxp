@@ -11,15 +11,6 @@ WIC_CREATE_EXTRA_ARGS:append = " --no-fstab-update"
 
 MACHINE_NAME = "Colibri-iMX6ULL"
 
-MACHINE_FIRMWARE:remove:use-mainline-bsp = "firmware-imx-vpu-imx6q firmware-imx-vpu-imx6d"
-
-IMX_DEFAULT_BOOTLOADER:colibri-imx6ull = "u-boot-toradex"
-PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
-UBOOT_MAKE_TARGET:colibri-imx6ull = "u-boot.imx"
-UBOOT_ENTRYPOINT:colibri-imx6ull = "0x81000000"
-UBOOT_DTB_LOADADDRESS:colibri-imx6ull = "0x82100000"
-UBOOT_DTBO_LOADADDRESS:colibri-imx6ull = "0x87000000"
-
 KERNEL_DEVICETREE:append:use-nxp-bsp = " \
     imx6ull-colibri-aster.dtb \
     imx6ull-colibri-iris.dtb \
@@ -34,3 +25,13 @@ PREFERRED_PROVIDER_virtual/kernel:preempt-rt = "linux-toradex"
 PREFERRED_PROVIDER_virtual/kernel:use-mainline-bsp = "linux-toradex-mainline"
 PREFERRED_PROVIDER_virtual/kernel:use-mainline-bsp:preempt-rt = "linux-toradex-mainline"
 PREFERRED_PROVIDER_virtual/dtb:use-mainline-bsp = "device-tree-overlays-mainline"
+
+IMX_DEFAULT_BOOTLOADER:colibri-imx6ull = "u-boot-toradex"
+PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
+
+MACHINE_FIRMWARE:remove:use-mainline-bsp = "firmware-imx-vpu-imx6q firmware-imx-vpu-imx6d"
+
+UBOOT_DTB_LOADADDRESS:colibri-imx6ull = "0x82100000"
+UBOOT_DTBO_LOADADDRESS:colibri-imx6ull = "0x87000000"
+UBOOT_ENTRYPOINT:colibri-imx6ull = "0x81000000"
+UBOOT_MAKE_TARGET:colibri-imx6ull = "u-boot.imx"

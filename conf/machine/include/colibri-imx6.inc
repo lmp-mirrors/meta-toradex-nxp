@@ -1,9 +1,9 @@
 IMAGE_CLASSES:append = " image_type_tezi"
 IMAGE_FSTYPES:append = " teziimg"
-TORADEX_PRODUCT_IDS = "0014 0015 0016 0017"
 # The payload offsets are given in number of 512 byte blocks.
 OFFSET_BOOTROM_PAYLOAD = "2"
 OFFSET_SPL_PAYLOAD = "138"
+TORADEX_PRODUCT_IDS = "0014 0015 0016 0017"
 
 MACHINE_NAME = "Colibri-iMX6"
 
@@ -27,6 +27,6 @@ UBOOT_SUFFIX = "img"
 
 MACHINE_FIRMWARE:remove = "firmware-imx-epdc"
 
-UBOOT_ENTRYPOINT:colibri-imx6 = "0x11000000"
 UBOOT_DTB_LOADADDRESS:colibri-imx6 = "0x12100000"
 UBOOT_DTBO_LOADADDRESS:colibri-imx6 = "0x17000000"
+UBOOT_ENTRYPOINT:colibri-imx6 = "0x11000000"
