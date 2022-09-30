@@ -7,8 +7,17 @@ TORADEX_PRODUCT_IDS = "0027 0028 0029 0035"
 
 MACHINE_NAME = "Apalis-iMX6"
 
-TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = "apalis-imx6_hdmi_overlay.dtbo"
-TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT:use-mainline-bsp = "apalis-imx6_parallel-rgb_overlay.dtbo display-edt7_overlay.dtbo apalis-imx6_stmpe-ts_overlay.dtbo apalis-imx6_hdmi_overlay.dtbo apalis-imx6_spi1_spidev_overlay.dtbo apalis-imx6_spi2_spidev_overlay.dtbo"
+TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = " \
+    apalis-imx6_hdmi_overlay.dtbo \
+"
+TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT:use-mainline-bsp = " \
+    apalis-imx6_parallel-rgb_overlay.dtbo \
+    display-edt7_overlay.dtbo \
+    apalis-imx6_stmpe-ts_overlay.dtbo \
+    apalis-imx6_hdmi_overlay.dtbo \
+    apalis-imx6_spi1_spidev_overlay.dtbo \
+    apalis-imx6_spi2_spidev_overlay.dtbo \
+"
 
 KERNEL_DEVICETREE += "imx6q-apalis-ixora-v1.2.dtb"
 KERNEL_DEVICETREE:use-mainline-bsp += " \

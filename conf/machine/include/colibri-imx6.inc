@@ -7,8 +7,16 @@ TORADEX_PRODUCT_IDS = "0014 0015 0016 0017"
 
 MACHINE_NAME = "Colibri-iMX6"
 
-TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = "colibri-imx6_lcd-vga_overlay.dtbo colibri-imx6_stmpe-ts_overlay.dtbo"
-TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT:use-mainline-bsp = "colibri-imx6_parallel-rgb_overlay.dtbo colibri-imx6_stmpe-ts_overlay.dtbo display-vga_overlay.dtbo colibri-imx6_spidev_overlay.dtbo"
+TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = " \
+    colibri-imx6_lcd-vga_overlay.dtbo \
+    colibri-imx6_stmpe-ts_overlay.dtbo \
+"
+TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT:use-mainline-bsp = " \
+    colibri-imx6_parallel-rgb_overlay.dtbo \
+    colibri-imx6_stmpe-ts_overlay.dtbo \
+    display-vga_overlay.dtbo \
+    colibri-imx6_spidev_overlay.dtbo
+"
 
 KERNEL_DEVICETREE += " \
     imx6dl-colibri-iris.dtb \
