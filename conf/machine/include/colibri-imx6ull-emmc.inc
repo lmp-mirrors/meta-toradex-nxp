@@ -9,8 +9,15 @@ WIC_CREATE_EXTRA_ARGS:append = " --no-fstab-update"
 
 MACHINE_NAME = "Colibri-iMX6ULL-eMMC"
 
-TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = "colibri-imx6ull_parallel-rgb_vga_overlay.dtbo colibri-imx6ull_ad7879_overlay.dtbo"
-TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT:use-mainline-bsp = "colibri-imx6ull_parallel-rgb_overlay.dtbo colibri-imx6ull_ad7879_overlay.dtbo display-vga_overlay.dtbo colibri-imx6ull_spidev_overlay.dtbo"
+TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = " \
+	colibri-imx6ull_parallel-rgb_vga_overlay.dtbo \
+	colibri-imx6ull_ad7879_overlay.dtbo \
+"
+TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT:use-mainline-bsp = "colibri-imx6ull_parallel-rgb_overlay.dtbo \
+    colibri-imx6ull_ad7879_overlay.dtbo \
+    display-vga_overlay.dtbo \
+    colibri-imx6ull_spidev_overlay.dtbo \
+"
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-toradex"
 PREFERRED_PROVIDER_virtual/kernel:preempt-rt = "linux-toradex"
