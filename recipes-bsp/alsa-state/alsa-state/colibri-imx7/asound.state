@@ -2,8 +2,8 @@ state.imx7sgtl5000 {
 	control.1 {
 		iface MIXER
 		name 'PCM Playback Volume'
-		value.0 192
-		value.1 192
+		value.0 144
+		value.1 144
 		comment {
 			access 'read write'
 			type INTEGER
