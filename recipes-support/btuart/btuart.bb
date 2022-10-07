@@ -4,7 +4,7 @@ LICENSE = "PD"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-RRECOMMENDS_${PN} = "bluez5"
+RRECOMMENDS:${PN} = "bluez5"
 
 SRC_URI = " \
     file://btuart.sh \
@@ -23,11 +23,11 @@ do_install () {
 }
 
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = "btuart.service"
+SYSTEMD_SERVICE:${PN} = "btuart.service"
 
 inherit allarch systemd
 
-pkg_postinst_ontarget_${PN}_verdin-imx8mp () {
+pkg_postinst_ontarget:${PN}:verdin-imx8mp () {
     # only BT UART modules need our service
     if fgrep -q V1.0 /proc/device-tree/toradex,board-rev || ! fgrep -q toradex,verdin-imx8mp-wifi /proc/device-tree/compatible; then
         /bin/systemctl disable btuart.service
