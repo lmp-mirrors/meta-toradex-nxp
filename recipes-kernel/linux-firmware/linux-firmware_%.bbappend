@@ -1,10 +1,10 @@
 IMX_FIRMWARE_SRC ?= "git://github.com/NXP/imx-firmware.git;protocol=https"
-SRCBRANCH_imx-firmware = "lf-5.10.72_2.2.0"
+SRCBRANCH_imx-firmware = "lf-5.15.52_2.1.0"
 SRC_URI += " \
     ${IMX_FIRMWARE_SRC};branch=${SRCBRANCH_imx-firmware};destsuffix=imx-firmware;name=imx-firmware \
 "
 
-SRCREV_imx-firmware = "a312213179f671cecba5f32aa839cc752a3e817f"
+SRCREV_imx-firmware = "b6f070e3d4cab23932d9e6bc29e3d884a7fd68f4"
 
 SRCREV_FORMAT = "default_imx-firmware"
 
