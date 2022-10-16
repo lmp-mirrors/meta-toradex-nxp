@@ -1,21 +1,21 @@
-state.sgtl5000audio {
+state.imx6qapalissgtl {
 	control.1 {
 		iface MIXER
 		name 'PCM Playback Volume'
-		value.0 117
-		value.1 117
+		value.0 192
+		value.1 192
 		comment {
 			access 'read write'
 			type INTEGER
 			count 2
-			range '0 - 156'
+			range '0 - 192'
 		}
 	}
 	control.2 {
 		iface MIXER
 		name 'Capture Volume'
-		value.0 12
-		value.1 12
+		value.0 0
+		value.1 0
 		comment {
 			access 'read write'
 			type INTEGER
@@ -26,15 +26,11 @@ state.sgtl5000audio {
 	control.3 {
 		iface MIXER
 		name 'Capture Attenuate Switch (-6dB)'
-		value 0
+		value false
 		comment {
 			access 'read write'
-			type INTEGER
+			type BOOLEAN
 			count 1
-			range '0 - 2'
-			dbmin -600
-			dbmax 600
-			dbvalue.0 -600
 		}
 	}
 	control.4 {
@@ -49,9 +45,19 @@ state.sgtl5000audio {
 	}
 	control.5 {
 		iface MIXER
+		name 'Capture Switch'
+		value false
+		comment {
+			access 'read write'
+			type BOOLEAN
+			count 1
+		}
+	}
+	control.6 {
+		iface MIXER
 		name 'Headphone Playback Volume'
-		value.0 127
-		value.1 127
+		value.0 103
+		value.1 103
 		comment {
 			access 'read write'
 			type INTEGER
@@ -59,11 +65,21 @@ state.sgtl5000audio {
 			range '0 - 127'
 			dbmin -5150
 			dbmax 1200
-			dbvalue.0 -2000
-			dbvalue.1 -2000
+			dbvalue.0 0
+			dbvalue.1 0
 		}
 	}
-	control.6 {
+	control.7 {
+		iface MIXER
+		name 'Headphone Playback Switch'
+		value false
+		comment {
+			access 'read write'
+			type BOOLEAN
+			count 1
+		}
+	}
+	control.8 {
 		iface MIXER
 		name 'Headphone Playback ZC Switch'
 		value true
@@ -73,10 +89,10 @@ state.sgtl5000audio {
 			count 1
 		}
 	}
-	control.7 {
+	control.9 {
 		iface MIXER
 		name 'Mic Volume'
-		value 2
+		value 0
 		comment {
 			access 'read write'
 			type INTEGER
@@ -84,34 +100,28 @@ state.sgtl5000audio {
 			range '0 - 3'
 			dbmin 0
 			dbmax 4000
-			dbvalue.0 3000
-		}
-	}
-	control.8 {
-		iface MIXER
-		name 'Mic Bias Volt'
-		value 4
-		comment {
-			access 'read write'
-			type INTEGER
-			count 1
-			range '0 - 7'
-		}
-	}
-	control.9 {
-		iface MIXER
-		name 'Mic Bias Impedance'
-		value 2
-		comment {
-			access 'read write'
-			type INTEGER
-			count 1
-			range '0 - 3'
+			dbvalue.0 0
 		}
 	}
 	control.10 {
 		iface MIXER
-		name 'Bass Enable'
+		name 'Lineout Playback Volume'
+		value.0 18
+		value.1 18
+		comment {
+			access 'read write'
+			type INTEGER
+			count 2
+			range '0 - 31'
+			dbmin -1550
+			dbmax 0
+			dbvalue.0 -650
+			dbvalue.1 -650
+		}
+	}
+	control.11 {
+		iface MIXER
+		name 'Lineout Playback Switch'
 		value false
 		comment {
 			access 'read write'
@@ -119,84 +129,37 @@ state.sgtl5000audio {
 			count 1
 		}
 	}
-	control.11 {
-		iface MIXER
-		name 'Bass Filter Feq'
-		value 1
-		comment {
-			access 'read write'
-			type INTEGER
-			count 1
-			range '0 - 7'
-			dbmin 80
-			dbmax 225
-			dbvalue.0 100
-		}
-	}
 	control.12 {
 		iface MIXER
-		name 'Bass Volume'
-		value 58
+		name 'DAP Main channel'
+		value 32768
 		comment {
 			access 'read write'
 			type INTEGER
 			count 1
-			range '0 - 63'
+			range '0 - 65535'
+			dbmin 0
+			dbmax 65535
+			dbvalue.0 32768
 		}
 	}
 	control.13 {
 		iface MIXER
-		name 'Bass Level'
-		value 96
-		comment {
-			access 'read write'
-			type INTEGER
-			count 1
-			range '0 - 127'
-		}
-	}
-	control.14 {
-		iface MIXER
-		name 'Surround Width'
-		value 4
-		comment {
-			access 'read write'
-			type INTEGER
-			count 1
-			range '0 - 7'
-		}
-	}
-	control.15 {
-		iface MIXER
-		name 'Main Channel Volume'
-		value 100
-		comment {
-			access 'read write'
-			type INTEGER
-			count 1
-			range '0 - 200'
-			dbmin 0
-			dbmax 200
-			dbvalue.0 100
-		}
-	}
-	control.16 {
-		iface MIXER
-		name 'Mixer Channel Volume'
+		name 'DAP Mix channel'
 		value 0
 		comment {
 			access 'read write'
 			type INTEGER
 			count 1
-			range '0 - 200'
+			range '0 - 65535'
 			dbmin 0
-			dbmax 200
+			dbmax 65535
 			dbvalue.0 0
 		}
 	}
-	control.17 {
+	control.14 {
 		iface MIXER
-		name 'AVC Enable'
+		name 'AVC Switch'
 		value false
 		comment {
 			access 'read write'
@@ -204,9 +167,9 @@ state.sgtl5000audio {
 			count 1
 		}
 	}
-	control.18 {
+	control.15 {
 		iface MIXER
-		name 'AVC Hard Limit'
+		name 'AVC Hard Limiter Switch'
 		value false
 		comment {
 			access 'read write'
@@ -214,9 +177,9 @@ state.sgtl5000audio {
 			count 1
 		}
 	}
-	control.19 {
+	control.16 {
 		iface MIXER
-		name 'AVC Max Gain'
+		name 'AVC Max Gain Volume'
 		value 1
 		comment {
 			access 'read write'
@@ -228,9 +191,20 @@ state.sgtl5000audio {
 			dbvalue.0 600
 		}
 	}
-	control.20 {
+	control.17 {
 		iface MIXER
-		name 'AVC Threshold (-dB)'
+		name 'AVC Integrator Response'
+		value 1
+		comment {
+			access 'read write'
+			type INTEGER
+			count 1
+			range '0 - 3'
+		}
+	}
+	control.18 {
+		iface MIXER
+		name 'AVC Threshold Volume'
 		value 12
 		comment {
 			access 'read write'
@@ -238,85 +212,81 @@ state.sgtl5000audio {
 			count 1
 			range '0 - 96'
 			dbmin 0
-			dbmax 96
-			dbvalue.0 12
+			dbmax 9600
+			dbvalue.0 1200
+		}
+	}
+	control.19 {
+		iface MIXER
+		name 'BASS 0'
+		value 47
+		comment {
+			access 'read write'
+			type INTEGER
+			count 1
+			range '0 - 95'
+			dbmin -1175
+			dbmax 1200
+			dbvalue.0 0
+		}
+	}
+	control.20 {
+		iface MIXER
+		name 'BASS 1'
+		value 47
+		comment {
+			access 'read write'
+			type INTEGER
+			count 1
+			range '0 - 95'
+			dbmin -1175
+			dbmax 1200
+			dbvalue.0 0
 		}
 	}
 	control.21 {
 		iface MIXER
-		name 'DAP_MIXER Mixer Channel'
-		value false
+		name 'BASS 2'
+		value 47
 		comment {
 			access 'read write'
-			type BOOLEAN
+			type INTEGER
 			count 1
+			range '0 - 95'
+			dbmin -1175
+			dbmax 1200
+			dbvalue.0 0
 		}
 	}
 	control.22 {
 		iface MIXER
-		name I2S_OUT
-		value ADC
+		name 'BASS 3'
+		value 47
 		comment {
 			access 'read write'
-			type ENUMERATED
+			type INTEGER
 			count 1
-			item.0 ADC
-			item.1 I2S_IN
-			item.2 reserved
-			item.3 DAP
+			range '0 - 95'
+			dbmin -1175
+			dbmax 1200
+			dbvalue.0 0
 		}
 	}
 	control.23 {
 		iface MIXER
-		name DAC_IN
-		value I2S_IN
+		name 'BASS 4'
+		value 47
 		comment {
 			access 'read write'
-			type ENUMERATED
+			type INTEGER
 			count 1
-			item.0 ADC
-			item.1 I2S_IN
-			item.2 reserved
-			item.3 DAP
+			range '0 - 95'
+			dbmin -1175
+			dbmax 1200
+			dbvalue.0 0
 		}
 	}
 	control.24 {
-		iface MIXER
-		name MIX_MUX
-		value ADC
-		comment {
-			access 'read write'
-			type ENUMERATED
-			count 1
-			item.0 ADC
-			item.1 I2S_IN
-		}
-	}
-	control.25 {
-		iface MIXER
-		name DAP_IN
-		value ADC
-		comment {
-			access 'read write'
-			type ENUMERATED
-			count 1
-			item.0 ADC
-			item.1 I2S_IN
-		}
-	}
-	control.26 {
-		iface MIXER
-		name 'Headphone Mux'
-		value DAC
-		comment {
-			access 'read write'
-			type ENUMERATED
-			count 1
-			item.0 DAC
-			item.1 LINE_IN
-		}
-	}
-	control.27 {
 		iface MIXER
 		name 'Capture Mux'
 		value MIC_IN
@@ -328,52 +298,54 @@ state.sgtl5000audio {
 			item.1 LINE_IN
 		}
 	}
+	control.25 {
+		iface MIXER
+		name 'Headphone Mux'
+		value DAC
+		comment {
+			access 'read write'
+			type ENUMERATED
+			count 1
+			item.0 DAC
+			item.1 LINE_IN
+		}
+	}
+	control.26 {
+		iface MIXER
+		name 'Digital Input Mux'
+		value I2S
+		comment {
+			access 'read write'
+			type ENUMERATED
+			count 1
+			item.0 ADC
+			item.1 I2S
+			item.2 Rsvrd
+			item.3 DAP
+		}
+	}
+	control.27 {
+		iface MIXER
+		name 'DAP Mux'
+		value ADC
+		comment {
+			access 'read write'
+			type ENUMERATED
+			count 1
+			item.0 ADC
+			item.1 I2S
+		}
+	}
 	control.28 {
 		iface MIXER
-		name 'Jack Function'
-		value off
+		name 'DAP MIX Mux'
+		value ADC
 		comment {
 			access 'read write'
 			type ENUMERATED
 			count 1
-			item.0 off
-			item.1 on
-		}
-	}
-	control.29 {
-		iface MIXER
-		name 'Speaker Function'
-		value off
-		comment {
-			access 'read write'
-			type ENUMERATED
-			count 1
-			item.0 off
-			item.1 on
-		}
-	}
-	control.30 {
-		iface MIXER
-		name 'Line In Function'
-		value off
-		comment {
-			access 'read write'
-			type ENUMERATED
-			count 1
-			item.0 off
-			item.1 on
-		}
-	}
-}
-state.imxhdmisoc {
-	control.1 {
-		iface MIXER
-		name 'IEC958 Playback Default'
-		value '0400020200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
-		comment {
-			access 'read write'
-			type IEC958
-			count 1
+			item.0 ADC
+			item.1 I2S
 		}
 	}
 }
