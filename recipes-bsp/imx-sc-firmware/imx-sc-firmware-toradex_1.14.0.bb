@@ -4,7 +4,7 @@
 
 DESCRIPTION = "i.MX System Controller Firmware for Toradex hardware"
 LICENSE = "Proprietary"
-LIC_FILES_CHKSUM = "file://COPYING;md5=94c5a3fc041e195df67fde3979a5e14e"
+LIC_FILES_CHKSUM = "file://COPYING;md5=5a0bf11f745e68024f37b4724a5364fe"
 SECTION = "BSP"
 
 inherit deploy
