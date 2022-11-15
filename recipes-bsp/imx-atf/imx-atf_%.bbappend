@@ -7,9 +7,3 @@ SRC_URI:append:tdx = " \
 EXTRA_OEMAKE:append:tdx = " \
     BUILD_STRING="${SRCBRANCH}-g${@'${SRCPV}'.replace('AUTOINC+', '')}" \
 "
-EXTRA_OEMAKE:append:verdin-imx8mm = " \
-    IMX_BOOT_UART_BASE=0x30860000 \
-"
-EXTRA_OEMAKE:append:verdin-imx8mp = " \
-    IMX_BOOT_UART_BASE=0x30880000 \
-"
