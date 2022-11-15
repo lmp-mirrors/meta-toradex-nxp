@@ -11,7 +11,7 @@ inherit deploy
 
 SRC_URI = "git://github.com/toradex/i.MX-System-Controller-Firmware.git;branch=master;protocol=https;fsl-eula=true"
 
-SRCREV = "8dda73989c3769a76653796651dde6422fe320aa"
+SRCREV = "9141880041424696f162d46abaca13a956bceeb1"
 SRCREV:use-head-next = "${AUTOREV}"
 
 S = "${WORKDIR}/git"
