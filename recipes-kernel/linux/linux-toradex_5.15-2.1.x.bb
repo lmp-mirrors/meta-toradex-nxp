@@ -16,7 +16,7 @@ KERNEL_MODULE_AUTOLOAD += "${@bb.utils.contains('COMBINED_FEATURES', 'usbgadget'
 inherit toradex-kernel-localversion
 LINUX_VERSION = "5.15.77"
 # skip, as with use-head-next LINUX_VERSION might be set wrongly
-KERNEL_VERSION_SANITY_SKIP:use-head-next = "1"
+KERNEL_VERSION_SANITY_SKIP = "1"
 
 # Make sure to override LOCALVERSION in linux-imx.inc
 LOCALVERSION = "-${TDX_VERSION}"
