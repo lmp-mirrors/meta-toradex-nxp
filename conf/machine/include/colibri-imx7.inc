@@ -8,15 +8,11 @@ TORADEX_FLASH_TYPE = "rawnand"
 
 MACHINE_NAME = "Colibri-iMX7"
 
-KERNEL_DEVICETREE:append:use-nxp-bsp = " \
+KERNEL_DEVICETREE:append = " \
     imx7d-colibri-iris.dtb \
     imx7d-colibri-iris-v2.dtb \
     imx7s-colibri-iris.dtb \
     imx7s-colibri-iris-v2.dtb \
-"
-KERNEL_DEVICETREE:append:use-mainline-bsp = " \
-    imx7d-colibri-aster.dtb \
-    imx7s-colibri-aster.dtb \
 "
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-toradex"
