@@ -13,7 +13,7 @@ TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT:use-mainline-bsp = " \
 "
 TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = ""
 
-KERNEL_DEVICETREE:append:use-nxp-bsp = " \
+KERNEL_DEVICETREE:append = " \
     imx7d-colibri-emmc-iris.dtb \
     imx7d-colibri-emmc-iris-v2.dtb \
 "
