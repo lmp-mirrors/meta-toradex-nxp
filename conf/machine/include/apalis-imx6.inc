@@ -14,10 +14,8 @@ TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT:use-mainline-bsp = " \
 "
 TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = ""
 
-KERNEL_DEVICETREE += "imx6q-apalis-ixora-v1.2.dtb"
-KERNEL_DEVICETREE:use-mainline-bsp += " \
-    imx6q-apalis-eval.dtb \
-    imx6q-apalis-ixora-v1.1.dtb \
+KERNEL_DEVICETREE:append = " \
+    imx6q-apalis-ixora-v1.2.dtb \
 "
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-toradex"
