@@ -13,7 +13,8 @@ TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT:use-mainline-bsp = " \
 "
 TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = ""
 
-KERNEL_DEVICETREE += " \
+KERNEL_DEVICETREE:append = " \
+    imx6dl-colibri-aster.dtb \
     imx6dl-colibri-iris.dtb \
     imx6dl-colibri-iris-v2.dtb \
 "
