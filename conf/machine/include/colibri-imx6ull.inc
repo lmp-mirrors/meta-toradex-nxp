@@ -11,7 +11,7 @@ WIC_CREATE_EXTRA_ARGS:append = " --no-fstab-update"
 
 MACHINE_NAME = "Colibri-iMX6ULL"
 
-KERNEL_DEVICETREE:append:use-nxp-bsp = " \
+KERNEL_DEVICETREE:append = " \
     imx6ull-colibri-aster.dtb \
     imx6ull-colibri-iris.dtb \
     imx6ull-colibri-iris-v2.dtb \
