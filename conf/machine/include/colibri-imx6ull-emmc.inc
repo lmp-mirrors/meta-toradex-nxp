@@ -15,6 +15,12 @@ TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT:use-mainline-bsp = " \
 "
 TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = ""
 
+KERNEL_DEVICETREE:append = " \
+    imx6ull-colibri-emmc-aster.dtb \
+    imx6ull-colibri-emmc-iris.dtb \
+    imx6ull-colibri-emmc-iris-v2.dtb \
+"
+
 PREFERRED_PROVIDER_virtual/kernel = "linux-toradex"
 PREFERRED_PROVIDER_virtual/kernel:preempt-rt = "linux-toradex"
 PREFERRED_PROVIDER_virtual/kernel:use-mainline-bsp = "linux-toradex-mainline"
