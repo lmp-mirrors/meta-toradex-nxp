@@ -11,7 +11,6 @@ MACHINE_NAME = "Colibri-iMX6ULL-eMMC"
 
 TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT:use-mainline-bsp = " \
 	colibri-imx6ull_vga-640x480_overlay.dtbo \
-	colibri-imx6ull_spidev_overlay.dtbo \
 "
 TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = ""
 
