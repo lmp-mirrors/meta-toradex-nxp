@@ -14,6 +14,8 @@ SRCBRANCH = "toradex_imx_lf_v2022.04"
 S = "${WORKDIR}/git"
 
 inherit toradex-u-boot-localversion
+# build imx-boot from within U-Boot
+inherit ${@oe.utils.ifelse(d.getVar('UBOOT_PROVIDES_BOOT_CONTAINER') == '1', 'imx-boot-container', '')}
 
 UBOOT_INITIAL_ENV = "u-boot-initial-env"
 
