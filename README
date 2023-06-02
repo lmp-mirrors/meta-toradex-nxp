@@ -1,4 +1,4 @@
-iOpenEmbedded/Yocto BSP Layer for Toradex Modules Based on NXP SoCs
+OpenEmbedded/Yocto BSP Layer for Toradex Modules Based on NXP SoCs
 ==================================================================
 
 This layer provides support for ARM based Toradex computer on modules (COM)
