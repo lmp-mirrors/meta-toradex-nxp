@@ -9,3 +9,5 @@ PROVIDES += "u-boot"
 DEPENDS += "bc-native dtc-native python3-setuptools-native"
 
 BOOT_TOOLS = "imx-boot-tools"
+
+SRCREV = "7bd2074193e156358adc5b5065c690371cf78231"
