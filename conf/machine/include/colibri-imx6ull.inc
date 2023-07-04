@@ -11,13 +11,19 @@ WIC_CREATE_EXTRA_ARGS:append = " --no-fstab-update"
 
 MACHINE_NAME = "Colibri-iMX6ULL"
 
-KERNEL_DEVICETREE:append = " \
-    imx6ull-colibri-aster.dtb \
-    imx6ull-colibri-iris.dtb \
-    imx6ull-colibri-iris-v2.dtb \
-    imx6ull-colibri-wifi-aster.dtb \
-    imx6ull-colibri-wifi-iris.dtb \
-    imx6ull-colibri-wifi-iris-v2.dtb \
+# with kernel 6.5 the device trees were moved to vendor subdirs
+KERNEL_DTB_PREFIX = "nxp/imx/"
+KERNEL_DTB_PREFIX:preempt-rt = ""
+KERNEL_DTB_PREFIX:use-nxp-bsp = ""
+KERNEL_DEVICETREE:colibri-imx6ull = " \
+    ${KERNEL_DTB_PREFIX}imx6ull-colibri-aster.dtb \
+    ${KERNEL_DTB_PREFIX}imx6ull-colibri-eval-v3.dtb \
+    ${KERNEL_DTB_PREFIX}imx6ull-colibri-iris.dtb \
+    ${KERNEL_DTB_PREFIX}imx6ull-colibri-iris-v2.dtb \
+    ${KERNEL_DTB_PREFIX}imx6ull-colibri-wifi-aster.dtb \
+    ${KERNEL_DTB_PREFIX}imx6ull-colibri-wifi-eval-v3.dtb \
+    ${KERNEL_DTB_PREFIX}imx6ull-colibri-wifi-iris.dtb \
+    ${KERNEL_DTB_PREFIX}imx6ull-colibri-wifi-iris-v2.dtb \
 "
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-toradex"

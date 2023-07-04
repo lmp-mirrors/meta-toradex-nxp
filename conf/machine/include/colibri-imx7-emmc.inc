@@ -7,15 +7,21 @@ TORADEX_FLASH_TYPE = "emmc"
 
 MACHINE_NAME = "Colibri-iMX7-eMMC"
 
+# with kernel 6.5 the device trees were moved to vendor subdirs
+KERNEL_DTB_PREFIX = "nxp/imx/"
+KERNEL_DTB_PREFIX:preempt-rt = ""
+KERNEL_DTB_PREFIX:use-nxp-bsp = ""
+KERNEL_DEVICETREE:colibri-imx7-emmc = " \
+    ${KERNEL_DTB_PREFIX}imx7d-colibri-emmc-aster.dtb \
+    ${KERNEL_DTB_PREFIX}imx7d-colibri-emmc-eval-v3.dtb \
+    ${KERNEL_DTB_PREFIX}imx7d-colibri-emmc-iris.dtb \
+    ${KERNEL_DTB_PREFIX}imx7d-colibri-emmc-iris-v2.dtb \
+"
+
 TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT:use-mainline-bsp = " \
     colibri-imx7_vga-640x480_overlay.dtbo \
 "
 TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = ""
-
-KERNEL_DEVICETREE:append = " \
-    imx7d-colibri-emmc-iris.dtb \
-    imx7d-colibri-emmc-iris-v2.dtb \
-"
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-toradex"
 PREFERRED_PROVIDER_virtual/kernel:preempt-rt = "linux-toradex"

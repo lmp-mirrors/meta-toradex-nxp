@@ -7,16 +7,20 @@ TORADEX_PRODUCT_IDS = "0014 0015 0016 0017"
 
 MACHINE_NAME = "Colibri-iMX6"
 
+# with kernel 6.5 the device trees were moved to vendor subdirs
+KERNEL_DTB_PREFIX = "nxp/imx/"
+KERNEL_DTB_PREFIX:preempt-rt = ""
+KERNEL_DTB_PREFIX:use-nxp-bsp = ""
+KERNEL_DEVICETREE:colibri-imx6 = " \
+    ${KERNEL_DTB_PREFIX}imx6dl-colibri-aster.dtb \
+    ${KERNEL_DTB_PREFIX}imx6dl-colibri-eval-v3.dtb \
+    ${KERNEL_DTB_PREFIX}imx6dl-colibri-iris.dtb \
+    ${KERNEL_DTB_PREFIX}imx6dl-colibri-iris-v2.dtb \
+"
 TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT:use-mainline-bsp = " \
     colibri-imx6_vga-640x480_overlay.dtbo \
 "
 TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = ""
-
-KERNEL_DEVICETREE:append = " \
-    imx6dl-colibri-aster.dtb \
-    imx6dl-colibri-iris.dtb \
-    imx6dl-colibri-iris-v2.dtb \
-"
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-toradex"
 PREFERRED_PROVIDER_virtual/kernel:preempt-rt = "linux-toradex"

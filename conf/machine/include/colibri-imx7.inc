@@ -8,11 +8,19 @@ TORADEX_FLASH_TYPE = "rawnand"
 
 MACHINE_NAME = "Colibri-iMX7"
 
-KERNEL_DEVICETREE:append = " \
-    imx7d-colibri-iris.dtb \
-    imx7d-colibri-iris-v2.dtb \
-    imx7s-colibri-iris.dtb \
-    imx7s-colibri-iris-v2.dtb \
+# with kernel 6.5 the device trees were moved to vendor subdirs
+KERNEL_DTB_PREFIX = "nxp/imx/"
+KERNEL_DTB_PREFIX:preempt-rt = ""
+KERNEL_DTB_PREFIX:use-nxp-bsp = ""
+KERNEL_DEVICETREE:colibri-imx7 = " \
+    ${KERNEL_DTB_PREFIX}imx7d-colibri-aster.dtb \
+    ${KERNEL_DTB_PREFIX}imx7d-colibri-eval-v3.dtb \
+    ${KERNEL_DTB_PREFIX}imx7d-colibri-iris.dtb \
+    ${KERNEL_DTB_PREFIX}imx7d-colibri-iris-v2.dtb \
+    ${KERNEL_DTB_PREFIX}imx7s-colibri-aster.dtb \
+    ${KERNEL_DTB_PREFIX}imx7s-colibri-eval-v3.dtb \
+    ${KERNEL_DTB_PREFIX}imx7s-colibri-iris.dtb \
+    ${KERNEL_DTB_PREFIX}imx7s-colibri-iris-v2.dtb \
 "
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-toradex"
