@@ -1,8 +1,3 @@
-INI_UNCOMMENT_ASSIGNMENTS_append_mx8 = " \
-    use-g2d=1 \
-"
-
-
 uncomment() {
     # already uncommented, do nothing
     if ! (grep "^$1" $2); then
