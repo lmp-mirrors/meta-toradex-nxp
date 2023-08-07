@@ -9,7 +9,7 @@ MACHINE_NAME = "Colibri-iMX6"
 
 # with kernel 6.5 the device trees were moved to vendor subdirs
 KERNEL_DTB_PREFIX = "nxp/imx/"
-KERNEL_DTB_PREFIX:preempt-rt = ""
+KERNEL_DTB_PREFIX:preempt-rt = "nxp/imx/"
 KERNEL_DTB_PREFIX:use-nxp-bsp = ""
 KERNEL_DEVICETREE:colibri-imx6 = " \
     ${KERNEL_DTB_PREFIX}imx6dl-colibri-aster.dtb \
