@@ -18,9 +18,6 @@ LINUX_VERSION = "5.15.77"
 # skip, as with use-head-next LINUX_VERSION might be set wrongly
 KERNEL_VERSION_SANITY_SKIP = "1"
 
-# Make sure to override LOCALVERSION in linux-imx.inc
-LOCALVERSION = "-${TDX_VERSION}"
-
 SRCBRANCH = "toradex_5.15-2.1.x-imx"
 SRCREV_machine = "ddc6ca4d76ea764aaec9837fb9c82297473e6edc"
 SRCREV_machine:use-head-next = "${AUTOREV}"
