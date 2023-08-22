@@ -13,7 +13,7 @@ SRC_URI = " \
 # Load USB functions configurable through configfs (CONFIG_USB_CONFIGFS)
 KERNEL_MODULE_AUTOLOAD += "${@bb.utils.contains('COMBINED_FEATURES', 'usbgadget', ' libcomposite', '',d)}"
 
-inherit toradex-kernel-localversion
+inherit toradex-kernel-deploy-config toradex-kernel-localversion
 LINUX_VERSION = "5.15.77"
 # skip, as with use-head-next LINUX_VERSION might be set wrongly
 KERNEL_VERSION_SANITY_SKIP = "1"
