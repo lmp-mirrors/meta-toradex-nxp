@@ -19,7 +19,7 @@ LINUX_VERSION = "5.15.125"
 KERNEL_VERSION_SANITY_SKIP = "1"
 
 SRCBRANCH = "toradex_5.15-2.2.x-imx"
-SRCREV_machine = "626df3983254bccebc2584b90e615ad89f79cf46"
+SRCREV_machine = "be55b0cec9240becc19459a02e859bf6af64d08d"
 SRCREV_machine:use-head-next = "${AUTOREV}"
 
 DEPENDS += "bc-native"
