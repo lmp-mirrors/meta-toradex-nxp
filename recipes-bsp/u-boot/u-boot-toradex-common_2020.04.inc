@@ -10,7 +10,7 @@ SRC_URI = " \
     file://fw_env.config \
 "
 
-SRCREV = "4b72b1453285ca134bfaef37d203546b770f27ab"
+SRCREV = "45c14f1758c7ada97c6d0858a2c31ecc0ccb4192"
 SRCREV_use-head-next = "${AUTOREV}"
 SRCBRANCH = "toradex_imx_v2020.04_5.4.70_2.3.0"
 
