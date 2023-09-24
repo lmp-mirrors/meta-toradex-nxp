@@ -22,7 +22,7 @@ KERNEL_VERSION_SANITY_SKIP = "1"
 LOCALVERSION = "-${TDX_VERSION}"
 
 SRCBRANCH = "toradex_5.15-2.2.x-imx"
-SRCREV_machine = "3311382cb124b5ca40fce03dca51cf24cca95754"
+SRCREV_machine = "67c3153d20ffa162269f9ba758a456c69f711d5b"
 SRCREV_machine:use-head-next = "${AUTOREV}"
 
 DEPENDS += "bc-native"
