@@ -16,8 +16,8 @@ TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = ""
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-toradex"
 PREFERRED_PROVIDER_virtual/kernel:preempt-rt = "linux-toradex"
-PREFERRED_PROVIDER_virtual/kernel:use-mainline-bsp = "linux-toradex-mainline"
-PREFERRED_PROVIDER_virtual/kernel:use-mainline-bsp:preempt-rt = "linux-toradex-mainline-rt"
+PREFERRED_PROVIDER_virtual/kernel:use-mainline-bsp = "linux-toradex-upstream"
+PREFERRED_PROVIDER_virtual/kernel:use-mainline-bsp:preempt-rt = "linux-toradex-upstream-rt"
 PREFERRED_PROVIDER_virtual/dtb:use-mainline-bsp = "device-tree-overlays-mainline"
 
 IMX_DEFAULT_BOOTLOADER:colibri-imx6ull-emmc = "u-boot-toradex"
