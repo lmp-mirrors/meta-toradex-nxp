@@ -11,6 +11,8 @@ WIC_CREATE_EXTRA_ARGS:append = " --no-fstab-update"
 
 MACHINE_NAME = "Colibri-iMX6ULL"
 
+MACHINE_EXTRA_RRECOMMENDS:append = " mwifiexconf"
+
 # with kernel 6.5 the device trees were moved to vendor subdirs
 KERNEL_DTB_PREFIX = "nxp/imx/"
 KERNEL_DTB_PREFIX:preempt-rt = "nxp/imx/"
