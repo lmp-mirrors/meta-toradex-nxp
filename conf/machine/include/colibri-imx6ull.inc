@@ -11,6 +11,8 @@ WIC_CREATE_EXTRA_ARGS:append = " --no-fstab-update"
 
 MACHINE_NAME = "Colibri-iMX6ULL"
 
+MACHINE_EXTRA_RRECOMMENDS:append = " mwifiexconf"
+
 KERNEL_DEVICETREE:append = " \
     imx6ull-colibri-aster.dtb \
     imx6ull-colibri-iris.dtb \
