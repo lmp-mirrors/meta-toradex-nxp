@@ -30,5 +30,5 @@ MACHINE_FIRMWARE:remove:use-mainline-bsp = "firmware-imx-vpu-imx6q firmware-imx-
 UBOOT_DTB_LOADADDRESS:colibri-imx7 = "0x88200000"
 UBOOT_DTBO_LOADADDRESS:colibri-imx7 = "0x88300000"
 UBOOT_ENTRYPOINT:colibri-imx7 = "0x84200000"
-UBOOT_MAKE_TARGET:colibri-imx7 = "u-boot.imx"
+UBOOT_MAKE_TARGET:colibri-imx7 = "u-boot-nand.imx"
 UBOOT_RD_LOADADDRESS:colibri-imx7 = "0x88400000"
