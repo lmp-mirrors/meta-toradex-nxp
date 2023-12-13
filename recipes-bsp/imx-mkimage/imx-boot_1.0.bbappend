@@ -1,0 +1,1 @@
+require imx-mkimage-patches.inc
