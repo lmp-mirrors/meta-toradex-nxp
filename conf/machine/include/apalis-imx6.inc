@@ -13,6 +13,7 @@ KERNEL_DTB_PREFIX:preempt-rt = "nxp/imx/"
 KERNEL_DTB_PREFIX:use-nxp-bsp = ""
 KERNEL_DEVICETREE:apalis-imx6 = " \
     ${KERNEL_DTB_PREFIX}imx6q-apalis-eval.dtb \
+    ${KERNEL_DTB_PREFIX}imx6q-apalis-eval-v1.2.dtb \
     ${KERNEL_DTB_PREFIX}imx6q-apalis-ixora.dtb \
     ${KERNEL_DTB_PREFIX}imx6q-apalis-ixora-v1.1.dtb \
     ${KERNEL_DTB_PREFIX}imx6q-apalis-ixora-v1.2.dtb \
