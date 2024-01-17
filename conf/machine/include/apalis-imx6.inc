@@ -15,6 +15,7 @@ TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT:use-mainline-bsp = " \
 TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = ""
 
 KERNEL_DEVICETREE:append = " \
+    imx6q-apalis-eval-v1.2.dtb \
     imx6q-apalis-ixora-v1.2.dtb \
 "
 
