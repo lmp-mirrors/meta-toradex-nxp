@@ -7,9 +7,13 @@ OFFSET_SPL_PAYLOAD = "138"
 
 MACHINE_NAME = "Apalis-iMX6"
 
-KERNEL_DEVICETREE += "imx6q-apalis-ixora-v1.2.dtb"
+KERNEL_DEVICETREE += " \
+    imx6q-apalis-ixora-v1.2.dtb \
+    imx6q-apalis-eval-v1.2.dtb \
+"
 KERNEL_DEVICETREE_use-mainline-bsp += " \
     imx6q-apalis-eval.dtb \
+    imx6q-apalis-eval-v1.2.dtb \
     imx6q-apalis-ixora-v1.1.dtb \
 "
 
