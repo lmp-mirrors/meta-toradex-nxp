@@ -31,7 +31,9 @@ KERNEL_DEVICETREE:colibri-imx6ull = " \
 PREFERRED_PROVIDER_virtual/kernel = "linux-toradex"
 PREFERRED_PROVIDER_virtual/kernel:preempt-rt = "linux-toradex"
 PREFERRED_PROVIDER_virtual/kernel:use-mainline-bsp = "linux-toradex-upstream"
+PREFERRED_VERSION_linux-toradex-upstream = "6.6%"
 PREFERRED_PROVIDER_virtual/kernel:use-mainline-bsp:preempt-rt = "linux-toradex-upstream-rt"
+PREFERRED_VERSION_linux-toradex-upstream-rt = "6.6%"
 PREFERRED_PROVIDER_virtual/dtb:use-mainline-bsp = "device-tree-overlays-mainline"
 
 IMX_DEFAULT_BOOTLOADER:colibri-imx6ull = "u-boot-toradex"
