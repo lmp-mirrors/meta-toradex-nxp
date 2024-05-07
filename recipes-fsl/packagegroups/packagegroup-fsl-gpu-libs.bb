@@ -15,7 +15,4 @@ RDEPENDS:${PN} = " \
     libgles2-imx \
     libopenvg-imx \
     libvdk-imx \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', '', \
-       bb.utils.contains('DISTRO_FEATURES',     'x11', 'xserver-xorg-extension-viv-autohdmi', \
-                                                       '', d), d)} \
 "
