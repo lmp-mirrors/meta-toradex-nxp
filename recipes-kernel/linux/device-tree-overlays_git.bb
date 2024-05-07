@@ -1,7 +1,7 @@
 inherit toradex-devicetree
 
 SRCBRANCH = "toradex_5.15-2.2.x-imx"
-SRCREV = "69f40a121e3f901be100f54c19d1721b70c63aa2"
+SRCREV = "e24c6cf1904b1123d3e72416e486484a4c449d61"
 SRCREV:use-head-next = "${AUTOREV}"
 
 # we have dtbo's in arm and arm64 architecture, set the include paths
