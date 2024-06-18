@@ -7,6 +7,7 @@ Subject: [PATCH 5/5] Revert "Revert "Revert "ARM: 9113/1: uaccess: remove
 This reverts commit 8f561f0a27a68205ad7a33b3e0fdaf80fc7f96ea
 Revert the changes made to make the RT-Patch apply.
 
+Upstream-Status: Pending
 Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
 ---
  arch/arm/include/asm/thread_info.h | 1 +

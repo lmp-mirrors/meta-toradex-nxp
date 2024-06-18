@@ -9,6 +9,7 @@ downstream commit.
 
 This reverts commit ee69377c0fb428a2319ca071bbdbbddbb756cd02.
 
+Upstream-Status: Pending
 Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
 ---
  arch/arm/include/asm/thread_info.h | 1 -

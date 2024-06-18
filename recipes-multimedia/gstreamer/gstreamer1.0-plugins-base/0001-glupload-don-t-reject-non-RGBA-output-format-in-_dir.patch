@@ -13,7 +13,7 @@ If the rejecetion is removed, the upload proceeds and the pipeline is later
 reconfigured so that the DirectVIV uploader's RGBA-only output is respected,
 meaning the final sink will also move over from handling I420 to RGBA.
 
-Upstream-Status: pending
+Upstream-Status: Pending
 
 Signed-off-by: Zan Dobersek <zdobersek@igalia.com>
 Signed-off-by: Ming Liu <ming.liu@toradex.com>

@@ -6,6 +6,7 @@ Subject: [PATCH 4/5] Revert "arch/arm/Kconfig: prepare for rt patch"
 This reverts commit 8e60810e199661b607557e560b329097dc3fea0e.
 Revert the changes made to make the RT-Patch apply.
 
+Upstream-Status: Pending
 Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
 ---
  arch/arm/Kconfig | 1 +

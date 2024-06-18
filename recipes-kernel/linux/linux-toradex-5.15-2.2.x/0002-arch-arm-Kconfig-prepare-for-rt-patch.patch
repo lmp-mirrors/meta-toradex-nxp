@@ -6,6 +6,7 @@ Subject: [PATCH 2/5] arch/arm/Kconfig: prepare for rt patch
 Prepare for applying the RT patch without fuzz (and revert the
 change after the RT patch is applied.
 
+Upstream-Status: Pending
 Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
 ---
  arch/arm/Kconfig | 1 -

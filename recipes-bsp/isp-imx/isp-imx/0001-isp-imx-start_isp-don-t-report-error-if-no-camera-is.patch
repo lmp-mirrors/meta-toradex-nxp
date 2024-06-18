@@ -10,6 +10,7 @@ goes to the failed state.
 Return '0' in that case as obviously the device tree doesn't have a
 camera configured and the service is not needed.
 
+Upstream-Status: Pending
 Related-to: ELB-5002
 Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
 ---
