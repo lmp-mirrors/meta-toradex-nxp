@@ -50,4 +50,4 @@ SRC_URI:append:preempt-rt = " \
 SRC_URI[rt-patch.sha256sum] = "b3494bd8c156550b3bfe27e544928e7ee3f0822d182ed77de54ebef867c67c6d"
 
 # The downloaded RT patch doesn't have a upstream status tag
-INSANE_SKIP:preempt-rt = "patch-status"
+ERROR_QA:remove:preempt-rt = "patch-status"
