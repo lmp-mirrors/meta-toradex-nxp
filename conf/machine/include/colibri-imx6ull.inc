@@ -37,7 +37,6 @@ PREFERRED_VERSION_linux-toradex-upstream-rt = "6.6%"
 PREFERRED_PROVIDER_virtual/dtb:use-mainline-bsp = "device-tree-overlays-mainline"
 
 IMX_DEFAULT_BOOTLOADER:colibri-imx6ull = "u-boot-toradex"
-PREFERRED_VERSION_u-boot-toradex:use-mainline-bsp = "mainline"
 PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
 
 MACHINE_FIRMWARE:remove:use-mainline-bsp = "firmware-imx-vpu-imx6q firmware-imx-vpu-imx6d"
