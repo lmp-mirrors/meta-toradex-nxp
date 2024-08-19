@@ -1,6 +1,6 @@
 inherit toradex-devicetree
 
-SRCBRANCH = "toradex_5.15-2.2.x-imx"
+SRCBRANCH = "toradex_6.6-2.0.x-imx"
 SRCREV = "939f660fedd445217da27a1d6409b84626a1c715"
 SRCREV:use-head-next = "${AUTOREV}"
 
