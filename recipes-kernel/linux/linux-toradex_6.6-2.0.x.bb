@@ -7,5 +7,5 @@ SRC_URI:append = " \
 
 LINUX_VERSION = "6.6.23"
 SRCBRANCH = "toradex_6.6-2.0.x-imx"
-SRCREV_machine = "2a6bf0a9a4064ebb85956d658121e918bd6aeeb1"
+SRCREV_machine = "5545cedda0e3b4e7282069d74a94db292b0c0eb6"
 SRCREV_machine:use-head-next = "${AUTOREV}"
