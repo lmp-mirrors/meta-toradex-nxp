@@ -30,5 +30,5 @@ KERNEL_VERSION_SANITY_SKIP = "1"
 do_kernel_configcheck[noexec] = "1"
 
 DEPENDS += "bc-native"
-COMPATIBLE_MACHINE = "mx8m-nxp-bsp"
+COMPATIBLE_MACHINE = "(mx8m-nxp-bsp|mx8qm)"
 
