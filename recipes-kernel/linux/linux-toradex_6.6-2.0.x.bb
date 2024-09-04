@@ -39,3 +39,27 @@ LINUX_VERSION = "6.6.23"
 SRCBRANCH = "toradex_6.6-2.0.x-imx"
 SRCREV_machine = "5545cedda0e3b4e7282069d74a94db292b0c0eb6"
 SRCREV_machine:use-head-next = "${AUTOREV}"
+
+###############################################################################
+# Apply the RT patch and change the configuration to use PREMPT_RT when the
+# preempt-rt override is set.
+###############################################################################
+
+SUMMARY:preempt-rt = "Real-time Linux kernel for Toradex Freescale i.MX based modules"
+
+MIRRORS:append:preempt-rt = "\
+    ${KERNELORG_MIRROR}/linux/kernel/projects/rt/6.6/older/ \
+    ${KERNELORG_MIRROR}/linux/kernel/projects/rt/6.6/ \
+"
+
+SRC_URI:append:preempt-rt = " \
+    ${KERNELORG_MIRROR}/linux/kernel/projects/rt/6.6/older/patch-6.6.23-rt28.patch.xz;name=rt-patch \
+"
+
+SRC_URI[rt-patch.sha256sum] = "a4fb0a6532988a1ca68ed1c8bf06d11db621563624cf4e2577638c6d71022551"
+
+LINUX_KERNEL_TYPE:preempt-rt = "preempt-rt"
+LINUX_VERSION:preempt-rt = "6.6.23-rt28"
+
+# The downloaded RT patch doesn't have a upstream status tag
+ERROR_QA:remove:preempt-rt = "patch-status"
