@@ -21,7 +21,9 @@ BOOT_TOOLS = "imx-boot-tools"
 inherit toradex-u-boot-localversion
 # build imx-boot from within U-Boot
 inherit ${@oe.utils.ifelse(d.getVar('UBOOT_PROVIDES_BOOT_CONTAINER') == '1', 'imx-boot-container', '')}
-inherit uuu_bootloader_tag
+# if final boot binary blob is created by U-Boot, create a tagged version
+# for wic images
+inherit ${@ '' if d.getVar('UBOOT_PROVIDES_BOOT_CONTAINER') == '0' and ('mx8-generic-bsp' in d.getVar('OVERRIDES').split(':') or 'mx9-generic-bsp' in d.getVar('OVERRIDES').split(':')) else 'uuu_bootloader_tag'}
 
 UBOOT_INITIAL_ENV = "u-boot-initial-env"
 
