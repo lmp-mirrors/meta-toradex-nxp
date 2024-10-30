@@ -35,9 +35,9 @@ do_kernel_configcheck[noexec] = "1"
 DEPENDS += "bc-native"
 COMPATIBLE_MACHINE = "mx8-nxp-bsp"
 
-LINUX_VERSION = "6.6.23"
-SRCBRANCH = "toradex_6.6-2.0.x-imx"
-SRCREV_machine = "558ba3740880b6e2bdf86782e9a5052047885721"
+LINUX_VERSION = "6.6.54"
+SRCBRANCH = "toradex_6.6-2.1.x-imx"
+SRCREV_machine = "f543ea57a26695955c073e42fd68dbe073ea16b6"
 SRCREV_machine:use-head-next = "${AUTOREV}"
 
 ###############################################################################
@@ -53,13 +53,13 @@ MIRRORS:append:preempt-rt = "\
 "
 
 SRC_URI:append:preempt-rt = " \
-    ${KERNELORG_MIRROR}/linux/kernel/projects/rt/6.6/older/patch-6.6.23-rt28.patch.xz;name=rt-patch \
+    ${KERNELORG_MIRROR}/linux/kernel/projects/rt/6.6/older/patch-6.6.53-rt44.patch.xz;name=rt-patch \
 "
 
-SRC_URI[rt-patch.sha256sum] = "a4fb0a6532988a1ca68ed1c8bf06d11db621563624cf4e2577638c6d71022551"
+SRC_URI[rt-patch.sha256sum] = "2f275f591bce00c6f2e36783a346ab41da4f5ee03abfb4962320e1fde1dad3bb"
 
 LINUX_KERNEL_TYPE:preempt-rt = "preempt-rt"
-LINUX_VERSION:preempt-rt = "6.6.23-rt28"
+LINUX_VERSION:preempt-rt = "6.6.53-rt44"
 
 # The downloaded RT patch doesn't have a upstream status tag
 ERROR_QA:remove:preempt-rt = "patch-status"
