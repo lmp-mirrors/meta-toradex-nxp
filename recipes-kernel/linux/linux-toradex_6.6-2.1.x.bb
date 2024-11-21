@@ -37,7 +37,7 @@ COMPATIBLE_MACHINE = "mx8-nxp-bsp"
 
 LINUX_VERSION = "6.6.54"
 SRCBRANCH = "toradex_6.6-2.1.x-imx"
-SRCREV_machine = "f7321c633d93e1cfd470710c51d2b7fa17635125"
+SRCREV_machine = "8de35b7808722fbd9411229ee714852c02b53d14"
 SRCREV_machine:use-head-next = "${AUTOREV}"
 
 ###############################################################################
