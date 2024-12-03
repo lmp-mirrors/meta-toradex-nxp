@@ -33,7 +33,7 @@ KERNEL_VERSION_SANITY_SKIP = "1"
 do_kernel_configcheck[noexec] = "1"
 
 DEPENDS += "bc-native"
-COMPATIBLE_MACHINE = "mx8-nxp-bsp"
+COMPATIBLE_MACHINE = "(mx8-nxp-bsp|mx9-nxp-bsp)"
 
 LINUX_VERSION = "6.6.54"
 SRCBRANCH = "toradex_6.6-2.1.x-imx"
