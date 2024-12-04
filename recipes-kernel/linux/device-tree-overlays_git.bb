@@ -14,4 +14,4 @@ KERNEL_INCLUDE = " \
     ${STAGING_KERNEL_DIR}/scripts/dtc/include-prefixes \
 "
 
-COMPATIBLE_MACHINE = ".*(mx[678]).*"
+COMPATIBLE_MACHINE = ".*(mx[6789]).*"
