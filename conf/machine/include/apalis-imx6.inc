@@ -5,6 +5,8 @@ OFFSET_BOOTROM_PAYLOAD = "2"
 OFFSET_SPL_PAYLOAD = "138"
 TORADEX_PRODUCT_IDS = "0027 0028 0029 0035 0082 0083 0084 0085"
 
+MACHINEOVERRIDES =. "tdx:"
+
 MACHINE_NAME = "Apalis-iMX6"
 
 # with kernel 6.5 the device trees were moved to vendor subdirs

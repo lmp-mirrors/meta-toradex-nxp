@@ -5,6 +5,8 @@ OFFSET_BOOTROM_PAYLOAD = "2"
 OFFSET_SPL_PAYLOAD = "138"
 TORADEX_PRODUCT_IDS = "0014 0015 0016 0017 0077 0078 0079 0080"
 
+MACHINEOVERRIDES =. "tdx:"
+
 MACHINE_NAME = "Colibri-iMX6"
 
 # with kernel 6.5 the device trees were moved to vendor subdirs
