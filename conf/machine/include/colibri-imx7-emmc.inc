@@ -5,6 +5,8 @@ OFFSET_BOOTROM_PAYLOAD = "2"
 TORADEX_PRODUCT_IDS = "0039"
 TORADEX_FLASH_TYPE = "emmc"
 
+MACHINEOVERRIDES =. "tdx:"
+
 MACHINE_NAME = "Colibri-iMX7-eMMC"
 
 # with kernel 6.5 the device trees were moved to vendor subdirs

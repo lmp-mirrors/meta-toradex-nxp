@@ -9,6 +9,8 @@ TORADEX_FLASH_TYPE = "rawnand"
 
 WIC_CREATE_EXTRA_ARGS:append = " --no-fstab-update"
 
+MACHINEOVERRIDES =. "tdx:"
+
 MACHINE_NAME = "Colibri-iMX6ULL"
 
 MACHINE_EXTRA_RRECOMMENDS:append = " mwifiexconf"
