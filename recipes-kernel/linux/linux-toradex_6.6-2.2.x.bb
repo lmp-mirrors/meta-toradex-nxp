@@ -12,9 +12,6 @@ SRC_URI = " \
     ${KCONFIG_REPO};protocol=https;type=kmeta;name=meta-toradex-bsp;branch=main;destsuffix=${KMETA} \
     file://nxp-imx.cfg \
 "
-SRC_URI:append:mx9-nxp-bsp = " \
-    file://nxp-imx95.cfg \
-"
 
 KCONFIG_REPO = "git://git.toradex.com/linux-toradex-kconfig.git"
 KMETA = "kernel-meta-toradex-bsp"
