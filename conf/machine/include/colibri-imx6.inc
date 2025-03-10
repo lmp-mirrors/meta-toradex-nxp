@@ -16,6 +16,10 @@ KERNEL_DEVICETREE:append = " \
     imx6dl-colibri-aster.dtb \
     imx6dl-colibri-iris.dtb \
     imx6dl-colibri-iris-v2.dtb \
+    imx6dl-colibri-v1.2-aster.dtb \
+    imx6dl-colibri-v1.2-eval-v3.dtb \
+    imx6dl-colibri-v1.2-iris.dtb \
+    imx6dl-colibri-v1.2-iris-v2.dtb \
 "
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-toradex"

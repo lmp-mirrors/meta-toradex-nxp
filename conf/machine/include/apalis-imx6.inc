@@ -17,6 +17,11 @@ TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT = ""
 KERNEL_DEVICETREE:append = " \
     imx6q-apalis-eval-v1.2.dtb \
     imx6q-apalis-ixora-v1.2.dtb \
+    imx6q-apalis-v1.2-eval.dtb \
+    imx6q-apalis-v1.2-eval-v1.2.dtb \
+    imx6q-apalis-v1.2-ixora.dtb \
+    imx6q-apalis-v1.2-ixora-v1.1.dtb \
+    imx6q-apalis-v1.2-ixora-v1.2.dtb \
 "
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-toradex"
