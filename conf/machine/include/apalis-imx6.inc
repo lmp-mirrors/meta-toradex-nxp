@@ -19,6 +19,11 @@ KERNEL_DEVICETREE:apalis-imx6 = " \
     ${KERNEL_DTB_PREFIX}imx6q-apalis-ixora.dtb \
     ${KERNEL_DTB_PREFIX}imx6q-apalis-ixora-v1.1.dtb \
     ${KERNEL_DTB_PREFIX}imx6q-apalis-ixora-v1.2.dtb \
+    ${KERNEL_DTB_PREFIX}imx6q-apalis-v1.2-eval.dtb \
+    ${KERNEL_DTB_PREFIX}imx6q-apalis-v1.2-eval-v1.2.dtb \
+    ${KERNEL_DTB_PREFIX}imx6q-apalis-v1.2-ixora.dtb \
+    ${KERNEL_DTB_PREFIX}imx6q-apalis-v1.2-ixora-v1.1.dtb \
+    ${KERNEL_DTB_PREFIX}imx6q-apalis-v1.2-ixora-v1.2.dtb \
 "
 TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT:use-mainline-bsp = " \
     apalis-imx6_hdmi_overlay.dtbo \
