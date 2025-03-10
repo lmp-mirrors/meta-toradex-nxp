@@ -18,6 +18,10 @@ KERNEL_DEVICETREE:colibri-imx6 = " \
     ${KERNEL_DTB_PREFIX}imx6dl-colibri-eval-v3.dtb \
     ${KERNEL_DTB_PREFIX}imx6dl-colibri-iris.dtb \
     ${KERNEL_DTB_PREFIX}imx6dl-colibri-iris-v2.dtb \
+    ${KERNEL_DTB_PREFIX}imx6dl-colibri-v1.2-aster.dtb \
+    ${KERNEL_DTB_PREFIX}imx6dl-colibri-v1.2-eval-v3.dtb \
+    ${KERNEL_DTB_PREFIX}imx6dl-colibri-v1.2-iris.dtb \
+    ${KERNEL_DTB_PREFIX}imx6dl-colibri-v1.2-iris-v2.dtb \
 "
 TEZI_EXTERNAL_KERNEL_DEVICETREE_BOOT:use-mainline-bsp = " \
     colibri-imx6_vga-640x480_overlay.dtbo \
