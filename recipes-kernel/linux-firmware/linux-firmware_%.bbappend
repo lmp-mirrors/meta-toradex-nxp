@@ -4,6 +4,9 @@ SRC_URI[sha256sum] = "b1083a36f19aea46f661dcfd4cd462d13933dcb4e7f0dc809525552dd5
 
 PACKAGECONFIG[deduplicate] = ",,rdfind-native"
 
+# Specifying -j requires GNU parallel, which is a part of meta-oe
+PARALLEL_MAKE = ""
+
 do_install() {
         sed -i 's:^./check_whence.py:#./check_whence.py:' ${S}/copy-firmware.sh
 
