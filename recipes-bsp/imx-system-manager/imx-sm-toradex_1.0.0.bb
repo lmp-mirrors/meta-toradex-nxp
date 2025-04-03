@@ -14,7 +14,7 @@ LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=b66f32a90f9577a5a3255c21d79bc619"
 SRC_URI = "${IMX_SYSTEM_MANAGER_SRC};branch=${SRCBRANCH}"
 IMX_SYSTEM_MANAGER_SRC = "git://gitlab.int.toradex.com/rd/linux-bsp/imx-sm-toradex.git;protocol=https"
 SRCBRANCH = "main"
-SRCREV = "8d805e9a94dc92bf43c443c96a56f36f23793ca9"
+SRCREV = "922f8affacd89c3d7912021297a871ae0dd70947"
 SRCREV:use-head-next = "${AUTOREV}"
 
 S = "${WORKDIR}/git"
