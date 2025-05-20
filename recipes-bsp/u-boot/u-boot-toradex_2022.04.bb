@@ -9,7 +9,7 @@ PROVIDES:append = " u-boot"
 require recipes-bsp/u-boot/u-boot.inc
 
 SRC_URI = "git://git.toradex.com/u-boot-toradex.git;protocol=https;branch=${SRCBRANCH}"
-SRCREV = "5d82a9629f6bcd6a197845322e32eb154ccf2b07"
+SRCREV = "75060d6a4c97dac5db14ce3ff02bb1f5dddccdfe"
 SRCREV:use-head-next = "${AUTOREV}"
 SRCBRANCH = "toradex_imx_lf_v2022.04"
 
