@@ -13,6 +13,8 @@ SRCREV = "dc12910d5e0cd2f82500c5652a104144d1af8f66"
 SRCREV:use-head-next = "${AUTOREV}"
 SRCBRANCH = "toradex_imx_lf_v2024.04"
 
+CVE_PRODUCT = "denx:u-boot"
+
 S = "${WORKDIR}/git"
 B = "${WORKDIR}/build"
 
