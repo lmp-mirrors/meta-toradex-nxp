@@ -2,8 +2,8 @@ OpenEmbedded/Yocto BSP Layer for Toradex Modules Based on NXP SoCs
 ==================================================================
 
 This layer provides support for ARM based Toradex computer on modules (COM)
-featuring NXP i.MX6, i.MX7, and Vybrid SoCs for use with OpenEmbedded
-and/or Yocto.
+featuring NXP i.MX6, i.MX7, i.MX8, i.MX8X, i.MX8MM, i.MX8MP and i.MX95 for use
+with OpenEmbedded and/or Yocto.
 For more information on available Toradex COMs please visit:
 
 https://www.toradex.com/computer-on-modules
