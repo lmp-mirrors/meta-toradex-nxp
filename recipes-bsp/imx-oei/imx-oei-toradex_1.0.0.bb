@@ -12,8 +12,6 @@ SRCBRANCH = "main"
 SRCREV = "5807062503e568300bf5460d0f3000bc29ea102a"
 SRCREV:use-head-next = "${AUTOREV}"
 
-S = "${WORKDIR}/git"
-
 inherit deploy
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"

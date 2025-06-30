@@ -18,8 +18,6 @@ SRC_URI = "git://github.com/toradex/i.MX-System-Controller-Firmware.git;branch=m
 SRCREV = "79416bcaa86f08c85c7af7d231fd13f68611b528"
 SRCREV:use-head-next = "${AUTOREV}"
 
-S = "${WORKDIR}/git"
-
 PROVIDES = "imx-sc-firmware"
 RREPLACES:${PN} = "imx-sc-firmware"
 RPROVIDES:${PN} = "imx-sc-firmware"

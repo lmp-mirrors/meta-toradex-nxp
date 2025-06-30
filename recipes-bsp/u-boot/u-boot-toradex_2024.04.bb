@@ -13,7 +13,6 @@ SRCREV = "22d100d163d841f261eecd76e01025b9782f6378"
 SRCREV:use-head-next = "${AUTOREV}"
 SRCBRANCH = "toradex_imx_lf_v2024.04"
 
-S = "${WORKDIR}/git"
 B = "${WORKDIR}/build"
 
 BOOT_TOOLS = "imx-boot-tools"

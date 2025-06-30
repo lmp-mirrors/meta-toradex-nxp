@@ -18,8 +18,6 @@ KMETA = "kernel-meta-toradex-bsp"
 SRCREV_meta-toradex-bsp = "440dd720d042e9e057c29aa439270e6398944abf"
 SRCREV_meta-toradex-bsp:use-head-next = "${AUTOREV}"
 
-S = "${WORKDIR}/git"
-
 KCONFIG_MODE = "--alldefconfig"
 
 # Load USB functions configurable through configfs (CONFIG_USB_CONFIGFS)

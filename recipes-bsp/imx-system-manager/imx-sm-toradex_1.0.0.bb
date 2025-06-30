@@ -17,8 +17,6 @@ SRCBRANCH = "main"
 SRCREV = "8d805e9a94dc92bf43c443c96a56f36f23793ca9"
 SRCREV:use-head-next = "${AUTOREV}"
 
-S = "${WORKDIR}/git"
-
 require dynamic-layers/arm-toolchain/recipes-bsp/imx-system-manager/imx-system-manager.inc
 
 # Disable serial debug monitor
