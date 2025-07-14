@@ -12,7 +12,7 @@ LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=b66f32a90f9577a5a3255c21d79bc619"
 
 SRC_URI = "${IMX_SYSTEM_MANAGER_SRC};branch=${SRCBRANCH}"
-IMX_SYSTEM_MANAGER_SRC = "git://gitlab.int.toradex.com/rd/linux-bsp/imx-sm-toradex.git;protocol=https"
+IMX_SYSTEM_MANAGER_SRC = "git://git.toradex.com/imx-sm-toradex.git;protocol=https"
 SRCBRANCH = "main"
 SRCREV = "8d805e9a94dc92bf43c443c96a56f36f23793ca9"
 SRCREV:use-head-next = "${AUTOREV}"
