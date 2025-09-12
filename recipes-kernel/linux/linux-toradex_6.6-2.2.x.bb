@@ -38,6 +38,14 @@ SRCBRANCH = "toradex_6.6-2.2.x-imx"
 SRCREV_machine = "e7ff4bb7a64142050ebd63ff84c35d87a662aa4f"
 SRCREV_machine:use-head-next = "${AUTOREV}"
 
+def get_linux_base_version(d):
+    linux_version = d.getVar('LINUX_VERSION')
+    if '-rt' in linux_version:
+        return linux_version.split('-rt')[0]
+    return linux_version
+
+CVE_VERSION = "${@get_linux_base_version(d)}"
+
 ###############################################################################
 # Apply the RT patch and change the configuration to use PREMPT_RT when the
 # preempt-rt override is set.
