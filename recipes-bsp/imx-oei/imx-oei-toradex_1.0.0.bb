@@ -9,7 +9,7 @@ DEPENDS = "gcc-arm-none-eabi-native"
 SRC_URI = "${IMX_OEI_SRC};branch=${SRCBRANCH}"
 IMX_OEI_SRC ?= "git://git.toradex.com/imx-oei-toradex.git;protocol=https"
 SRCBRANCH = "main"
-SRCREV = "326cf61ab97b90cb3e2a8d1d2c9dc88731f3970e"
+SRCREV = "b1fb0d0baab625a4b2fff47bd2d8b36f6177b377"
 SRCREV:use-head-next = "${AUTOREV}"
 
 S = "${WORKDIR}/git"

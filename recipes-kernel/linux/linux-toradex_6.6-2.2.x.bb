@@ -15,7 +15,7 @@ SRC_URI = " \
 
 KCONFIG_REPO = "git://git.toradex.com/linux-toradex-kconfig.git"
 KMETA = "kernel-meta-toradex-bsp"
-SRCREV_meta-toradex-bsp = "9695cd0663a25fe4dc88da01e63cfa37bcb9e2e6"
+SRCREV_meta-toradex-bsp = "0f16294bb9076195ffc48171063908b2431bf14a"
 SRCREV_meta-toradex-bsp:use-head-next = "${AUTOREV}"
 
 S = "${WORKDIR}/git"
@@ -37,7 +37,7 @@ COMPATIBLE_MACHINE = "(mx8-nxp-bsp|mx9-nxp-bsp)"
 
 LINUX_VERSION = "6.6.101"
 SRCBRANCH = "toradex_6.6-2.2.x-imx"
-SRCREV_machine = "e7ff4bb7a64142050ebd63ff84c35d87a662aa4f"
+SRCREV_machine = "557af2783d91278bd589d861828bb02a40278a48"
 SRCREV_machine:use-head-next = "${AUTOREV}"
 
 def get_linux_base_version(d):
