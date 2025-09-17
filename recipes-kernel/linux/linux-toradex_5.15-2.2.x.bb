@@ -22,6 +22,14 @@ SRCBRANCH = "toradex_5.15-2.2.x-imx"
 SRCREV_machine = "88e9f1ec02f87bb86c41152f0b18eec78d0fbfeb"
 SRCREV_machine:use-head-next = "${AUTOREV}"
 
+def get_linux_base_version(d):
+    linux_version = d.getVar('LINUX_VERSION')
+    if '-rt' in linux_version:
+        return linux_version.split('-rt')[0]
+    return linux_version
+
+CVE_VERSION = "${@get_linux_base_version(d)}"
+
 DEPENDS += "bc-native"
 COMPATIBLE_MACHINE = "mx8-nxp-bsp"
 
