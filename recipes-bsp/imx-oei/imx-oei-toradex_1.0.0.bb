@@ -20,6 +20,7 @@ OEI_CONFIGS ?= "UNDEFINED"
 OEI_CORE    ?= "UNDEFINED"
 OEI_SOC     ?= "UNDEFINED"
 OEI_BOARD   ?= "UNDEFINED"
+OEI_DDRCONFIG ?= ""
 
 LDFLAGS[unexport] = "1"
 
@@ -29,6 +30,7 @@ EXTRA_OEMAKE = "\
     "
 
 EXTRA_OEMAKE:append:mx95-generic-bsp = " r=${IMX_SOC_REV}"
+EXTRA_OEMAKE:append = " ${@' DDR_CONFIG=${OEI_DDRCONFIG}' if d.getVar('OEI_DDRCONFIG') else ''}"
 
 do_configure() {
     for oei_config in ${OEI_CONFIGS}; do
