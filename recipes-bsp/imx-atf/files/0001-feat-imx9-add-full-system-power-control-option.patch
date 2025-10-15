@@ -1,6 +1,6 @@
-From 5ebd11a08106ae7925589fc1bebfdd073a85d74f Mon Sep 17 00:00:00 2001
+From 80d8c15441aab6d2881e7df43d3d5572160d0c4a Mon Sep 17 00:00:00 2001
 From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-Date: Mon, 13 Oct 2025 17:03:00 +0200
+Date: Fri, 10 Oct 2025 09:47:36 +0200
 Subject: [PATCH] feat(imx9): add full system power control option
 
 Add an optional build-time configuration to enable full system
@@ -17,16 +17,15 @@ Upstream-Status: Submitted [https://review.trustedfirmware.org/c/TF-A/trusted-fi
 Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 ---
  drivers/arm/css/scmi/vendor/scmi_imx9.h |  3 +++
- include/drivers/arm/css/scmi.h          |  1 -
- plat/imx/imx95/imx95_psci.c             | 14 +++++++++++---
- plat/imx/imx95/platform.mk              |  3 +++
- 4 files changed, 17 insertions(+), 4 deletions(-)
+ plat/imx/imx9/imx95/imx95_psci.c        | 12 ++++++++++--
+ plat/imx/imx9/imx95/platform.mk         |  3 +++
+ 3 files changed, 16 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/arm/css/scmi/vendor/scmi_imx9.h b/drivers/arm/css/scmi/vendor/scmi_imx9.h
-index 0e50374fdeaa..52d4f519b538 100644
+index b03dc98cd4da..e210c687d651 100644
 --- a/drivers/arm/css/scmi/vendor/scmi_imx9.h
 +++ b/drivers/arm/css/scmi/vendor/scmi_imx9.h
-@@ -109,6 +109,9 @@
+@@ -150,6 +150,9 @@
  #define SCMI_GIC_WAKEUP				1
  #define SCMI_RESUME_CPU				BIT(1)
  
@@ -36,25 +35,13 @@ index 0e50374fdeaa..52d4f519b538 100644
  struct scmi_cpu_reset_addr_a2p {
  	uint32_t cpu_id;
  	uint32_t flags;
-diff --git a/include/drivers/arm/css/scmi.h b/include/drivers/arm/css/scmi.h
-index 2531d8bc85c5..a8429b61b8c1 100644
---- a/include/drivers/arm/css/scmi.h
-+++ b/include/drivers/arm/css/scmi.h
-@@ -102,7 +102,6 @@
- #define SCMI_SYS_PWR_WARM_RESET			0x2
- #define SCMI_SYS_PWR_POWER_UP			0x3
- #define SCMI_SYS_PWR_SUSPEND			0x4
--#define SCMI_SYS_STATE_FULL_RESET		0x80000002U
- 
- /*
-  * Macros to describe the bit-fields of the `attribute` of AP core protocol
-diff --git a/plat/imx/imx95/imx95_psci.c b/plat/imx/imx95/imx95_psci.c
-index aa63b1a74d2d..1e4ae8556674 100644
---- a/plat/imx/imx95/imx95_psci.c
-+++ b/plat/imx/imx95/imx95_psci.c
-@@ -117,6 +117,14 @@ sleep_mode[7:4] – sleep mode performance level
- 
- #define NETC_IREC_PCI_INT_X0	304
+diff --git a/plat/imx/imx9/imx95/imx95_psci.c b/plat/imx/imx9/imx95/imx95_psci.c
+index 61e1514133f9..c1d5dd42557c 100644
+--- a/plat/imx/imx9/imx95/imx95_psci.c
++++ b/plat/imx/imx9/imx95/imx95_psci.c
+@@ -23,6 +23,14 @@
+ #include <plat_imx8.h>
+ #include <scmi_imx9.h>
  
 +#if SYS_PWR_FULL_CTRL == 1
 +#define PLAT_SCMI_SYS_PWR_SHUTDOWN	IMX9_SCMI_SYS_PWR_FULL_SHUTDOWN
@@ -64,41 +51,32 @@ index aa63b1a74d2d..1e4ae8556674 100644
 +#define PLAT_SCMI_SYS_PWR_COLD_RESET	SCMI_SYS_PWR_COLD_RESET
 +#endif
 +
- extern void* imx95_scmi_handle;
+ #define IMR_NUM		U(12)
+ #define IMX95_A55P_IDX		6
  
- static bool boot_stage[6] = {false, true, true, true, true, true};
-@@ -759,7 +767,7 @@ void __dead2 imx_system_reset(void)
+@@ -758,7 +766,7 @@ void __dead2 imx_system_reset(void)
  	/* Force: work, Gracefull: not work */
- 	ret = scmi_sys_pwr_state_set(imx95_scmi_handle,
+ 	ret = scmi_sys_pwr_state_set(imx9_scmi_handle,
  				     SCMI_SYS_PWR_FORCEFUL_REQ,
 -				     SCMI_SYS_PWR_COLD_RESET);
 +				     PLAT_SCMI_SYS_PWR_COLD_RESET);
  	if (ret) {
  		VERBOSE("%s failed: %d\n", __func__, ret);
  	}
-@@ -796,7 +804,7 @@ int __dead2 imx_system_reset2(int is_vendor, int reset_type, u_register_t cookie
- 		/* Force: work, Gracefull: not work */
- 		ret = scmi_sys_pwr_state_set(imx95_scmi_handle,
- 					     SCMI_SYS_PWR_FORCEFUL_REQ,
--					     SCMI_SYS_STATE_FULL_RESET);
-+					     IMX9_SCMI_SYS_PWR_FULL_RESET);
- 		break;
- 	default:
- 		ret = PSCI_E_INVALID_PARAMS;
-@@ -816,7 +824,7 @@ void __dead2 imx_system_off(void)
+@@ -815,7 +823,7 @@ void __dead2 imx_system_off(void)
  
- 	ret = scmi_sys_pwr_state_set(imx95_scmi_handle,
+ 	ret = scmi_sys_pwr_state_set(imx9_scmi_handle,
  				     SCMI_SYS_PWR_FORCEFUL_REQ,
 -				     SCMI_SYS_PWR_SHUTDOWN);
 +				     PLAT_SCMI_SYS_PWR_SHUTDOWN);
  	if (ret) {
  		NOTICE("%s failed: %d\n", __func__, ret);
  	}
-diff --git a/plat/imx/imx95/platform.mk b/plat/imx/imx95/platform.mk
-index e3de10a6e2d0..20a6f987ff89 100644
---- a/plat/imx/imx95/platform.mk
-+++ b/plat/imx/imx95/platform.mk
-@@ -59,6 +59,9 @@ PROGRAMMABLE_RESET_ADDRESS := 1
+diff --git a/plat/imx/imx9/imx95/platform.mk b/plat/imx/imx9/imx95/platform.mk
+index 08340fa7516c..0d65af12df48 100644
+--- a/plat/imx/imx9/imx95/platform.mk
++++ b/plat/imx/imx9/imx95/platform.mk
+@@ -60,6 +60,9 @@ PROGRAMMABLE_RESET_ADDRESS := 1
  COLD_BOOT_SINGLE_CPU := 1
  ERRATA_A55_1530923 := 1
  
