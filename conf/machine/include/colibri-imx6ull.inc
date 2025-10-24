@@ -40,6 +40,7 @@ IMX_DEFAULT_BOOTLOADER:colibri-imx6ull = "u-boot-toradex"
 PREFERRED_VERSION_u-boot-toradex = "mainline"
 PREFERRED_PROVIDER_u-boot-default-script = "u-boot-distro-boot"
 
+MACHINE_FIRMWARE:append = " linux-firmware-sd8997"
 MACHINE_FIRMWARE:remove:use-mainline-bsp = "firmware-imx-vpu-imx6q firmware-imx-vpu-imx6d"
 
 UBOOT_DTB_LOADADDRESS:colibri-imx6ull = "0x88200000"
