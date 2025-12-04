@@ -14,12 +14,12 @@ SRC_URI = " \
 KERNEL_MODULE_AUTOLOAD += "${@bb.utils.contains('COMBINED_FEATURES', 'usbgadget', ' libcomposite', '',d)}"
 
 inherit toradex-kernel-deploy-config toradex-kernel-localversion
-LINUX_VERSION = "5.15.191"
+LINUX_VERSION = "5.15.196"
 # skip, as with use-head-next LINUX_VERSION might be set wrongly
 KERNEL_VERSION_SANITY_SKIP = "1"
 
 SRCBRANCH = "toradex_5.15-2.2.x-imx"
-SRCREV_machine = "88e9f1ec02f87bb86c41152f0b18eec78d0fbfeb"
+SRCREV_machine = "e0d2c0556a62886a8db485beef41d45be5b24a76"
 SRCREV_machine:use-head-next = "${AUTOREV}"
 
 DEPENDS += "bc-native"
@@ -40,11 +40,11 @@ MIRRORS:append:preempt-rt = "${KERNELORG_MIRROR}/linux/kernel/projects/rt/5.15/o
 SRC_URI:append:preempt-rt = " \
     file://0001-Revert-Revert-ARM-9113-1-uaccess-remove-set_fs-imple.patch \
     file://0002-arch-arm-Kconfig-prepare-for-rt-patch.patch \
-    ${KERNELORG_MIRROR}/linux/kernel/projects/rt/5.15/older/patch-5.15.191-rt88.patch.xz;name=rt-patch \
+    ${KERNELORG_MIRROR}/linux/kernel/projects/rt/5.15/older/patch-5.15.195-rt90.patch.xz;name=rt-patch \
     file://0004-Revert-arch-arm-Kconfig-prepare-for-rt-patch.patch \
     file://0005-Revert-Revert-Revert-ARM-9113-1-uaccess-remove-set_f.patch \
     file://preempt-rt.scc \
     file://preempt-rt-less-latency.scc \
 "
 
-SRC_URI[rt-patch.sha256sum] = "31f9b5df63d252cab38a7d644dadbd59ef2ac3450ef4bc5c84fa60ca3b66cc04"
+SRC_URI[rt-patch.sha256sum] = "45dca65139c8b4bd158bc56de63d650255ff871a7af8a6bea0f0600fd6a0c196"
