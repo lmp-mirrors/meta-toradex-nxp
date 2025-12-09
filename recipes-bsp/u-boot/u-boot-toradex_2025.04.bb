@@ -1,5 +1,5 @@
-SUMMARY = "U-Boot bootloader with support for Toradex i.MX 8 series SoMs"
-HOMEPAGE = "http://www.denx.de/wiki/U-Boot/WebHome"
+SUMMARY = "U-Boot bootloader with support for Toradex i.MX 8/9 series SoMs"
+HOMEPAGE = "https://u-boot.org/"
 SECTION = "bootloaders"
 LICENSE = "GPL-2.0-or-later"
 LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
@@ -9,9 +9,9 @@ PROVIDES:append = " u-boot"
 require recipes-bsp/u-boot/u-boot.inc
 
 SRC_URI = "git://git.toradex.com/u-boot-toradex.git;protocol=https;branch=${SRCBRANCH}"
-SRCREV = "22d100d163d841f261eecd76e01025b9782f6378"
+SRCREV = "274cef201fdce86d300a17d99feff26684af429c"
 SRCREV:use-head-next = "${AUTOREV}"
-SRCBRANCH = "toradex_imx_lf_v2024.04"
+SRCBRANCH = "toradex_imx_lf_v2025.04"
 
 S = "${WORKDIR}/git"
 B = "${WORKDIR}/build"
