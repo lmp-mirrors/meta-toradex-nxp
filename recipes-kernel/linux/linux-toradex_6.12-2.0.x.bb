@@ -1,6 +1,6 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}-${PV}:"
 
-SUMMARY = "Linux kernel for Toradex Freescale i.MX based modules"
+SUMMARY = "Linux kernel for Toradex Freescale i.MX 64bit based modules"
 SECTION = "kernel"
 LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM ?= "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
@@ -15,7 +15,7 @@ SRC_URI = " \
 
 KCONFIG_REPO = "git://git.toradex.com/linux-toradex-kconfig.git"
 KMETA = "kernel-meta-toradex-bsp"
-SRCREV_meta-toradex-bsp = "440dd720d042e9e057c29aa439270e6398944abf"
+SRCREV_meta-toradex-bsp = "78c70bc57ab5a8efb3cebd86624539fd5e9c2a45"
 SRCREV_meta-toradex-bsp:use-head-next = "${AUTOREV}"
 
 S = "${WORKDIR}/git"
@@ -35,9 +35,9 @@ do_kernel_configcheck[noexec] = "1"
 DEPENDS += "bc-native"
 COMPATIBLE_MACHINE = "(mx8-nxp-bsp|mx9-nxp-bsp)"
 
-LINUX_VERSION = "6.6.101"
-SRCBRANCH = "toradex_6.6-2.2.x-imx"
-SRCREV_machine = "e7ff4bb7a64142050ebd63ff84c35d87a662aa4f"
+LINUX_VERSION = "6.12.49"
+SRCBRANCH = "toradex_6.12-2.0.x-imx"
+SRCREV_machine = "ba6cdcdc9ad9cbff84ef6fdc0b426c5eb37d7926"
 SRCREV_machine:use-head-next = "${AUTOREV}"
 
 ###############################################################################
@@ -48,18 +48,18 @@ SRCREV_machine:use-head-next = "${AUTOREV}"
 SUMMARY:preempt-rt = "Real-time Linux kernel for Toradex Freescale i.MX based modules"
 
 MIRRORS:append:preempt-rt = "\
-    ${KERNELORG_MIRROR}/linux/kernel/projects/rt/6.6/older/ \
-    ${KERNELORG_MIRROR}/linux/kernel/projects/rt/6.6/ \
+    ${KERNELORG_MIRROR}/linux/kernel/projects/rt/6.12/older/ \
+    ${KERNELORG_MIRROR}/linux/kernel/projects/rt/6.12/ \
 "
 
 SRC_URI:append:preempt-rt = " \
-    ${KERNELORG_MIRROR}/linux/kernel/projects/rt/6.6/older/patch-6.6.101-rt59.patch.xz;name=rt-patch \
+    ${KERNELORG_MIRROR}/linux/kernel/projects/rt/6.12/older/patch-6.12.49-rt13.patch.xz;name=rt-patch \
 "
 
-SRC_URI[rt-patch.sha256sum] = "8be735d3feeb682c262bb2918e192f8d63b6872c742b3cbaf9ec5aa011b5e170"
+SRC_URI[rt-patch.sha256sum] = "6d4b325649b74c443a7f9577dc5a3972e9f46316aac2538cab0ff5944685c361"
 
 LINUX_KERNEL_TYPE:preempt-rt = "preempt-rt"
-LINUX_VERSION:preempt-rt = "6.6.101-rt59"
+LINUX_VERSION:preempt-rt = "6.12.49-rt13"
 
 # The downloaded RT patch doesn't have a upstream status tag
 ERROR_QA:remove:preempt-rt = "patch-status"
