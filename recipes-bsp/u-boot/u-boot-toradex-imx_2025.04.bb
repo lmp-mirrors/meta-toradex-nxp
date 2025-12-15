@@ -3,7 +3,7 @@ HOMEPAGE = "https://u-boot.org/"
 SECTION = "bootloaders"
 LICENSE = "GPL-2.0-or-later"
 LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
-DEPENDS = "bc-native dtc-native flex-native bison-native python3-setuptools-native"
+DEPENDS = "bc-native dtc-native flex-native bison-native gnutls-native python3-setuptools-native"
 PROVIDES:append = " u-boot"
 
 require recipes-bsp/u-boot/u-boot.inc
