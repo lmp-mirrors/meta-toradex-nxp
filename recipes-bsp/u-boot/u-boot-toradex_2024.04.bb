@@ -29,5 +29,5 @@ inherit ${@ '' if d.getVar('UBOOT_PROVIDES_BOOT_CONTAINER') == '0' and ('mx8-gen
 
 UBOOT_INITIAL_ENV = "u-boot-initial-env"
 
-COMPATIBLE_MACHINE = "(colibri-imx8x|apalis-imx8|mx95-generic-bsp)"
+COMPATIBLE_MACHINE = "(colibri-imx8x|apalis-imx8|mx9-generic-bsp)"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
