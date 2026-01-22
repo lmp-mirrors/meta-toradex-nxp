@@ -31,7 +31,6 @@ KERNEL_DEVICETREE:colibri-imx6ull = " \
 "
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-toradex"
-PREFERRED_PROVIDER_virtual/kernel:preempt-rt = "linux-toradex"
 PREFERRED_PROVIDER_virtual/kernel:use-mainline-bsp = "linux-toradex-upstream"
 PREFERRED_PROVIDER_virtual/kernel:use-mainline-bsp:preempt-rt = "linux-toradex-upstream-rt"
 PREFERRED_PROVIDER_virtual/dtb:use-mainline-bsp = "device-tree-overlays-mainline"
