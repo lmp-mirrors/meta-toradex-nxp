@@ -15,7 +15,7 @@ SRC_URI = " \
 
 KCONFIG_REPO = "git://git.toradex.com/linux-toradex-kconfig.git"
 KMETA = "kernel-meta-toradex-bsp"
-SRCREV_meta-toradex-bsp = "78c70bc57ab5a8efb3cebd86624539fd5e9c2a45"
+SRCREV_meta-toradex-bsp = "97124253a227df171a7a622949968f474963fe04"
 SRCREV_meta-toradex-bsp:use-head-next = "${AUTOREV}"
 
 S = "${WORKDIR}/git"
@@ -37,7 +37,7 @@ COMPATIBLE_MACHINE = "(mx8-nxp-bsp|mx9-nxp-bsp)"
 
 LINUX_VERSION = "6.12.49"
 SRCBRANCH = "toradex_6.12-2.0.x-imx"
-SRCREV_machine = "b713d320bf6193786e6033ad68e3cfe55248166a"
+SRCREV_machine = "239bbdc8cab91cfa417d96482d70782ae63edc68"
 SRCREV_machine:use-head-next = "${AUTOREV}"
 
 ###############################################################################
